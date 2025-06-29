@@ -52,6 +52,46 @@ export default function EditBlogPage() {
         [lang]: value
       }
     }));
+
+    // Auto-generate slug from title
+    if (field === 'title') {
+      const generatedSlug = generateSlugFromTitle(value, lang);
+      setFormData(prev => ({
+        ...prev,
+        slug: {
+          ...prev.slug,
+          [lang]: generatedSlug
+        }
+      }));
+    }
+  };
+
+  // Function to generate slug from title
+  const generateSlugFromTitle = (title, language) => {
+    if (!title || typeof title !== 'string') {
+      return '';
+    }
+
+    let slug = title.trim();
+
+    if (language === 'bn') {
+      // For Bangla, keep the original characters but replace spaces with hyphens
+      slug = slug
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/[^\u0980-\u09FFa-z0-9-]/g, '') // Keep only Bangla letters, English letters, numbers, and hyphens
+        .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+        .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+    } else {
+      // For English, convert to lowercase and replace spaces with hyphens
+      slug = slug
+        .toLowerCase()
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/[^a-z0-9-]/g, '') // Keep only letters, numbers, and hyphens
+        .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+        .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+    }
+
+    return slug;
   };
 
   const handleSubmit = async (e) => {

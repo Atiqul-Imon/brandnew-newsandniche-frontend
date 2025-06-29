@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import { AuthProvider } from '../context/AuthContext';
 import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 import "../globals.css";
 import { notFound } from 'next/navigation';
 
@@ -60,8 +61,13 @@ export default async function LocaleLayout(props) {
       <body>
         <NextIntlClientProvider locale={locale} messages={localeMessages}>
           <AuthProvider>
-            <Navigation locale={locale} />
-            {children}
+            <div className="flex flex-col min-h-screen">
+              <Navigation locale={locale} />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+            </div>
           </AuthProvider>
         </NextIntlClientProvider>
       </body>

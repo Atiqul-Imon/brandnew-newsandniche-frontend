@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslations } from 'next-intl';
 
-export default function RegisterPage({ params }) {
+export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,7 +19,8 @@ export default function RegisterPage({ params }) {
   const { register, user, error, clearError } = useAuth();
   const router = useRouter();
   const t = useTranslations();
-  const { locale } = params;
+  const params = useParams();
+  const locale = params.locale;
 
   useEffect(() => {
     if (user) {
