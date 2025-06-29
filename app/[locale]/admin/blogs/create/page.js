@@ -195,6 +195,11 @@ export default function CreateBlogPage() {
       if (filteredData.slug && !filteredData.slug.en) delete filteredData.slug.en;
       if (filteredData.slug && !filteredData.slug.bn) delete filteredData.slug.bn;
 
+      // Set publishedAt if status is published and publishedAt is not set
+      if (filteredData.status === 'published' && !filteredData.publishedAt) {
+        filteredData.publishedAt = new Date().toISOString();
+      }
+
       console.log('Sending data to backend:', filteredData);
 
       const token = localStorage.getItem('token');

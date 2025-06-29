@@ -1,0 +1,295 @@
+"use client";
+import { useState, useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import Link from "next/link";
+import SearchBar from "./SearchBar";
+import { api } from "@/app/apiConfig";
+
+export default function BlogListClient({ initialBlogs, total, hasMore: initialHasMore, initialParams, error: initialError }) {
+  const t = useTranslations();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  // State
+  const [blogs, setBlogs] = useState(initialBlogs || []);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(initialError || null);
+  const [hasMore, setHasMore] = useState(initialHasMore);
+  const [totalBlogs, setTotalBlogs] = useState(total || 0);
+  const [currentPage, setCurrentPage] = useState(Number(initialParams.page) || 1);
+  const [categories, setCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+
+  // Params from searchParams
+  const search = searchParams.get("search") || "";
+  const category = searchParams.get("category") || "";
+  const status = searchParams.get("status") || "published";
+  const sortBy = searchParams.get("sortBy") || "publishedAt";
+  const sortOrder = searchParams.get("sortOrder") || "desc";
+  const locale = initialParams.locale;
+
+  // Fetch categories
+  useEffect(() => {
+    setCategoriesLoading(true);
+    api.get(`/categories?lang=${locale}`)
+      .then(res => setCategories(res.data.data.categories || []))
+      .catch(() => setCategories([]))
+      .finally(() => setCategoriesLoading(false));
+  }, [locale]);
+
+  // Fetch blogs on param change (except first render)
+  useEffect(() => {
+    // If params match initial, don't refetch
+    if (
+      search === initialParams.search &&
+      category === initialParams.category &&
+      status === initialParams.status &&
+      sortBy === initialParams.sortBy &&
+      sortOrder === initialParams.sortOrder &&
+      Number(searchParams.get("page") || 1) === Number(initialParams.page)
+    ) {
+      setBlogs(initialBlogs);
+      setHasMore(initialHasMore);
+      setTotalBlogs(total);
+      setError(initialError);
+      setCurrentPage(Number(initialParams.page) || 1);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    const params = new URLSearchParams({
+      status,
+      sortBy,
+      sortOrder,
+      limit: initialParams.limit.toString(),
+      page: searchParams.get("page") || "1"
+    });
+    if (search) params.append("search", search);
+    if (category) params.append("category", category);
+    api.get(`/blogs/${locale}?${params}`)
+      .then(res => {
+        setBlogs(res.data.data.blogs || []);
+        setHasMore(res.data.data.hasMore);
+        setTotalBlogs(res.data.data.total);
+        setCurrentPage(Number(searchParams.get("page") || 1));
+      })
+      .catch(err => {
+        setError(err.response?.data?.message || t("errors.serverError") || "Failed to load blogs");
+        setBlogs([]);
+      })
+      .finally(() => setLoading(false));
+    // eslint-disable-next-line
+  }, [search, category, status, sortBy, sortOrder, searchParams.get("page"), pathname]);
+
+  // Handlers
+  const handleLoadMore = useCallback(() => {
+    setLoading(true);
+    const nextPage = currentPage + 1;
+    const params = new URLSearchParams({
+      status,
+      sortBy,
+      sortOrder,
+      limit: initialParams.limit.toString(),
+      page: nextPage.toString()
+    });
+    if (search) params.append("search", search);
+    if (category) params.append("category", category);
+    api.get(`/blogs/${locale}?${params}`)
+      .then(res => {
+        setBlogs(prev => [...prev, ...(res.data.data.blogs || [])]);
+        setHasMore(res.data.data.hasMore);
+        setTotalBlogs(res.data.data.total);
+        setCurrentPage(nextPage);
+      })
+      .catch(err => {
+        setError(err.response?.data?.message || t("errors.serverError") || "Failed to load blogs");
+      })
+      .finally(() => setLoading(false));
+  }, [currentPage, search, category, status, sortBy, sortOrder, locale, initialParams.limit, t]);
+
+  // UI
+  if (loading && blogs.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && blogs.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="text-red-600 mb-4">
+              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <p className="text-red-600 text-lg">{error}</p>
+            <button 
+              onClick={() => router.refresh()}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              {t("common.retry") || "Retry"}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            {t("blog.allPosts")}
+          </h1>
+          <p className="text-xl text-gray-600">
+            {t("blog.discoverStories")}
+          </p>
+        </div>
+
+        {/* Category Filter Bar */}
+        <div className="mb-8 flex flex-wrap gap-2 justify-center">
+          <button
+            className={`px-4 py-2 rounded-full border ${!category ? "bg-blue-600 text-white" : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50"}`}
+            onClick={() => {
+              router.push(pathname);
+            }}
+          >
+            {t("category.all")}
+          </button>
+          {categoriesLoading ? (
+            <div className="px-4 py-2 text-gray-500">Loading categories...</div>
+          ) : (
+            categories.map(cat => (
+              <button
+                key={cat._id}
+                className={`px-4 py-2 rounded-full border ${category === cat.slug?.[locale] ? "bg-blue-600 text-white" : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50"}`}
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams.toString());
+                  params.set("category", cat.slug?.[locale]);
+                  router.push(`${pathname}?${params.toString()}`);
+                }}
+              >
+                {cat.name?.[locale]}
+              </button>
+            ))
+          )}
+        </div>
+
+        {/* Search and Filters */}
+        <div className="mb-8">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="w-full md:w-96">
+              <SearchBar onSearch={() => {}} />
+            </div>
+            <div className="flex items-center space-x-4 text-sm text-gray-600">
+              <span>{totalBlogs} {t("blog.allPosts").toLowerCase()}</span>
+              {search && (
+                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                  "{search}"
+                </span>
+              )}
+              {category && (
+                <span className="bg-green-100 text-green-800 px-2 py-1 rounded">
+                  {category}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Error message (if any) */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
+
+        {blogs.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-gray-400 mb-4">
+              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <p className="text-gray-500 text-lg">{t("blog.noPosts")}</p>
+            {search && (
+              <p className="text-gray-400 mt-2">
+                {locale === "bn"
+                  ? `"${search}" এর জন্য কোন ফলাফল পাওয়া যায়নি`
+                  : `No results found for "${search}"`
+                }
+              </p>
+            )}
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {blogs.map((blog) => (
+                <article key={blog._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                  {blog.featuredImage && (
+                    <div className="aspect-w-16 aspect-h-9">
+                      <img
+                        src={blog.featuredImage}
+                        alt={blog.title?.[locale] || "Blog image"}
+                        className="w-full h-48 object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                      <span className="capitalize">
+                        {categories.find(c => c.slug?.[locale] === blog.category?.[locale])?.name?.[locale] || blog.category?.[locale] || "Uncategorized"}
+                      </span>
+                      <span className="mx-2">•</span>
+                      <span>{blog.readTime?.[locale] || 5} {t("blog.minRead")}</span>
+                    </div>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                      {blog.title?.[locale] || "Untitled"}
+                    </h2>
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      {blog.excerpt?.[locale] || blog.content?.[locale]?.substring(0, 150) || "No excerpt available"}
+                    </p>
+                    <Link
+                      href={`/${locale}/blogs/${blog.slug?.[locale]}`}
+                      className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      {t("blog.readMore")}
+                      <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {/* Load More Button */}
+            {hasMore && (
+              <div className="text-center mt-12">
+                <button
+                  onClick={handleLoadMore}
+                  disabled={loading}
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? t("common.loading") : t("blog.loadMore")}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+} 
