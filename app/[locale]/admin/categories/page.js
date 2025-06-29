@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from '../../../apiConfig';
 import { useTranslations, useLocale } from "next-intl";
 
 export default function AdminCategoriesPage() {
@@ -23,7 +23,7 @@ export default function AdminCategoriesPage() {
   });
   const [saving, setSaving] = useState(false);
   const [languages, setLanguages] = useState({ en: true, bn: true });
-  const API_URL = 'http://localhost:5000/api/categories';
+  const API_URL = '/categories';
 
   useEffect(() => {
     fetchCategories();
@@ -32,7 +32,7 @@ export default function AdminCategoriesPage() {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${API_URL}?lang=${locale}`);
+      const res = await api.get(`${API_URL}?lang=${locale}`);
       setCategories(res.data.data.categories);
     } catch (err) {
       setError("Failed to fetch categories");
@@ -72,12 +72,7 @@ export default function AdminCategoriesPage() {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this category?")) return;
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`${API_URL}/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      await api.delete(`${API_URL}/${id}`);
       setCategories(categories.filter((cat) => cat._id !== id));
     } catch (err) {
       alert(err.response?.data?.message || "Delete failed");
@@ -106,13 +101,13 @@ export default function AdminCategoriesPage() {
       }
       const token = localStorage.getItem('token');
       if (editingCategory) {
-        await axios.put(`${API_URL}/${editingCategory._id}`, filteredForm, {
+        await api.put(`${API_URL}/${editingCategory._id}`, filteredForm, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
       } else {
-        await axios.post(API_URL, filteredForm, {
+        await api.post(API_URL, filteredForm, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

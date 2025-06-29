@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import { api } from '../../../../apiConfig';
 import ImageUpload from '../../../../components/ImageUpload';
 
 export default function CreateBlogPage() {
@@ -33,6 +33,21 @@ export default function CreateBlogPage() {
     en: true,
     bn: true
   });
+
+  // Category state
+  const [categoriesEn, setCategoriesEn] = useState([]);
+  const [categoriesBn, setCategoriesBn] = useState([]);
+
+  useEffect(() => {
+    // Fetch English categories
+    api.get('/categories?lang=en')
+      .then(res => setCategoriesEn(res.data.data.categories || []))
+      .catch(() => setCategoriesEn([]));
+    // Fetch Bangla categories
+    api.get('/categories?lang=bn')
+      .then(res => setCategoriesBn(res.data.data.categories || []))
+      .catch(() => setCategoriesBn([]));
+  }, []);
 
   const handleInputChange = (field, lang, value) => {
     setFormData(prev => ({
@@ -183,7 +198,7 @@ export default function CreateBlogPage() {
       console.log('Sending data to backend:', filteredData);
 
       const token = localStorage.getItem('token');
-      const response = await axios.post(`http://localhost:5000/api/blogs`, filteredData, {
+      const response = await api.post(`/blogs`, filteredData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -305,33 +320,39 @@ export default function CreateBlogPage() {
         </div>
 
         {/* Category */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className={!languages.en ? 'opacity-50' : ''}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('blog.categoryEn')} {languages.en && '*'}
-            </label>
-            <input
-              type="text"
-              value={formData.category.en}
-              onChange={(e) => handleInputChange('category', 'en', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required={languages.en}
-              disabled={!languages.en}
-            />
-          </div>
-          <div className={!languages.bn ? 'opacity-50' : ''}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('blog.categoryBn')} {languages.bn && '*'}
-            </label>
-            <input
-              type="text"
-              value={formData.category.bn}
-              onChange={(e) => handleInputChange('category', 'bn', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required={languages.bn}
-              disabled={!languages.bn}
-            />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {languages.en && (
+            <div>
+              <label className="block text-sm font-medium mb-1">Category (English)</label>
+              <select
+                value={formData.category.en}
+                onChange={e => handleInputChange('category', 'en', e.target.value)}
+                className="w-full border px-3 py-2 rounded"
+                required={languages.en}
+              >
+                <option value="">Select a category</option>
+                {categoriesEn.map(cat => (
+                  <option key={cat._id} value={cat.slug?.en}>{cat.name?.en}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          {languages.bn && (
+            <div>
+              <label className="block text-sm font-medium mb-1">Category (Bangla)</label>
+              <select
+                value={formData.category.bn}
+                onChange={e => handleInputChange('category', 'bn', e.target.value)}
+                className="w-full border px-3 py-2 rounded"
+                required={languages.bn}
+              >
+                <option value="">একটি বিভাগ নির্বাচন করুন</option>
+                {categoriesBn.map(cat => (
+                  <option key={cat._id} value={cat.slug?.bn}>{cat.name?.bn}</option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
         {/* Excerpt */}

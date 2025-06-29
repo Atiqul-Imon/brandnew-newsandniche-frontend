@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -10,16 +10,28 @@ export default function SearchBar({ onSearch, placeholder, className = '' }) {
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('search') || '');
   const [isSearching, setIsSearching] = useState(false);
+  const isFirstRun = useRef(true);
 
   useEffect(() => {
+    if (isFirstRun.current) {
+      console.log('[SearchBar] Skipping first run of useEffect');
+      isFirstRun.current = false;
+      return;
+    }
+    const currentSearch = searchParams.get('search');
+    console.log('[SearchBar] useEffect running after first run, query:', query, 'searchParams:', currentSearch);
+    if (currentSearch === null) {
+      // Don't run search if searchParams is not ready
+      return;
+    }
     const timer = setTimeout(() => {
-      if (query !== searchParams.get('search')) {
+      if (query !== currentSearch) {
         handleSearch();
       }
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, searchParams]);
 
   const handleSearch = () => {
     setIsSearching(true);

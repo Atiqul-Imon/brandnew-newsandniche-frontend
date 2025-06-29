@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
-import axios from 'axios';
+import { api } from '@/app/apiConfig';
 import Link from 'next/link';
 
 export default function EditBlogPage() {
@@ -31,15 +31,14 @@ export default function EditBlogPage() {
     seoKeywords: { en: [], bn: [] }
   });
 
+  // Category state
+  const [categoriesEn, setCategoriesEn] = useState([]);
+  const [categoriesBn, setCategoriesBn] = useState([]);
+
   useEffect(() => {
     async function fetchBlog() {
       try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/blogs/admin/${params.id}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const res = await api.get(`/blogs/admin/${params.id}`);
         setFormData(res.data.data.blog);
       } catch (err) {
         setError(err.response?.data?.message || t('errors.blogNotFound'));
@@ -48,6 +47,15 @@ export default function EditBlogPage() {
       }
     }
     fetchBlog();
+
+    // Fetch English categories
+    api.get('/categories?lang=en')
+      .then(res => setCategoriesEn(res.data.data.categories || []))
+      .catch(() => setCategoriesEn([]));
+    // Fetch Bangla categories
+    api.get('/categories?lang=bn')
+      .then(res => setCategoriesBn(res.data.data.categories || []))
+      .catch(() => setCategoriesBn([]));
   }, [params.id, t]);
 
   const handleInputChange = (field, lang, value) => {
@@ -107,7 +115,11 @@ export default function EditBlogPage() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/blogs/${params.id}`, formData, {
+      // Remove empty slug fields before sending
+      const filteredData = { ...formData };
+      if (filteredData.slug && !filteredData.slug.en) delete filteredData.slug.en;
+      if (filteredData.slug && !filteredData.slug.bn) delete filteredData.slug.bn;
+      await api.put(`/blogs/${params.id}`, filteredData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -195,94 +207,94 @@ export default function EditBlogPage() {
           
           {/* Title */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.titleEn')} *
-              </label>
-              <input
-                type="text"
-                value={formData.title.en || ''}
-                onChange={(e) => handleInputChange('title', 'en', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter English title"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.titleBn')} *
-              </label>
-              <input
-                type="text"
-                value={formData.title.bn || ''}
-                onChange={(e) => handleInputChange('title', 'bn', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="বাংলা শিরোনাম লিখুন"
-                required
-              />
-            </div>
+            {formData.title.en && formData.title.en.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Title (English)</label>
+                <input
+                  type="text"
+                  value={formData.title.en}
+                  onChange={e => handleInputChange('title', 'en', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                />
+              </div>
+            )}
+            {formData.title.bn && formData.title.bn.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Title (Bangla)</label>
+                <input
+                  type="text"
+                  value={formData.title.bn}
+                  onChange={e => handleInputChange('title', 'bn', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                />
+              </div>
+            )}
           </div>
 
           {/* Slug */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.slugEn')} *
-              </label>
-              <input
-                type="text"
-                value={formData.slug.en || ''}
-                onChange={(e) => handleInputChange('slug', 'en', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="english-slug"
-                required
-              />
-              <p className="mt-1 text-xs text-gray-500">Auto-generated from title</p>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.slugBn')} *
-              </label>
-              <input
-                type="text"
-                value={formData.slug.bn || ''}
-                onChange={(e) => handleInputChange('slug', 'bn', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="বাংলা-স্লাগ"
-                required
-              />
-              <p className="mt-1 text-xs text-gray-500">Auto-generated from title</p>
-            </div>
+            {formData.slug.en && formData.slug.en.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Slug (English)</label>
+                <input
+                  type="text"
+                  value={formData.slug.en}
+                  onChange={e => handleInputChange('slug', 'en', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                />
+              </div>
+            )}
+            {formData.slug.bn && formData.slug.bn.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Slug (Bangla)</label>
+                <input
+                  type="text"
+                  value={formData.slug.bn}
+                  onChange={e => handleInputChange('slug', 'bn', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                />
+              </div>
+            )}
           </div>
 
-          {/* Category */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.categoryEn')} *
-              </label>
-              <input
-                type="text"
-                value={formData.category.en || ''}
-                onChange={(e) => handleInputChange('category', 'en', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter category"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.categoryBn')} *
-              </label>
-              <input
-                type="text"
-                value={formData.category.bn || ''}
-                onChange={(e) => handleInputChange('category', 'bn', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="বিভাগ লিখুন"
-                required
-              />
-            </div>
+          {/* Category Dropdowns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {formData.title.en && formData.title.en.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Category (English)</label>
+                <select
+                  value={formData.category.en || ''}
+                  onChange={e => handleInputChange('category', 'en', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                >
+                  <option value="">Select a category</option>
+                  {categoriesEn.map(cat => (
+                    <option key={cat._id} value={cat.slug?.en}>{cat.name?.en}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {formData.title.bn && formData.title.bn.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Category (Bangla)</label>
+                <select
+                  value={formData.category.bn || ''}
+                  onChange={e => handleInputChange('category', 'bn', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                >
+                  <option value="">একটি বিভাগ নির্বাচন করুন</option>
+                  {categoriesBn.map(cat => (
+                    <option key={cat._id} value={cat.slug?.bn}>{cat.name?.bn}</option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </div>
 
@@ -292,70 +304,54 @@ export default function EditBlogPage() {
           
           {/* Excerpt */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.excerptEn')} *
-              </label>
-              <textarea
-                value={formData.excerpt.en || ''}
-                onChange={(e) => handleInputChange('excerpt', 'en', e.target.value)}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter a brief excerpt..."
-                required
-              />
-              <p className="mt-1 text-xs text-gray-500">Brief summary of the post</p>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.excerptBn')} *
-              </label>
-              <textarea
-                value={formData.excerpt.bn || ''}
-                onChange={(e) => handleInputChange('excerpt', 'bn', e.target.value)}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="সংক্ষিপ্তসার লিখুন..."
-                required
-              />
-              <p className="mt-1 text-xs text-gray-500">পোস্টের সংক্ষিপ্তসার</p>
-            </div>
+            {formData.excerpt.en && formData.excerpt.en.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Excerpt (English)</label>
+                <textarea
+                  value={formData.excerpt.en}
+                  onChange={e => handleInputChange('excerpt', 'en', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                />
+              </div>
+            )}
+            {formData.excerpt.bn && formData.excerpt.bn.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Excerpt (Bangla)</label>
+                <textarea
+                  value={formData.excerpt.bn}
+                  onChange={e => handleInputChange('excerpt', 'bn', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                />
+              </div>
+            )}
           </div>
 
           {/* Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.contentEn')} *
-              </label>
-              <textarea
-                value={formData.content.en || ''}
-                onChange={(e) => handleInputChange('content', 'en', e.target.value)}
-                rows={15}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Write your blog content here..."
-                required
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                {formData.content.en ? `${formData.content.en.length} characters` : '0 characters'}
-              </p>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.contentBn')} *
-              </label>
-              <textarea
-                value={formData.content.bn || ''}
-                onChange={(e) => handleInputChange('content', 'bn', e.target.value)}
-                rows={15}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="ব্লগের বিষয়বস্তু লিখুন..."
-                required
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                {formData.content.bn ? `${formData.content.bn.length} characters` : '0 characters'}
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {formData.content.en && formData.content.en.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Content (English)</label>
+                <textarea
+                  value={formData.content.en}
+                  onChange={e => handleInputChange('content', 'en', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                />
+              </div>
+            )}
+            {formData.content.bn && formData.content.bn.trim() !== '' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Content (Bangla)</label>
+                <textarea
+                  value={formData.content.bn}
+                  onChange={e => handleInputChange('content', 'bn', e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                  required
+                />
+              </div>
+            )}
           </div>
         </div>
 

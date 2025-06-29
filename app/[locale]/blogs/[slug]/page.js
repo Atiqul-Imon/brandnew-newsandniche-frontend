@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTranslations, useLocale, useParams } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 
