@@ -32,7 +32,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
 
   if (error || !blog) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-100 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
@@ -40,7 +40,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
             </h1>
             <Link
               href={`/${locale}/blogs`}
-              className="text-blue-600 hover:text-blue-800"
+              className="text-gray-700 hover:text-gray-900"
             >
               {t('blog.backToBlogs')}
             </Link>
@@ -51,7 +51,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-100 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="mb-8">
@@ -89,7 +89,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
             {/* Header */}
             <header className="mb-8">
               <div className="flex items-center text-sm text-gray-500 mb-4">
-                <span className="capitalize bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+                <span className="capitalize bg-gray-200 text-gray-800 px-3 py-1 rounded-full">
                   {blog.category[locale]}
                 </span>
                 <span className="mx-3">•</span>
@@ -99,25 +99,25 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
                 {blog.isFeatured && (
                   <>
                     <span className="mx-3">•</span>
-                    <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
+                    <span className="bg-gray-300 text-gray-800 px-2 py-1 rounded-full text-xs">
                       {t('blog.featured')}
                     </span>
                   </>
                 )}
               </div>
               
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+              <h1 className={`text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight ${locale === 'bn' ? 'font-bangla' : ''}`}>
                 {blog.title[locale]}
               </h1>
               
-              <p className="text-xl text-gray-600 mb-6 leading-relaxed">
+              <p className={`text-xl text-gray-700 mb-6 leading-relaxed ${locale === 'bn' ? 'font-bangla' : ''}`}>
                 {blog.excerpt[locale]}
               </p>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-semibold text-lg">
+                  <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center mr-4">
+                    <span className="text-gray-900 font-semibold text-lg">
                       {blog.author?.name?.charAt(0) || 'A'}
                     </span>
                   </div>
@@ -130,34 +130,33 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
                     </p>
                   </div>
                 </div>
-
-                {/* Social Share Buttons */}
+                {/* Social Share Buttons (grayscale) */}
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-gray-500 mr-2">{t('blog.shareThis')}:</span>
                   <button
                     onClick={() => handleShare('facebook')}
-                    className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
+                    className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
                     title="Share on Facebook"
                   >
                     f
                   </button>
                   <button
                     onClick={() => handleShare('twitter')}
-                    className="w-8 h-8 bg-blue-400 text-white rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors"
+                    className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
                     title="Share on Twitter"
                   >
                     t
                   </button>
                   <button
                     onClick={() => handleShare('linkedin')}
-                    className="w-8 h-8 bg-blue-700 text-white rounded-full flex items-center justify-center hover:bg-blue-800 transition-colors"
+                    className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
                     title="Share on LinkedIn"
                   >
                     in
                   </button>
                   <button
                     onClick={() => handleShare('whatsapp')}
-                    className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center hover:bg-green-600 transition-colors"
+                    className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
                     title="Share on WhatsApp"
                   >
                     wa
@@ -167,7 +166,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
             </header>
 
             {/* Content */}
-            <div className="prose prose-lg max-w-none">
+            <div className={`prose prose-lg max-w-none ${locale === 'bn' ? 'font-bangla' : ''}`}>
               <div className="whitespace-pre-wrap text-gray-800 leading-relaxed text-lg">
                 {blog.content[locale]}
               </div>
@@ -176,7 +175,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
             {/* Tags */}
             {blog.tags && blog.tags.length > 0 && (
               <div className="mt-8 pt-8 border-t border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <h3 className={`text-lg font-semibold text-gray-900 mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                   {t('blog.tags')}:
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -203,7 +202,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
                 </div>
                 <Link
                   href={`/${locale}/blogs`}
-                  className="text-blue-600 hover:text-blue-800 font-medium"
+                  className="text-gray-700 hover:text-gray-900 font-medium"
                 >
                   ← {t('blog.backToBlogs')}
                 </Link>
@@ -215,7 +214,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
         {/* Related Posts */}
         {relatedBlogs.length > 0 && (
           <section className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${locale === 'bn' ? 'font-bangla' : ''}`}>
               {t('blog.relatedPosts')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -236,15 +235,15 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
                       <span className="mx-2">•</span>
                       <span>{relatedBlog.readTime[locale]} {t('blog.minRead')}</span>
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                    <h3 className={`text-lg font-semibold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                       {relatedBlog.title[locale]}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">
+                    <p className={`text-gray-700 mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                       {relatedBlog.excerpt[locale]}
                     </p>
                     <Link
                       href={`/${locale}/blogs/${relatedBlog.slug[locale]}`}
-                      className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                      className="text-gray-700 hover:text-gray-900 font-medium text-sm"
                     >
                       {t('blog.readMore')} →
                     </Link>

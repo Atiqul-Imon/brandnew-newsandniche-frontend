@@ -1,4 +1,39 @@
+/* Import Google Fonts first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+Bengali:wght@400;700&family=Tiro+Bangla:ital,wght@0,400;1,400&display=swap');
+
+/* Then import Tailwind */
 @import "tailwindcss";
+
+/* Base styles for public-facing site */
+body {
+  @apply bg-gray-100 text-gray-900;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+}
+
+/* Headings: Medium-like serif for English */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Georgia', 'Charter', 'serif';
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Bangla font utility for article content */
+.font-bangla {
+  font-family: 'Tiro Bangla', 'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Arial', sans-serif;
+}
+
+/* Bangla UI font utility for navigation, headings, buttons */
+.font-bangla-ui {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', Arial, sans-serif;
+  font-size: 1.12em;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* English font utility */
+.font-en {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+}
 
 /* Line clamp utilities */
 .line-clamp-1 {
@@ -71,4 +106,3 @@
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
-

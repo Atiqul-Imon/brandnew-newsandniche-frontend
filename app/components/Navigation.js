@@ -15,7 +15,7 @@ export default function Navigation({ locale }) {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href={`/${locale}`} className="flex-shrink-0 flex items-center">
-              <h1 className="text-2xl font-bold text-blue-600">
+              <h1 className={`text-2xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>
                 {locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche'}
               </h1>
             </Link>
@@ -23,20 +23,20 @@ export default function Navigation({ locale }) {
             <div className="hidden md:ml-10 md:flex md:space-x-8">
               <Link
                 href={`/${locale}`}
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
+                className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
               >
                 {t('common.home')}
               </Link>
               <Link
                 href={`/${locale}/blogs`}
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
+                className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
               >
                 {t('blog.allPosts')}
               </Link>
               {user && (
                 <Link
                   href={`/${locale}/admin/blogs`}
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
+                  className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
                 >
                   {t('admin.dashboard')}
                 </Link>
@@ -49,12 +49,12 @@ export default function Navigation({ locale }) {
             
             {user ? (
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-700">
+                <span className={`text-sm text-gray-700 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>
                   {t('common.welcome')}, {user.name}
                 </span>
                 <button
                   onClick={logout}
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
+                  className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
                 >
                   {t('auth.logout')}
                 </button>
@@ -63,13 +63,13 @@ export default function Navigation({ locale }) {
               <div className="flex items-center space-x-4">
                 <Link
                   href={`/${locale}/login`}
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
+                  className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
                 >
                   {t('auth.login')}
                 </Link>
                 <Link
                   href={`/${locale}/register`}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+                  className={`bg-gray-900 text-gray-100 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
                 >
                   {t('auth.register')}
                 </Link>

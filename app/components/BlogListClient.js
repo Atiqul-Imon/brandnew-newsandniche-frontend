@@ -147,13 +147,13 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-100 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className={`text-4xl font-bold text-gray-900 mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
             {t("blog.allPosts")}
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className={`text-xl text-gray-700 ${locale === 'bn' ? 'font-bangla' : ''}`}>
             {t("blog.discoverStories")}
           </p>
         </div>
@@ -161,7 +161,7 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
         {/* Category Filter Bar */}
         <div className="mb-8 flex flex-wrap gap-2 justify-center">
           <button
-            className={`px-4 py-2 rounded-full border ${!category ? "bg-blue-600 text-white" : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50"}`}
+            className={`px-4 py-2 rounded-full border ${!category ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"}`}
             onClick={() => {
               router.push(pathname);
             }}
@@ -174,7 +174,7 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
             categories.map(cat => (
               <button
                 key={cat._id}
-                className={`px-4 py-2 rounded-full border ${category === cat.slug?.[locale] ? "bg-blue-600 text-white" : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50"}`}
+                className={`px-4 py-2 rounded-full border ${category === cat.slug?.[locale] ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"}`}
                 onClick={() => {
                   const params = new URLSearchParams(searchParams.toString());
                   params.set("category", cat.slug?.[locale]);
@@ -196,12 +196,12 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
             <div className="flex items-center space-x-4 text-sm text-gray-600">
               <span>{totalBlogs} {t("blog.allPosts").toLowerCase()}</span>
               {search && (
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                <span className="bg-gray-200 text-gray-800 px-2 py-1 rounded">
                   "{search}"
                 </span>
               )}
               {category && (
-                <span className="bg-green-100 text-green-800 px-2 py-1 rounded">
+                <span className="bg-gray-200 text-gray-800 px-2 py-1 rounded">
                   {category}
                 </span>
               )}
@@ -211,8 +211,8 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
 
         {/* Error message (if any) */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-600">{error}</p>
+          <div className="mb-6 p-4 bg-gray-200 border border-gray-300 rounded-lg">
+            <p className="text-gray-800">{error}</p>
           </div>
         )}
 
@@ -255,15 +255,15 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
                       <span className="mx-2">•</span>
                       <span>{blog.readTime?.[locale] || 5} {t("blog.minRead")}</span>
                     </div>
-                    <h2 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                    <h2 className={`text-xl font-semibold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                       {blog.title?.[locale] || "Untitled"}
                     </h2>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
+                    <p className={`text-gray-700 mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                       {blog.excerpt?.[locale] || blog.content?.[locale]?.substring(0, 150) || "No excerpt available"}
                     </p>
                     <Link
                       href={`/${locale}/blogs/${blog.slug?.[locale]}`}
-                      className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+                      className="text-gray-700 hover:text-gray-900 font-medium"
                     >
                       {t("blog.readMore")}
                       <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -281,7 +281,7 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
                 <button
                   onClick={handleLoadMore}
                   disabled={loading}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-3 bg-gray-900 text-gray-100 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? t("common.loading") : t("blog.loadMore")}
                 </button>
