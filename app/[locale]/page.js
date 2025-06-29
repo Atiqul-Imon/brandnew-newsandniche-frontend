@@ -2,7 +2,7 @@
 import HomeClient from '../components/HomeClient';
 
 export default async function HomePage({ params }) {
-  const locale = params?.locale || 'en';
+  const { locale } = await params;
   const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
 
   let featuredBlogs = [];
@@ -41,7 +41,7 @@ export default async function HomePage({ params }) {
 }
 
 export async function generateMetadata({ params }) {
-  const locale = params?.locale || 'en';
+  const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   const supportedLocales = ['en', 'bn'];
   const title = locale === 'bn' ? 'নিউজ&নিচে - বাংলা খবরের সেরা উৎস' : 'News&Niche - Best Source for News & Insights';
