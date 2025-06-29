@@ -24,7 +24,8 @@
     "ascending": "Ascending",
     "descending": "Descending",
     "clearFilters": "Clear Filters",
-    "features": "Features"
+    "features": "Features",
+    "retry": "Retry"
   },
   "navigation": {
     "home": "Home",

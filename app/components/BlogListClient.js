@@ -34,7 +34,7 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
   // Fetch categories
   useEffect(() => {
     setCategoriesLoading(true);
-    api.get(`/categories?lang=${locale}`)
+    api.get(`/api/categories?lang=${locale}`)
       .then(res => setCategories(res.data.data.categories || []))
       .catch(() => setCategories([]))
       .finally(() => setCategoriesLoading(false));
