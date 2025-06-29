@@ -69,7 +69,7 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
     });
     if (search) params.append("search", search);
     if (category) params.append("category", category);
-    api.get(`/blogs/${locale}?${params}`)
+    api.get(`/api/blogs/${locale}?${params}`)
       .then(res => {
         setBlogs(res.data.data.blogs || []);
         setHasMore(res.data.data.hasMore);
@@ -97,7 +97,7 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
     });
     if (search) params.append("search", search);
     if (category) params.append("category", category);
-    api.get(`/blogs/${locale}?${params}`)
+    api.get(`/api/blogs/${locale}?${params}`)
       .then(res => {
         setBlogs(prev => [...prev, ...(res.data.data.blogs || [])]);
         setHasMore(res.data.data.hasMore);
