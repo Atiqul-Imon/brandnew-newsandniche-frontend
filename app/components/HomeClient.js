@@ -3,16 +3,43 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { api } from '@/app/apiConfig';
 
-export default function HomeClient({ featuredBlogs, recentBlogs, categories, error, locale }) {
+export default function HomeClient({ locale }) {
   const t = useTranslations();
   const { user, logout, loading } = useAuth();
+
+  const [featuredBlogs, setFeaturedBlogs] = useState([]);
+  const [recentBlogs, setRecentBlogs] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [error, setError] = useState(null);
+  const [loadingData, setLoadingData] = useState(true);
+
+  useEffect(() => {
+    setLoadingData(true);
+    setError(null);
+    Promise.all([
+      api.get(`/api/blogs/${locale}?status=published&featured=true&limit=3`),
+      api.get(`/api/blogs/${locale}?status=published&limit=6`),
+      api.get(`/api/categories?lang=${locale}`)
+    ])
+      .then(([featuredRes, recentRes, categoriesRes]) => {
+        setFeaturedBlogs(featuredRes.data.data.blogs || []);
+        setRecentBlogs(recentRes.data.data.blogs || []);
+        setCategories(categoriesRes.data.data.categories || []);
+      })
+      .catch((err) => {
+        setError(err.message || 'Failed to load homepage data.');
+      })
+      .finally(() => setLoadingData(false));
+  }, [locale]);
 
   const handleLogout = () => {
     logout();
   };
 
-  if (loading) {
+  if (loading || loadingData) {
     return (
       <main className="min-h-screen flex items-center justify-center" aria-label="Main content">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
@@ -101,9 +128,9 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
               {categories.map((category, index) => (
                 <Link
                   key={index}
-                  href={`/${locale}/blogs?category=${category.slug}`}
+                  href={`/${locale}/blogs?category=${category.slug?.[locale] || category.slug?.en || category.slug?.bn || ''}`}
                   className="bg-gray-100 hover:bg-white p-3 sm:p-4 rounded-lg text-center transition-colors flex flex-col items-center">
-                  <h3 className={`font-semibold text-gray-900 text-base sm:text-lg ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.name}</h3>
+                  <h3 className={`font-semibold text-gray-900 text-base sm:text-lg ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.name?.[locale] || category.name?.en || category.name?.bn || 'Untitled'}</h3>
                   <p className={`text-xs sm:text-sm text-gray-700 mt-1 ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.postCount || 0} {t('home.categories.posts')}</p>
                 </Link>
               ))}

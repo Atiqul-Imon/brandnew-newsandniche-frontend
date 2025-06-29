@@ -7,19 +7,28 @@ import SearchBar from "./SearchBar";
 import { api } from "@/app/apiConfig";
 import Image from 'next/image';
 
-export default function BlogListClient({ initialBlogs, total, hasMore: initialHasMore, initialParams, error: initialError }) {
+export default function BlogListClient(props) {
   const t = useTranslations();
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
+  const initialParams = props.initialParams || {};
+  const initialBlogs = props.initialBlogs || [];
+  const total = props.total || 0;
+  const initialHasMore = props.hasMore || false;
+  const initialError = props.error || null;
+  const locale = props.locale || initialParams.locale || 'en';
+
   // State
-  const [blogs, setBlogs] = useState(initialBlogs || []);
+  const [blogs, setBlogs] = useState(initialBlogs);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(initialError || null);
+  const [error, setError] = useState(initialError);
   const [hasMore, setHasMore] = useState(initialHasMore);
-  const [totalBlogs, setTotalBlogs] = useState(total || 0);
-  const [currentPage, setCurrentPage] = useState(Number(initialParams.page) || 1);
+  const [totalBlogs, setTotalBlogs] = useState(total);
+  const limit = Number(initialParams.limit) || 12;
+  const page = Number(initialParams.page) || 1;
+  const [currentPage, setCurrentPage] = useState(page);
   const [categories, setCategories] = useState([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
 
@@ -29,7 +38,6 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
   const status = searchParams.get("status") || "published";
   const sortBy = searchParams.get("sortBy") || "publishedAt";
   const sortOrder = searchParams.get("sortOrder") || "desc";
-  const locale = initialParams.locale;
 
   // Fetch categories
   useEffect(() => {
@@ -64,8 +72,8 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
       status,
       sortBy,
       sortOrder,
-      limit: initialParams.limit.toString(),
-      page: searchParams.get("page") || "1"
+      limit: limit.toString(),
+      page: searchParams.get("page") || page.toString()
     });
     if (search) params.append("search", search);
     if (category) params.append("category", category);
@@ -92,7 +100,7 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
       status,
       sortBy,
       sortOrder,
-      limit: initialParams.limit.toString(),
+      limit: limit.toString(),
       page: nextPage.toString()
     });
     if (search) params.append("search", search);
@@ -108,7 +116,7 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
         setError(err.response?.data?.message || t("errors.serverError") || "Failed to load blogs");
       })
       .finally(() => setLoading(false));
-  }, [currentPage, search, category, status, sortBy, sortOrder, locale, initialParams.limit, t]);
+  }, [currentPage, search, category, status, sortBy, sortOrder, locale, limit, t]);
 
   // UI
   if (loading && blogs.length === 0) {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import axios from 'axios';
+import { api } from '../apiConfig';
 
 export default function ImageUpload({ onImageUploaded, className = '', initialImage = '', onImageRemoved }) {
   const t = useTranslations();
@@ -42,7 +42,7 @@ export default function ImageUpload({ onImageUploaded, className = '', initialIm
       formData.append('image', file);
 
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/upload/image', formData, {
+      const response = await api.post('/upload/image', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

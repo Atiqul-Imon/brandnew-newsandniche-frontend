@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { api } from '../apiConfig';
 
 const AuthContext = createContext();
 
@@ -18,9 +18,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // API base URL
-  const API_BASE_URL = 'http://localhost:5000/api';
-
   // Check if user is logged in on app load
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -33,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async (token) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/users/profile`, {
+      const response = await api.get('/users/profile', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -49,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       setError(null);
-      const response = await axios.post(`${API_BASE_URL}/users/register`, userData);
+      const response = await api.post('/users/register', userData);
       const { user, token } = response.data.data;
       
       localStorage.setItem('token', token);
@@ -66,7 +63,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       setError(null);
-      const response = await axios.post(`${API_BASE_URL}/users/login`, credentials);
+      const response = await api.post('/users/login', credentials);
       const { user, token } = response.data.data;
       
       localStorage.setItem('token', token);

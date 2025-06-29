@@ -4,7 +4,7 @@ import BlogDetailClient from '../../../components/BlogDetailClient';
 export async function generateMetadata({ params }) {
   const locale = params?.locale || 'en';
   const slug = params?.slug;
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
   const siteUrl = 'https://newsandniche.com';
   const supportedLocales = ['en', 'bn'];
 
@@ -100,7 +100,7 @@ export async function generateMetadata({ params }) {
 export default async function BlogPostPage({ params }) {
   const locale = params?.locale || 'en';
   const slug = params?.slug;
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   let blog = null;
   let relatedBlogs = [];

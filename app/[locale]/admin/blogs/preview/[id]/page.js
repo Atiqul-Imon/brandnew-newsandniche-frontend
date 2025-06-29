@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import axios from 'axios';
+import { api } from '../../../apiConfig';
 
 export default function BlogPreviewPage() {
   const t = useTranslations();
@@ -20,7 +20,7 @@ export default function BlogPreviewPage() {
     async function fetchBlog() {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/blogs/admin/${params.id}`, {
+        const res = await api.get(`/blogs/admin/${params.id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import axios from 'axios';
 import BlogFilters from '../../../components/BlogFilters';
+import api from '../../../lib/api';
 
 export default function AdminBlogsPage() {
   const t = useTranslations();
@@ -35,7 +36,7 @@ export default function AdminBlogsPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/blogs/${locale}/categories`);
+      const res = await api.get(`/api/blogs/${locale}/categories`);
       setCategories(res.data.data.categories);
     } catch (err) {
       console.error('Failed to fetch categories:', err);
@@ -51,7 +52,7 @@ export default function AdminBlogsPage() {
         limit: itemsPerPage
       });
       
-      const res = await axios.get(`http://localhost:5000/api/blogs/${locale}?${params}`);
+      const res = await api.get(`/api/blogs/${locale}?${params}`);
       setBlogs(res.data.data.blogs);
       setTotalBlogs(res.data.data.total || res.data.data.blogs.length);
       setTotalPages(Math.ceil((res.data.data.total || res.data.data.blogs.length) / itemsPerPage));
@@ -71,7 +72,7 @@ export default function AdminBlogsPage() {
     setUpdatingId(blogId);
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/blogs/${blogId}`, 
+      await api.put(`/api/blogs/${blogId}`, 
         { status: newStatus },
         {
           headers: {
@@ -101,7 +102,7 @@ export default function AdminBlogsPage() {
 
     setDeletingId(blogId);
     try {
-      await axios.delete(`http://localhost:5000/api/blogs/${blogId}`, {
+      await api.delete(`/api/blogs/${blogId}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -126,7 +127,7 @@ export default function AdminBlogsPage() {
       const token = localStorage.getItem('token');
       await Promise.all(
         selectedBlogs.map(id => 
-          axios.delete(`http://localhost:5000/api/blogs/${id}`, {
+          api.delete(`/api/blogs/${id}`, {
             headers: { 'Authorization': `Bearer ${token}` }
           })
         )
@@ -144,7 +145,7 @@ export default function AdminBlogsPage() {
       const token = localStorage.getItem('token');
       await Promise.all(
         selectedBlogs.map(id => 
-          axios.put(`http://localhost:5000/api/blogs/${id}`, 
+          api.put(`/api/blogs/${id}`, 
             { status: newStatus },
             { headers: { 'Authorization': `Bearer ${token}` } }
           )

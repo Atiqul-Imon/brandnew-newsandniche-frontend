@@ -5,7 +5,7 @@ export async function GET() {
   // Fetch blog slugs from your API
   let blogSlugs = [];
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api'}/blogs/en?status=published&limit=1000`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/blogs/en?status=published&limit=1000`);
     const data = await res.json();
     if (data.success) {
       blogSlugs = data.data.blogs.map(blog => blog.slug?.en).filter(Boolean);
@@ -13,7 +13,7 @@ export async function GET() {
   } catch (e) {}
   let blogSlugsBn = [];
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api'}/blogs/bn?status=published&limit=1000`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/blogs/bn?status=published&limit=1000`);
     const data = await res.json();
     if (data.success) {
       blogSlugsBn = data.data.blogs.map(blog => blog.slug?.bn).filter(Boolean);
