@@ -1,11 +1,11 @@
 // Centralized API config and axios instance
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://newsandniche-backend.onrender.com";
 
 // Create axios instance
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -38,4 +38,4 @@ api.interceptors.response.use(
   }
 );
 
-export { API_URL, api }; 
+export { api }; 

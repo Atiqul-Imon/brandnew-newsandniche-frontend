@@ -38,4 +38,62 @@ export default async function HomePage({ params }) {
       locale={locale}
     />
   );
+}
+
+export async function generateMetadata({ params }) {
+  const locale = params?.locale || 'en';
+  const siteUrl = 'https://newsandniche.com';
+  const supportedLocales = ['en', 'bn'];
+  const title = locale === 'bn' ? 'নিউজ&নিচে - বাংলা খবরের সেরা উৎস' : 'News&Niche - Best Source for News & Insights';
+  const description = locale === 'bn'
+    ? 'নিউজ&নিচে - সর্বশেষ বাংলা খবর, বিশ্লেষণ, ও গল্প।'
+    : 'News&Niche brings you the latest news, analysis, and stories from around the world.';
+  const image = `${siteUrl}/default-og-image.jpg`;
+  const canonical = `${siteUrl}/${locale}`;
+  const keywords = locale === 'bn'
+    ? ['বাংলা খবর', 'নিউজ', 'বাংলা সংবাদ', 'বাংলা ব্লগ']
+    : ['news', 'latest news', 'blog', 'insights', 'world news'];
+
+  // Build alternate links for hreflang
+  const alternateLinks = Object.fromEntries(
+    supportedLocales.map(l => [
+      l,
+      `${siteUrl}/${l}`
+    ])
+  );
+  alternateLinks['x-default'] = `${siteUrl}/en`;
+
+  return {
+    title,
+    description,
+    keywords,
+    alternates: {
+      canonical,
+      languages: alternateLinks,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: 'website',
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      siteName: 'News&Niche',
+      locale,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+      site: '@newsandniche',
+      creator: '@newsandniche',
+    },
+  };
 } 

@@ -2,6 +2,7 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState } from 'react';
+import Image from 'next/image';
 
 // Code syntax highlighting component
 const CodeBlock = ({ code, language = 'javascript', title }) => {
@@ -52,10 +53,12 @@ const ImageGallery = ({ images, title }) => {
         <h3 className="text-lg font-semibold text-gray-900 mb-3">{title}</h3>
       )}
       <div className="relative">
-        <img
+        <Image
           src={images[activeIndex]}
           alt={`${title || 'Gallery image'} ${activeIndex + 1}`}
           className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-lg"
+          fill
+          unoptimized
         />
         {images.length > 1 && (
           <>
@@ -326,7 +329,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
 
   if (error || !blog) {
     return (
-      <div className="min-h-screen bg-gray-100 py-8">
+      <main className="min-h-screen bg-gray-100 py-8" aria-label="Main content">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
@@ -340,335 +343,383 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
             </Link>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
+
+  // --- JSON-LD Structured Data ---
+  const siteUrl = 'https://newsandniche.com';
+  const blogUrl = `${siteUrl}/${locale}/blogs/${blog.slug?.[locale]}`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blog.title?.[locale],
+    description: blog.seoDescription?.[locale] || blog.excerpt?.[locale],
+    image: blog.featuredImage ? [blog.featuredImage] : undefined,
+    author: {
+      '@type': 'Person',
+      name: blog.author?.name || 'News&Niche',
+      url: blog.author?.website || siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'News&Niche',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/logo.png`,
+      },
+    },
+    datePublished: blog.publishedAt,
+    dateModified: blog.updatedAt || blog.publishedAt,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': blogUrl,
+    },
+    url: blogUrl,
+    inLanguage: locale,
+    keywords: blog.seoKeywords?.[locale]?.join(', '),
+  };
 
   // Parse content into blocks
   const contentBlocks = parseContent(blog.content[locale]);
 
   return (
-    <div className="min-h-screen bg-gray-100 py-6 sm:py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        <nav className="mb-6 sm:mb-8">
-          <ol className="flex flex-wrap items-center space-x-2 text-xs sm:text-sm text-gray-500">
-            <li>
-              <Link href={`/${locale}`} className="hover:text-gray-700">
-                {t('common.home')}
-              </Link>
-            </li>
-            <li>/</li>
-            <li>
-              <Link href={`/${locale}/blogs`} className="hover:text-gray-700">
-                {t('blog.allPosts')}
-              </Link>
-            </li>
-            <li>/</li>
-            <li className="text-gray-900 line-clamp-1">{blog.title[locale]}</li>
-          </ol>
-        </nav>
+    <>
+      {/* JSON-LD Structured Data */}
+      <script type="application/ld+json" suppressHydrationWarning>{JSON.stringify(jsonLd)}</script>
+      <main className="min-h-screen bg-gray-100 py-6 sm:py-8" aria-label="Main content">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Breadcrumb */}
+          <nav className="mb-6 sm:mb-8" aria-label="Breadcrumb">
+            <ol className="flex flex-wrap items-center space-x-2 text-xs sm:text-sm text-gray-500" itemScope itemType="https://schema.org/BreadcrumbList">
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                <Link href={`/${locale}`} className="hover:text-gray-700" itemProp="item">
+                  <span itemProp="name">{t('common.home')}</span>
+                </Link>
+                <meta itemProp="position" content="1" />
+              </li>
+              <li aria-hidden="true">/</li>
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                <Link href={`/${locale}/blogs`} className="hover:text-gray-700" itemProp="item">
+                  <span itemProp="name">{t('blog.allPosts')}</span>
+                </Link>
+                <meta itemProp="position" content="2" />
+              </li>
+              <li aria-hidden="true">/</li>
+              <li className="text-gray-900 line-clamp-1" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                <span itemProp="name">{blog.title[locale]}</span>
+                <meta itemProp="position" content="3" />
+              </li>
+            </ol>
+          </nav>
 
-        {/* Article */}
-        <article className="bg-gray-50 overflow-hidden">
-          {/* Featured Image */}
-          {blog.featuredImage && (
-            <div className="w-full h-40 sm:h-64 md:h-96">
-              <img
-                src={blog.featuredImage}
-                alt={blog.title[locale]}
-                className="w-full h-full object-cover"
-                style={{ WebkitFontSmoothing: 'antialiased' }}
-              />
-            </div>
-          )}
-
-          <div className="p-4 sm:p-8">
-            {/* Header */}
-            <header className="mb-6 sm:mb-8">
-              <div className="flex flex-wrap items-center text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
-                <span className="capitalize bg-gray-200 text-gray-800 px-2 sm:px-3 py-1 rounded-full">
-                  {blog.category[locale]}
-                </span>
-                <span className="mx-2">•</span>
-                <span>{blog.readTime[locale]} {t('blog.minRead')}</span>
-                <span className="mx-2">•</span>
-                <span>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
-                {blog.isFeatured && (
-                  <>
-                    <span className="mx-2">•</span>
-                    <span className="bg-gray-300 text-gray-800 px-2 py-1 rounded-full text-xs">
-                      {t('blog.featured')}
-                    </span>
-                  </>
-                )}
-              </div>
-              
-              <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight ${locale === 'bn' ? 'font-bangla' : ''}`}>
-                {blog.title[locale]}
-              </h1>
-              
-              <p className={`text-base sm:text-xl text-gray-700 mb-5 sm:mb-6 leading-relaxed ${locale === 'bn' ? 'font-bangla' : ''}`}>
-                {blog.excerpt[locale]}
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
-                <div className="flex items-center">
-                  {/* Author Avatar */}
-                  {getAuthorField(blog, 'avatar') ? (
-                    <img
-                      src={getAuthorField(blog, 'avatar')}
-                      alt={getAuthorField(blog, 'name') || 'Author'}
-                      className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover mr-3 sm:mr-4"
-                    />
-                  ) : (
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-300 rounded-full flex items-center justify-center mr-3 sm:mr-4">
-                      <span className="text-gray-900 font-semibold text-base sm:text-lg">
-                        {(getAuthorField(blog, 'name') || 'A').charAt(0)}
-                      </span>
-                    </div>
-                  )}
-                  
-                  {/* Author Info */}
-                  <div>
-                    <p className="font-medium text-gray-900 text-sm sm:text-base">
-                      {getAuthorField(blog, 'name') || t('blog.anonymous')}
-                    </p>
-                    <p className="text-xs sm:text-sm text-gray-500">
-                      {t('blog.author')}
-                    </p>
-                    {/* Author Bio */}
-                    {getAuthorField(blog, 'bio') && (
-                      <p className="text-xs text-gray-600 mt-1 max-w-xs line-clamp-2">
-                        {getAuthorField(blog, 'bio')}
-                      </p>
-                    )}
-                    {/* Author Website */}
-                    {getAuthorField(blog, 'website') && (
-                      <a
-                        href={getAuthorField(blog, 'website')}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-blue-600 hover:text-blue-800 mt-1 block"
-                      >
-                        🌐 Visit Website
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                {/* Author Social Links */}
-                {getAuthorField(blog, 'social') && (getAuthorField(blog, 'social').twitter || getAuthorField(blog, 'social').linkedin || getAuthorField(blog, 'social').github) && (
-                  <div className="flex items-center space-x-2 mt-3 sm:mt-0">
-                    {getAuthorField(blog, 'social').twitter && (
-                      <a
-                        href={getAuthorField(blog, 'social').twitter}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                        title="Twitter"
-                      >
-                        𝕏
-                      </a>
-                    )}
-                    {getAuthorField(blog, 'social').linkedin && (
-                      <a
-                        href={getAuthorField(blog, 'social').linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                        title="LinkedIn"
-                      >
-                        in
-                      </a>
-                    )}
-                    {getAuthorField(blog, 'social').github && (
-                      <a
-                        href={getAuthorField(blog, 'social').github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                        title="GitHub"
-                      >
-                        GH
-                      </a>
-                    )}
-                  </div>
-                )}
-
-                {/* Social Share Buttons (grayscale) */}
-                <div className="flex items-center space-x-2 mt-3 sm:mt-0">
-                  <span className="text-xs sm:text-sm text-gray-500 mr-2">{t('blog.shareThis')}:</span>
-                  <button
-                    onClick={() => handleShare('facebook')}
-                    className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                    title="Share on Facebook"
-                  >
-                    f
-                  </button>
-                  <button
-                    onClick={() => handleShare('twitter')}
-                    className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                    title="Share on Twitter"
-                  >
-                    t
-                  </button>
-                  <button
-                    onClick={() => handleShare('linkedin')}
-                    className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                    title="Share on LinkedIn"
-                  >
-                    in
-                  </button>
-                  <button
-                    onClick={() => handleShare('whatsapp')}
-                    className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                    title="Share on WhatsApp"
-                  >
-                    wa
-                  </button>
-                </div>
-              </div>
-            </header>
-
-            {/* Enhanced Content */}
-            <div className={`prose prose-lg max-w-none ${locale === 'bn' ? 'font-bangla' : ''}`}>
-              {contentBlocks.map((block, index) => {
-                switch (block.type) {
-                  case 'code':
-                    return (
-                      <CodeBlock
-                        key={index}
-                        code={block.content}
-                        language={block.language}
-                        title={block.title}
-                      />
-                    );
-                  case 'gallery':
-                    return (
-                      <ImageGallery
-                        key={index}
-                        images={block.images}
-                        title={block.title}
-                      />
-                    );
-                  case 'image':
-                    return (
-                      <div key={index} className="my-6">
-                        <img
-                          src={block.src}
-                          alt={block.alt}
-                          className="w-full h-auto rounded-lg"
-                        />
-                        {block.alt && (
-                          <p className="text-sm text-gray-600 mt-2 text-center italic">
-                            {block.alt}
-                          </p>
-                        )}
-                      </div>
-                    );
-                  case 'callout':
-                    return (
-                      <Callout
-                        key={index}
-                        type={block.calloutType}
-                        content={block.content}
-                      />
-                    );
-                  default:
-                    return (
-                      <div
-                        key={index}
-                        className="text-gray-800 leading-relaxed text-lg"
-                        dangerouslySetInnerHTML={{ __html: renderMarkdown(block.content) }}
-                      />
-                    );
-                }
-              })}
-            </div>
-
-            {/* Tags */}
-            {blog.tags && blog.tags.length > 0 && (
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <h3 className={`text-lg font-semibold text-gray-900 mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
-                  {t('blog.tags')}:
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {blog.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors"
-                    >
-                      {tag[locale]}
-                    </span>
-                  ))}
-                </div>
+          {/* Article */}
+          <article className="bg-gray-50 overflow-hidden" itemScope itemType="https://schema.org/Article">
+            {/* Featured Image */}
+            {blog.featuredImage && (
+              <div className="relative w-full h-64 sm:h-80 md:h-[500px]">
+                <Image
+                  src={blog.featuredImage}
+                  alt={blog.title[locale]}
+                  className="object-cover"
+                  style={{ WebkitFontSmoothing: 'antialiased' }}
+                  fill
+                  unoptimized
+                />
               </div>
             )}
 
-            {/* Footer */}
-            <footer className="mt-8 pt-8 border-t border-gray-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <button className="flex items-center space-x-2 text-gray-500 hover:text-gray-700">
-                    <span>👁️</span>
-                    <span>{blog.viewCount || 0} {t('blog.views')}</span>
-                  </button>
+            <div className="p-4 sm:p-8">
+              {/* Header */}
+              <header className="mb-6 sm:mb-8">
+                <div className="flex flex-wrap items-center text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
+                  <span className="capitalize bg-gray-200 text-gray-800 px-2 sm:px-3 py-1 rounded-full">
+                    {blog.category[locale]}
+                  </span>
+                  <span className="mx-2">•</span>
+                  <span>{blog.readTime[locale]} {t('blog.minRead')}</span>
+                  <span className="mx-2">•</span>
+                  <span>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
+                  {blog.isFeatured && (
+                    <>
+                      <span className="mx-2">•</span>
+                      <span className="bg-gray-300 text-gray-800 px-2 py-1 rounded-full text-xs">
+                        {t('blog.featured')}
+                      </span>
+                    </>
+                  )}
                 </div>
-                <Link
-                  href={`/${locale}/blogs`}
-                  className="text-gray-700 hover:text-gray-900 font-medium"
-                >
-                  ← {t('blog.backToBlogs')}
-                </Link>
-              </div>
-            </footer>
-          </div>
-        </article>
+                
+                <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight ${locale === 'bn' ? 'font-bangla' : ''}`}
+                  id="blog-title">
+                  {blog.title[locale]}
+                </h1>
+                
+                <p className={`text-base sm:text-xl text-gray-700 mb-5 sm:mb-6 leading-relaxed ${locale === 'bn' ? 'font-bangla' : ''}`}
+                  id="blog-excerpt">
+                  {blog.excerpt[locale]}
+                </p>
 
-        {/* Related Posts */}
-        {relatedBlogs.length > 0 && (
-          <section className="mt-12">
-            <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${locale === 'bn' ? 'font-bangla' : ''}`}>
-              {t('blog.relatedPosts')}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedBlogs.map((relatedBlog) => (
-                <article key={relatedBlog._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                  {relatedBlog.featuredImage && (
-                    <div className="aspect-w-16 aspect-h-9">
-                      <img
-                        src={relatedBlog.featuredImage}
-                        alt={relatedBlog.title[locale]}
-                        className="w-full h-48 object-cover"
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+                  <div className="flex items-center">
+                    {/* Author Avatar */}
+                    {getAuthorField(blog, 'avatar') ? (
+                      <Image
+                        src={getAuthorField(blog, 'avatar')}
+                        alt={getAuthorField(blog, 'name') || 'Author'}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover mr-3 sm:mr-4"
+                        width={48}
+                        height={48}
+                        unoptimized
                       />
+                    ) : (
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-300 rounded-full flex items-center justify-center mr-3 sm:mr-4">
+                        <span className="text-gray-900 font-semibold text-base sm:text-lg">
+                          {(getAuthorField(blog, 'name') || 'A').charAt(0)}
+                        </span>
+                      </div>
+                    )}
+                    
+                    {/* Author Info */}
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm sm:text-base">
+                        {getAuthorField(blog, 'name') || t('blog.anonymous')}
+                      </p>
+                      <p className="text-xs sm:text-sm text-gray-500">
+                        {t('blog.author')}
+                      </p>
+                      {/* Author Bio */}
+                      {getAuthorField(blog, 'bio') && (
+                        <p className="text-xs text-gray-600 mt-1 max-w-xs line-clamp-2">
+                          {getAuthorField(blog, 'bio')}
+                        </p>
+                      )}
+                      {/* Author Website */}
+                      {getAuthorField(blog, 'website') && (
+                        <a
+                          href={getAuthorField(blog, 'website')}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-600 hover:text-blue-800 mt-1 block"
+                        >
+                          🌐 Visit Website
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Author Social Links */}
+                  {getAuthorField(blog, 'social') && (getAuthorField(blog, 'social').twitter || getAuthorField(blog, 'social').linkedin || getAuthorField(blog, 'social').github) && (
+                    <div className="flex items-center space-x-2 mt-3 sm:mt-0">
+                      {getAuthorField(blog, 'social').twitter && (
+                        <a
+                          href={getAuthorField(blog, 'social').twitter}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
+                          title="Twitter"
+                        >
+                          𝕏
+                        </a>
+                      )}
+                      {getAuthorField(blog, 'social').linkedin && (
+                        <a
+                          href={getAuthorField(blog, 'social').linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
+                          title="LinkedIn"
+                        >
+                          in
+                        </a>
+                      )}
+                      {getAuthorField(blog, 'social').github && (
+                        <a
+                          href={getAuthorField(blog, 'social').github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
+                          title="GitHub"
+                        >
+                          GH
+                        </a>
+                      )}
                     </div>
                   )}
-                  <div className="p-6">
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
-                      <span className="capitalize">{relatedBlog.category[locale]}</span>
-                      <span className="mx-2">•</span>
-                      <span>{relatedBlog.readTime[locale]} {t('blog.minRead')}</span>
-                    </div>
-                    <h3 className={`text-lg font-semibold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>
-                      {relatedBlog.title[locale]}
-                    </h3>
-                    <p className={`text-gray-700 mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>
-                      {relatedBlog.excerpt[locale]}
-                    </p>
-                    <Link
-                      href={`/${locale}/blogs/${relatedBlog.slug[locale]}`}
-                      className="text-gray-700 hover:text-gray-900 font-medium text-sm"
+
+                  {/* Social Share Buttons (grayscale) */}
+                  <div className="flex items-center space-x-2 mt-3 sm:mt-0">
+                    <span className="text-xs sm:text-sm text-gray-500 mr-2">{t('blog.shareThis')}:</span>
+                    <button
+                      onClick={() => handleShare('facebook')}
+                      className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
+                      title="Share on Facebook"
                     >
-                      {t('blog.readMore')} →
-                    </Link>
+                      f
+                    </button>
+                    <button
+                      onClick={() => handleShare('twitter')}
+                      className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
+                      title="Share on Twitter"
+                    >
+                      t
+                    </button>
+                    <button
+                      onClick={() => handleShare('linkedin')}
+                      className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
+                      title="Share on LinkedIn"
+                    >
+                      in
+                    </button>
+                    <button
+                      onClick={() => handleShare('whatsapp')}
+                      className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
+                      title="Share on WhatsApp"
+                    >
+                      wa
+                    </button>
                   </div>
-                </article>
-              ))}
+                </div>
+              </header>
+
+              {/* Enhanced Content */}
+              <div className={`prose prose-lg max-w-none ${locale === 'bn' ? 'font-bangla' : ''}`}>
+                {contentBlocks.map((block, index) => {
+                  switch (block.type) {
+                    case 'code':
+                      return (
+                        <CodeBlock
+                          key={index}
+                          code={block.content}
+                          language={block.language}
+                          title={block.title}
+                        />
+                      );
+                    case 'gallery':
+                      return (
+                        <ImageGallery
+                          key={index}
+                          images={block.images}
+                          title={block.title}
+                        />
+                      );
+                    case 'image':
+                      return (
+                        <div key={index} className="my-6">
+                          <Image
+                            src={block.src}
+                            alt={block.alt}
+                            className="w-full h-auto rounded-lg"
+                            width={500}
+                            height={300}
+                            unoptimized
+                          />
+                          {block.alt && (
+                            <p className="text-sm text-gray-600 mt-2 text-center italic">
+                              {block.alt}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    case 'callout':
+                      return (
+                        <Callout
+                          key={index}
+                          type={block.calloutType}
+                          content={block.content}
+                        />
+                      );
+                    default:
+                      return (
+                        <div
+                          key={index}
+                          className="text-gray-800 leading-relaxed text-lg"
+                          dangerouslySetInnerHTML={{ __html: renderMarkdown(block.content) }}
+                        />
+                      );
+                  }
+                })}
+              </div>
+
+              {/* Tags */}
+              {blog.tags && blog.tags.length > 0 && (
+                <div className="mt-8 pt-8 border-t border-gray-200">
+                  <h3 className={`text-lg font-semibold text-gray-900 mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+                    {t('blog.tags')}:
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {blog.tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors"
+                      >
+                        {tag[locale]}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Footer */}
+              <footer className="mt-8 pt-8 border-t border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <button className="flex items-center space-x-2 text-gray-500 hover:text-gray-700">
+                      <span>👁️</span>
+                      <span>{blog.viewCount || 0} {t('blog.views')}</span>
+                    </button>
+                  </div>
+                  <Link
+                    href={`/${locale}/blogs`}
+                    className="text-gray-700 hover:text-gray-900 font-medium"
+                  >
+                    ← {t('blog.backToBlogs')}
+                  </Link>
+                </div>
+              </footer>
             </div>
-          </section>
-        )}
-      </div>
-    </div>
+          </article>
+
+          {/* Related Posts */}
+          {relatedBlogs.length > 0 && (
+            <section className="mt-12">
+              <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+                {t('blog.relatedPosts')}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {relatedBlogs.map((relatedBlog) => (
+                  <Link
+                    key={relatedBlog._id}
+                    href={`/${locale}/blogs/${relatedBlog.slug[locale]}`}
+                    className="bg-white shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block group"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <div className="relative w-full h-40 sm:h-48">
+                      <Image
+                        src={relatedBlog.featuredImage}
+                        alt={relatedBlog.title[locale]}
+                        className="w-full object-cover"
+                        fill
+                        unoptimized
+                      />
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                        <span className="capitalize">{relatedBlog.category[locale]}</span>
+                        <span className="mx-2">•</span>
+                        <span>{relatedBlog.readTime[locale]} {t('blog.minRead')}</span>
+                      </div>
+                      <h3 className={`text-lg font-semibold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.title[locale]}</h3>
+                      <p className={`text-gray-700 mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.excerpt[locale]}</p>
+                      <span className="text-gray-700 hover:text-gray-900 font-medium text-sm group-hover:underline">{t('blog.readMore')} →</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+      </main>
+    </>
   );
 } 

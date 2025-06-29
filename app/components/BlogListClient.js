@@ -5,6 +5,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import { api } from "@/app/apiConfig";
+import Image from 'next/image';
 
 export default function BlogListClient({ initialBlogs, total, hasMore: initialHasMore, initialParams, error: initialError }) {
   const t = useTranslations();
@@ -112,20 +113,20 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
   // UI
   if (loading && blogs.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <main className="min-h-screen bg-gray-50 py-8" aria-label="Main content">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">{t("common.loading")}</p>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
   if (error && blogs.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <main className="min-h-screen bg-gray-50 py-8" aria-label="Main content">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="text-red-600 mb-4">
@@ -142,18 +143,20 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
             </button>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-6 sm:py-8">
+    <main className="min-h-screen bg-gray-100 py-6 sm:py-8" aria-label="Main content">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className={`text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+          <h1 className={`text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}
+            id="blog-list-title">
             {t("blog.allPosts")}
           </h1>
-          <p className={`text-base sm:text-xl text-gray-700 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+          <p className={`text-base sm:text-xl text-gray-700 ${locale === 'bn' ? 'font-bangla' : ''}`}
+            id="blog-list-desc">
             {t("blog.discoverStories")}
           </p>
         </div>
@@ -243,16 +246,16 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
                   className="bg-white flex flex-col cursor-pointer group"
                   style={{ textDecoration: 'none' }}
                 >
-                  {blog.featuredImage && (
-                    <div className="aspect-w-16 aspect-h-9 w-full">
-                      <img
-                        src={blog.featuredImage}
-                        alt={blog.title?.[locale] || 'Blog image'}
-                        className="w-full h-40 sm:h-48 object-cover"
-                        style={{ WebkitFontSmoothing: 'antialiased' }}
-                      />
-                    </div>
-                  )}
+                  <div className="relative w-full h-56 sm:h-64">
+                    <Image
+                      src={blog.featuredImage}
+                      alt={blog.title?.[locale] || 'Blog image'}
+                      className="w-full object-cover"
+                      style={{ WebkitFontSmoothing: 'antialiased' }}
+                      fill
+                      unoptimized
+                    />
+                  </div>
                   <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <span className="capitalize">
@@ -287,6 +290,6 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
           </>
         )}
       </div>
-    </div>
+    </main>
   );
 } 

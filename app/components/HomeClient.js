@@ -2,6 +2,7 @@
 import { useTranslations } from 'next-intl';
 import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function HomeClient({ featuredBlogs, recentBlogs, categories, error, locale }) {
   const t = useTranslations();
@@ -13,24 +14,24 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <main className="min-h-screen flex items-center justify-center" aria-label="Main content">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-      </div>
+      </main>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <main className="min-h-screen flex items-center justify-center" aria-label="Main content">
         <div className="text-red-600 text-lg">{error}</div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <main className="min-h-screen bg-gray-100" aria-label="Main content">
       {/* Hero Section */}
-      <div className="bg-gray-900 text-gray-100 py-12 sm:py-20">
+      <section className="bg-gray-900 text-gray-100 py-12 sm:py-20" aria-label="Hero">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className={`text-3xl sm:text-5xl font-bold mb-4 sm:mb-6 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.hero.title')}</h1>
           <p className={`text-base sm:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.hero.subtitle')}</p>
@@ -51,11 +52,11 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
             )}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Featured Blogs Section */}
       {featuredBlogs.length > 0 && (
-        <section className="py-10 sm:py-16">
+        <section className="py-10 sm:py-16" aria-label="Featured blogs">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.featured.title')}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -66,16 +67,15 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
                   className="bg-white flex flex-col cursor-pointer group"
                   style={{ textDecoration: 'none' }}
                 >
-                  {blog.featuredImage && (
-                    <div className="aspect-w-16 aspect-h-9 w-full">
-                      <img
-                        src={blog.featuredImage}
-                        alt={blog.title[locale]}
-                        className="w-full h-40 sm:h-48 object-cover"
-                        style={{ WebkitFontSmoothing: 'antialiased' }}
-                      />
-                    </div>
-                  )}
+                  <div className="relative w-full h-56 sm:h-64">
+                    <Image
+                      src={blog.featuredImage}
+                      alt={blog.title[locale]}
+                      className="w-full object-cover"
+                      fill
+                      unoptimized
+                    />
+                  </div>
                   <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <span className="capitalize">{blog.category[locale]}</span>
@@ -94,7 +94,7 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
 
       {/* Categories Section */}
       {categories.length > 0 && (
-        <section className="py-10 sm:py-16 bg-white">
+        <section className="py-10 sm:py-16 bg-white" aria-label="Categories">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.categories.title')}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
@@ -114,7 +114,7 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
 
       {/* Recent Blogs Section */}
       {recentBlogs.length > 0 && (
-        <section className="py-10 sm:py-16">
+        <section className="py-10 sm:py-16" aria-label="Recent blogs">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-3 sm:gap-0">
               <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.recent.title')}</h2>
@@ -133,16 +133,15 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
                   className="bg-white flex flex-col cursor-pointer group"
                   style={{ textDecoration: 'none' }}
                 >
-                  {blog.featuredImage && (
-                    <div className="aspect-w-16 aspect-h-9 w-full">
-                      <img
-                        src={blog.featuredImage}
-                        alt={blog.title[locale]}
-                        className="w-full h-40 sm:h-48 object-cover"
-                        style={{ WebkitFontSmoothing: 'antialiased' }}
-                      />
-                    </div>
-                  )}
+                  <div className="relative w-full h-56 sm:h-64">
+                    <Image
+                      src={blog.featuredImage}
+                      alt={blog.title[locale]}
+                      className="w-full object-cover"
+                      fill
+                      unoptimized
+                    />
+                  </div>
                   <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <span className="capitalize">{blog.category[locale]}</span>
@@ -160,7 +159,7 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
       )}
 
       {/* Call to Action */}
-      <section className="py-10 sm:py-16 bg-gray-900 text-gray-100">
+      <section className="py-10 sm:py-16 bg-gray-900 text-gray-100" aria-label="Call to action">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className={`text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.cta.title')}</h2>
           <p className={`text-base sm:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.cta.subtitle')}</p>
@@ -172,6 +171,6 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
           </Link>
         </div>
       </section>
-    </div>
+    </main>
   );
 } 
