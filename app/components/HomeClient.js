@@ -30,21 +30,21 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Hero Section */}
-      <div className="bg-gray-900 text-gray-100 py-20">
+      <div className="bg-gray-900 text-gray-100 py-12 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className={`text-5xl font-bold mb-6 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.hero.title')}</h1>
-          <p className={`text-xl mb-8 max-w-3xl mx-auto ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.hero.subtitle')}</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <h1 className={`text-3xl sm:text-5xl font-bold mb-4 sm:mb-6 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.hero.title')}</h1>
+          <p className={`text-base sm:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.hero.subtitle')}</p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link
               href={`/${locale}/blogs`}
-              className={`bg-gray-100 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-white transition-colors ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+              className={`bg-gray-100 text-gray-900 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-white transition-colors text-base sm:text-lg ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
             >
               {t('home.hero.browseBlogs')}
             </Link>
             {!user && (
               <Link
                 href={`/${locale}/register`}
-                className={`border-2 border-gray-100 text-gray-100 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 hover:text-gray-900 transition-colors ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                className={`border-2 border-gray-100 text-gray-100 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 hover:text-gray-900 transition-colors text-base sm:text-lg ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
               >
                 {t('home.hero.joinUs')}
               </Link>
@@ -55,37 +55,37 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
 
       {/* Featured Blogs Section */}
       {featuredBlogs.length > 0 && (
-        <section className="py-16">
+        <section className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className={`text-3xl font-bold text-gray-900 mb-8 text-center ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.featured.title')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.featured.title')}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {featuredBlogs.map((blog) => (
-                <article key={blog._id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <Link
+                  key={blog._id}
+                  href={`/${locale}/blogs/${blog.slug[locale]}`}
+                  className="bg-white flex flex-col cursor-pointer group"
+                  style={{ textDecoration: 'none' }}
+                >
                   {blog.featuredImage && (
-                    <div className="aspect-w-16 aspect-h-9">
+                    <div className="aspect-w-16 aspect-h-9 w-full">
                       <img
                         src={blog.featuredImage}
                         alt={blog.title[locale]}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-40 sm:h-48 object-cover"
+                        style={{ WebkitFontSmoothing: 'antialiased' }}
                       />
                     </div>
                   )}
-                  <div className="p-6">
+                  <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <span className="capitalize">{blog.category[locale]}</span>
                       <span className="mx-2">•</span>
                       <span>{blog.readTime[locale]} {t('blog.minRead')}</span>
                     </div>
-                    <h3 className={`text-xl font-semibold text-gray-900 mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.title[locale]}</h3>
-                    <p className={`text-gray-700 mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.excerpt[locale]}</p>
-                    <Link
-                      href={`/${locale}/blogs/${blog.slug[locale]}`}
-                      className="text-gray-700 hover:text-gray-900 font-medium"
-                    >
-                      {t('blog.readMore')} →
-                    </Link>
+                    <h3 className={`text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.title[locale]}</h3>
+                    <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.excerpt[locale]}</p>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           </div>
@@ -94,18 +94,17 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
 
       {/* Categories Section */}
       {categories.length > 0 && (
-        <section className="py-16 bg-white">
+        <section className="py-10 sm:py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className={`text-3xl font-bold text-gray-900 mb-8 text-center ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.categories.title')}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.categories.title')}</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
               {categories.map((category, index) => (
                 <Link
                   key={index}
                   href={`/${locale}/blogs?category=${category.slug}`}
-                  className="bg-gray-100 hover:bg-white p-4 rounded-lg text-center transition-colors"
-                >
-                  <h3 className={`font-semibold text-gray-900 ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.name}</h3>
-                  <p className={`text-sm text-gray-700 mt-1 ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.postCount || 0} {t('home.categories.posts')}</p>
+                  className="bg-gray-100 hover:bg-white p-3 sm:p-4 rounded-lg text-center transition-colors flex flex-col items-center">
+                  <h3 className={`font-semibold text-gray-900 text-base sm:text-lg ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.name}</h3>
+                  <p className={`text-xs sm:text-sm text-gray-700 mt-1 ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.postCount || 0} {t('home.categories.posts')}</p>
                 </Link>
               ))}
             </div>
@@ -115,45 +114,45 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
 
       {/* Recent Blogs Section */}
       {recentBlogs.length > 0 && (
-        <section className="py-16">
+        <section className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className={`text-3xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.recent.title')}</h2>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-3 sm:gap-0">
+              <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.recent.title')}</h2>
               <Link
                 href={`/${locale}/blogs`}
-                className="text-gray-700 hover:text-gray-900 font-medium"
+                className="text-gray-700 hover:text-gray-900 font-medium text-base sm:text-lg"
               >
                 {t('home.recent.viewAll')} →
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {recentBlogs.slice(0, 6).map((blog) => (
-                <article key={blog._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <Link
+                  key={blog._id}
+                  href={`/${locale}/blogs/${blog.slug[locale]}`}
+                  className="bg-white flex flex-col cursor-pointer group"
+                  style={{ textDecoration: 'none' }}
+                >
                   {blog.featuredImage && (
-                    <div className="aspect-w-16 aspect-h-9">
+                    <div className="aspect-w-16 aspect-h-9 w-full">
                       <img
                         src={blog.featuredImage}
                         alt={blog.title[locale]}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-40 sm:h-48 object-cover"
+                        style={{ WebkitFontSmoothing: 'antialiased' }}
                       />
                     </div>
                   )}
-                  <div className="p-6">
+                  <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <span className="capitalize">{blog.category[locale]}</span>
                       <span className="mx-2">•</span>
                       <span>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
                     </div>
-                    <h3 className={`text-lg font-semibold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.title[locale]}</h3>
-                    <p className={`text-gray-700 mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.excerpt[locale]}</p>
-                    <Link
-                      href={`/${locale}/blogs/${blog.slug[locale]}`}
-                      className="text-gray-700 hover:text-gray-900 font-medium text-sm"
-                    >
-                      {t('blog.readMore')} →
-                    </Link>
+                    <h3 className={`text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.title[locale]}</h3>
+                    <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.excerpt[locale]}</p>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           </div>
@@ -161,13 +160,13 @@ export default function HomeClient({ featuredBlogs, recentBlogs, categories, err
       )}
 
       {/* Call to Action */}
-      <section className="py-16 bg-gray-900 text-gray-100">
+      <section className="py-10 sm:py-16 bg-gray-900 text-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className={`text-3xl font-bold mb-4 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.cta.title')}</h2>
-          <p className={`text-xl mb-8 max-w-2xl mx-auto ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.cta.subtitle')}</p>
+          <h2 className={`text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.cta.title')}</h2>
+          <p className={`text-base sm:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.cta.subtitle')}</p>
           <Link
             href={`/${locale}/blogs`}
-            className={`bg-gray-100 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-white transition-colors ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+            className={`bg-gray-100 text-gray-900 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-white transition-colors text-base sm:text-lg ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
           >
             {t('home.cta.button')}
           </Link>

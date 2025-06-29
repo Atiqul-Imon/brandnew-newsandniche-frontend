@@ -5,6 +5,8 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
 import { api } from '@/app/apiConfig';
 import Link from 'next/link';
+import ImageUpload from '@/app/components/ImageUpload';
+import RichBlogEditor from '@/app/components/RichBlogEditor';
 
 export default function EditBlogPage() {
   const t = useTranslations();
@@ -28,7 +30,19 @@ export default function EditBlogPage() {
     isFeatured: false,
     seoTitle: { en: '', bn: '' },
     seoDescription: { en: '', bn: '' },
-    seoKeywords: { en: [], bn: [] }
+    seoKeywords: { en: [], bn: [] },
+    author: {
+      name: '',
+      email: '',
+      bio: '',
+      avatar: '',
+      website: '',
+      social: {
+        twitter: '',
+        linkedin: '',
+        github: ''
+      }
+    }
   });
 
   // Category state
@@ -132,6 +146,27 @@ export default function EditBlogPage() {
       setSaving(false);
     }
   };
+
+  const handleImageUploaded = (imageUrl) => {
+    console.log('🖼️ Image uploaded successfully:', imageUrl);
+    setFormData(prev => ({
+      ...prev,
+      featuredImage: imageUrl
+    }));
+  };
+
+  const handleImageRemoved = () => {
+    console.log('🗑️ Image removed');
+    setFormData(prev => ({
+      ...prev,
+      featuredImage: ''
+    }));
+  };
+
+  // Debug: Log when featured image changes
+  useEffect(() => {
+    console.log('📸 Featured image changed:', formData.featuredImage);
+  }, [formData.featuredImage]);
 
   if (loading) {
     return <div className="text-center py-8">{t('common.loading')}</div>;
@@ -333,22 +368,22 @@ export default function EditBlogPage() {
             {formData.content.en && formData.content.en.trim() !== '' && (
               <div>
                 <label className="block text-sm font-medium mb-1">Content (English)</label>
-                <textarea
+                <RichBlogEditor
                   value={formData.content.en}
-                  onChange={e => handleInputChange('content', 'en', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
+                  onChange={(value) => handleInputChange('content', 'en', value)}
+                  placeholder="Write your blog content in English..."
+                  language="en"
                 />
               </div>
             )}
             {formData.content.bn && formData.content.bn.trim() !== '' && (
               <div>
                 <label className="block text-sm font-medium mb-1">Content (Bangla)</label>
-                <textarea
+                <RichBlogEditor
                   value={formData.content.bn}
-                  onChange={e => handleInputChange('content', 'bn', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
+                  onChange={(value) => handleInputChange('content', 'bn', value)}
+                  placeholder="বাংলায় আপনার ব্লগের বিষয়বস্তু লিখুন..."
+                  language="bn"
                 />
               </div>
             )}
@@ -364,30 +399,155 @@ export default function EditBlogPage() {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {t('blog.featuredImage')} *
             </label>
-            <input
-              type="url"
-              value={formData.featuredImage || ''}
-              onChange={(e) => setFormData(prev => ({ ...prev, featuredImage: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="https://example.com/image.jpg"
-              required
+            <ImageUpload
+              onImageUploaded={handleImageUploaded}
+              onImageRemoved={handleImageRemoved}
+              initialImage={formData.featuredImage}
+              className="mb-2"
             />
-            {formData.featuredImage && (
-              <div className="mt-2">
-                <img 
-                  src={formData.featuredImage} 
-                  alt="Featured" 
-                  className="w-32 h-20 object-cover rounded border"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
+            {!formData.featuredImage && (
+              <p className="text-sm text-red-600 mt-1">Featured image is required</p>
+            )}
+          </div>
+
+          {/* Author Information */}
+          <div className="mb-6">
+            <h3 className="text-md font-medium text-gray-900 mb-4">Author Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Author Name *
+                </label>
+                <input
+                  type="text"
+                  value={formData.author?.name || ''}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    author: { ...prev.author, name: e.target.value }
+                  }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter author name"
+                  required
                 />
-                <div className="hidden w-32 h-20 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-500">
-                  Image not found
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Author Email
+                </label>
+                <input
+                  type="email"
+                  value={formData.author?.email || ''}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    author: { ...prev.author, email: e.target.value }
+                  }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="author@example.com"
+                />
+              </div>
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Author Bio
+              </label>
+              <textarea
+                value={formData.author?.bio || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  author: { ...prev.author, bio: e.target.value }
+                }))}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Brief description about the author"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Author Avatar URL
+                </label>
+                <input
+                  type="url"
+                  value={formData.author?.avatar || ''}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    author: { ...prev.author, avatar: e.target.value }
+                  }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="https://example.com/avatar.jpg"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Author Website
+                </label>
+                <input
+                  type="url"
+                  value={formData.author?.website || ''}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    author: { ...prev.author, website: e.target.value }
+                  }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="https://author-website.com"
+                />
+              </div>
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Social Media Links
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">Twitter</label>
+                  <input
+                    type="url"
+                    value={formData.author?.social?.twitter || ''}
+                    onChange={(e) => setFormData(prev => ({
+                      ...prev,
+                      author: {
+                        ...prev.author,
+                        social: { ...prev.author?.social, twitter: e.target.value }
+                      }
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="https://twitter.com/username"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">LinkedIn</label>
+                  <input
+                    type="url"
+                    value={formData.author?.social?.linkedin || ''}
+                    onChange={(e) => setFormData(prev => ({
+                      ...prev,
+                      author: {
+                        ...prev.author,
+                        social: { ...prev.author?.social, linkedin: e.target.value }
+                      }
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="https://linkedin.com/in/username"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-600 mb-1">GitHub</label>
+                  <input
+                    type="url"
+                    value={formData.author?.social?.github || ''}
+                    onChange={(e) => setFormData(prev => ({
+                      ...prev,
+                      author: {
+                        ...prev.author,
+                        social: { ...prev.author?.social, github: e.target.value }
+                      }
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="https://github.com/username"
+                  />
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Status and Settings */}

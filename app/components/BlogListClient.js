@@ -147,19 +147,19 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
+    <div className="min-h-screen bg-gray-100 py-6 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className={`text-4xl font-bold text-gray-900 mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className={`text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
             {t("blog.allPosts")}
           </h1>
-          <p className={`text-xl text-gray-700 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+          <p className={`text-base sm:text-xl text-gray-700 ${locale === 'bn' ? 'font-bangla' : ''}`}>
             {t("blog.discoverStories")}
           </p>
         </div>
 
         {/* Category Filter Bar */}
-        <div className="mb-8 flex flex-wrap gap-2 justify-center">
+        <div className="mb-6 sm:mb-8 flex flex-wrap gap-2 justify-center">
           <button
             className={`px-4 py-2 rounded-full border ${!category ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"}`}
             onClick={() => {
@@ -188,12 +188,12 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
         </div>
 
         {/* Search and Filters */}
-        <div className="mb-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div className="w-full md:w-96">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between">
+            <div className="w-full sm:w-96">
               <SearchBar onSearch={() => {}} />
             </div>
-            <div className="flex items-center space-x-4 text-sm text-gray-600">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-gray-600 mt-2 sm:mt-0">
               <span>{totalBlogs} {t("blog.allPosts").toLowerCase()}</span>
               {search && (
                 <span className="bg-gray-200 text-gray-800 px-2 py-1 rounded">
@@ -235,53 +235,50 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {blogs.map((blog) => (
-                <article key={blog._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <Link
+                  key={blog._id}
+                  href={`/${locale}/blogs/${blog.slug?.[locale]}`}
+                  className="bg-white flex flex-col cursor-pointer group"
+                  style={{ textDecoration: 'none' }}
+                >
                   {blog.featuredImage && (
-                    <div className="aspect-w-16 aspect-h-9">
+                    <div className="aspect-w-16 aspect-h-9 w-full">
                       <img
                         src={blog.featuredImage}
-                        alt={blog.title?.[locale] || "Blog image"}
-                        className="w-full h-48 object-cover"
+                        alt={blog.title?.[locale] || 'Blog image'}
+                        className="w-full h-40 sm:h-48 object-cover"
+                        style={{ WebkitFontSmoothing: 'antialiased' }}
                       />
                     </div>
                   )}
-                  <div className="p-6">
+                  <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <span className="capitalize">
-                        {categories.find(c => c.slug?.[locale] === blog.category?.[locale])?.name?.[locale] || blog.category?.[locale] || "Uncategorized"}
+                        {categories.find(c => c.slug?.[locale] === blog.category?.[locale])?.name?.[locale] || blog.category?.[locale] || 'Uncategorized'}
                       </span>
                       <span className="mx-2">•</span>
-                      <span>{blog.readTime?.[locale] || 5} {t("blog.minRead")}</span>
+                      <span>{blog.readTime?.[locale] || 5} {t('blog.minRead')}</span>
                     </div>
-                    <h2 className={`text-xl font-semibold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>
-                      {blog.title?.[locale] || "Untitled"}
+                    <h2 className={`text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+                      {blog.title?.[locale] || 'Untitled'}
                     </h2>
-                    <p className={`text-gray-700 mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>
-                      {blog.excerpt?.[locale] || blog.content?.[locale]?.substring(0, 150) || "No excerpt available"}
+                    <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+                      {blog.excerpt?.[locale] || blog.content?.[locale]?.substring(0, 150) || 'No excerpt available'}
                     </p>
-                    <Link
-                      href={`/${locale}/blogs/${blog.slug?.[locale]}`}
-                      className="text-gray-700 hover:text-gray-900 font-medium"
-                    >
-                      {t("blog.readMore")}
-                      <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </Link>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
 
             {/* Load More Button */}
             {hasMore && (
-              <div className="text-center mt-12">
+              <div className="text-center mt-10 sm:mt-12">
                 <button
                   onClick={handleLoadMore}
                   disabled={loading}
-                  className="px-6 py-3 bg-gray-900 text-gray-100 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-3 bg-gray-900 text-gray-100 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed text-base sm:text-lg"
                 >
                   {loading ? t("common.loading") : t("blog.loadMore")}
                 </button>
