@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import axios from 'axios';
+import { api } from '@/app/apiConfig';
 import BlogFilters from '../../../components/BlogFilters';
-import api from '../../../lib/api';
 
 export default function AdminBlogsPage() {
   const t = useTranslations();

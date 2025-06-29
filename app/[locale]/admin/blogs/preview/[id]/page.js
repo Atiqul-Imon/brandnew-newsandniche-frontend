@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { api } from '../../../apiConfig';
+import { api } from '@/app/apiConfig';
 
 export default function BlogPreviewPage() {
   const t = useTranslations();
