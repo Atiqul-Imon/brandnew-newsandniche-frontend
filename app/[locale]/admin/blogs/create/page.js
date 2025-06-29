@@ -153,28 +153,32 @@ export default function CreateBlogPage() {
       const filteredData = { ...formData };
       
       if (!languages.en) {
-        filteredData.title.en = undefined;
-        filteredData.content.en = undefined;
-        filteredData.excerpt.en = undefined;
-        filteredData.slug.en = undefined;
-        filteredData.category.en = undefined;
-        filteredData.readTime.en = undefined;
-        filteredData.seoTitle.en = undefined;
-        filteredData.seoDescription.en = undefined;
-        filteredData.seoKeywords.en = undefined;
+        delete filteredData.title.en;
+        delete filteredData.content.en;
+        delete filteredData.excerpt.en;
+        delete filteredData.slug.en;
+        delete filteredData.category.en;
+        delete filteredData.readTime.en;
+        delete filteredData.seoTitle.en;
+        delete filteredData.seoDescription.en;
+        delete filteredData.seoKeywords.en;
       }
       
       if (!languages.bn) {
-        filteredData.title.bn = undefined;
-        filteredData.content.bn = undefined;
-        filteredData.excerpt.bn = undefined;
-        filteredData.slug.bn = undefined;
-        filteredData.category.bn = undefined;
-        filteredData.readTime.bn = undefined;
-        filteredData.seoTitle.bn = undefined;
-        filteredData.seoDescription.bn = undefined;
-        filteredData.seoKeywords.bn = undefined;
+        delete filteredData.title.bn;
+        delete filteredData.content.bn;
+        delete filteredData.excerpt.bn;
+        delete filteredData.slug.bn;
+        delete filteredData.category.bn;
+        delete filteredData.readTime.bn;
+        delete filteredData.seoTitle.bn;
+        delete filteredData.seoDescription.bn;
+        delete filteredData.seoKeywords.bn;
       }
+
+      // Remove empty slug fields if present
+      if (filteredData.slug && !filteredData.slug.en) delete filteredData.slug.en;
+      if (filteredData.slug && !filteredData.slug.bn) delete filteredData.slug.bn;
 
       console.log('Sending data to backend:', filteredData);
 
