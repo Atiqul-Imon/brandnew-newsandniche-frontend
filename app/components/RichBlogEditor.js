@@ -252,7 +252,7 @@ console.log('Hello World!');
             className="px-2 py-1 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors"
             title="Insert Quote"
           >
-            "
+            &quot;
           </button>
           <button
             onClick={() => insertTable()}

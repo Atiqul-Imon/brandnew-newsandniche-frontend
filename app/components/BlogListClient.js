@@ -200,7 +200,7 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
               <span>{totalBlogs} {t("blog.allPosts").toLowerCase()}</span>
               {search && (
                 <span className="bg-gray-200 text-gray-800 px-2 py-1 rounded">
-                  "{search}"
+                  &quot;{search}&quot;
                 </span>
               )}
               {category && (
@@ -230,8 +230,8 @@ export default function BlogListClient({ initialBlogs, total, hasMore: initialHa
             {search && (
               <p className="text-gray-400 mt-2">
                 {locale === "bn"
-                  ? `"${search}" এর জন্য কোন ফলাফল পাওয়া যায়নি`
-                  : `No results found for "${search}"`
+                  ? `&quot;${search}&quot; এর জন্য কোন ফলাফল পাওয়া যায়নি`
+                  : `No results found for &quot;${search}&quot;`
                 }
               </p>
             )}
