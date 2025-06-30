@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { api } from '../../../apiConfig';
 import { useTranslations, useLocale } from "next-intl";
+import { useAuth } from '../../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 // Add a simple slugify function
 function slugify(text) {
@@ -20,6 +22,8 @@ function slugify(text) {
 export default function AdminCategoriesPage() {
   const t = useTranslations();
   const locale = useLocale();
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,6 +43,12 @@ export default function AdminCategoriesPage() {
   const [languages, setLanguages] = useState({ en: true, bn: true });
   const API_URL = '/api/categories';
   const [formError, setFormError] = useState('');
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace(`/${locale}/login?redirect=/${locale}/admin/categories`);
+    }
+  }, [authLoading, user, router, locale]);
 
   useEffect(() => {
     fetchCategories();
@@ -203,6 +213,14 @@ export default function AdminCategoriesPage() {
       </span>
     );
   };
+
+  if (authLoading || !user) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -2,10 +2,14 @@
 import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { api } from '../../../apiConfig';
+import { useAuth } from '../../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function AdminUsersPage() {
   const t = useTranslations();
   const locale = useLocale();
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,6 +22,12 @@ export default function AdminUsersPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
   const [itemsPerPage] = useState(10);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace(`/${locale}/login?redirect=/${locale}/admin/users`);
+    }
+  }, [authLoading, user, router, locale]);
 
   useEffect(() => {
     fetchUsers();
@@ -200,6 +210,14 @@ export default function AdminUsersPage() {
       </div>
     );
   };
+
+  if (authLoading || !user) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

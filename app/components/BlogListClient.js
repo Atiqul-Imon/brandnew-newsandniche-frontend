@@ -257,7 +257,7 @@ export default function BlogListClient(props) {
                   className="bg-white flex flex-col cursor-pointer group"
                   style={{ textDecoration: 'none' }}
                 >
-                  <div className="relative w-full h-56 sm:h-64">
+                  <div className="relative w-full h-64">
                     <Image
                       src={blog.featuredImage}
                       alt={blog.title?.[locale] || 'Blog image'}

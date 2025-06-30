@@ -5,10 +5,14 @@ import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { api } from '@/app/apiConfig';
 import BlogFilters from '../../../components/BlogFilters';
+import { useAuth } from '../../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function AdminBlogsPage() {
   const t = useTranslations();
   const locale = useLocale();
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,6 +31,12 @@ export default function AdminBlogsPage() {
     sortBy: 'createdAt',
     sortOrder: 'desc'
   });
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace(`/${locale}/login?redirect=/${locale}/admin/blogs`);
+    }
+  }, [authLoading, user, router, locale]);
 
   useEffect(() => {
     fetchCategories();
@@ -262,6 +272,14 @@ export default function AdminBlogsPage() {
       </div>
     );
   };
+
+  if (authLoading || !user) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

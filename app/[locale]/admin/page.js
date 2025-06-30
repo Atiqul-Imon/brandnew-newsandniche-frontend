@@ -4,10 +4,14 @@ import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { api } from '@/app/apiConfig';
 import AnalyticsDashboard from '@/app/components/AnalyticsDashboard';
+import { useAuth } from '../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function AdminDashboardPage() {
   const t = useTranslations();
   const locale = useLocale();
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [stats, setStats] = useState({
     totalBlogs: 0,
     publishedBlogs: 0,
@@ -19,6 +23,12 @@ export default function AdminDashboardPage() {
   const [recentUsers, setRecentUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace(`/${locale}/login?redirect=/${locale}/admin`);
+    }
+  }, [authLoading, user, router, locale]);
 
   useEffect(() => {
     fetchDashboardData();
@@ -130,6 +140,14 @@ export default function AdminDashboardPage() {
       </Link>
     );
   };
+
+  if (authLoading || !user) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

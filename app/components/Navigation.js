@@ -12,7 +12,7 @@ export default function Navigation({ locale }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-sm border-b">
+    <nav className="sticky top-0 z-50 bg-gray-50 shadow-sm border-b border-gray-200 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
@@ -111,7 +111,7 @@ export default function Navigation({ locale }) {
           </div>
         </div>
         {mobileMenuOpen && (
-          <div className="md:hidden mt-2 bg-white rounded shadow-lg border border-gray-200 z-50 absolute left-0 right-0 mx-4">
+          <div className="md:hidden mt-2 bg-gray-50 rounded shadow-lg border border-gray-200 z-50 absolute left-0 right-0 mx-4 transition-all duration-300">
             <div className="flex flex-col py-2">
               <Link
                 href={`/${locale}`}

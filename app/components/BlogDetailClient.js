@@ -469,7 +469,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
           </nav>
 
           {/* Article */}
-          <article className="bg-gray-50 overflow-hidden" itemScope itemType="https://schema.org/Article">
+          <article className="bg-gray-50 overflow-hidden border border-gray-200 shadow-md" itemScope itemType="https://schema.org/Article">
             {/* Featured Image */}
             {blog.featuredImage && (
               <div className="relative w-full h-64 sm:h-80 md:h-[500px]">
@@ -518,7 +518,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                   <div className="flex items-center">
                     {/* Author Avatar */}
-                    {getAuthorField(blog, 'avatar') ? (
+                    {getAuthorField(blog, 'avatar') && (
                       <Image
                         src={getAuthorField(blog, 'avatar')}
                         alt={getAuthorField(blog, 'name') || 'Author'}
@@ -527,12 +527,6 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                         height={48}
                         unoptimized
                       />
-                    ) : (
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-300 rounded-full flex items-center justify-center mr-3 sm:mr-4">
-                        <span className="text-gray-900 font-semibold text-base sm:text-lg">
-                          {(getAuthorField(blog, 'name') || 'A').charAt(0)}
-                        </span>
-                      </div>
                     )}
                     
                     {/* Author Info */}
@@ -607,60 +601,66 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                     <span className="text-xs sm:text-sm text-gray-500 mr-2">{t('blog.shareThis')}:</span>
                     <button
                       onClick={() => handleShare('facebook')}
-                      className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                      title="Share on Facebook"
+                      aria-label="Share on Facebook"
+                      className="w-8 h-8 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: '#1877F3' }}
                     >
-                      f
+                      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.127V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/></svg>
                     </button>
                     <button
                       onClick={() => handleShare('twitter')}
-                      className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                      title="Share on Twitter"
+                      aria-label="Share on Twitter"
+                      className="w-8 h-8 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: '#000000' }}
                     >
-                      t
+                      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.72 0-4.924 2.206-4.924 4.924 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.424.729-.666 1.577-.666 2.476 0 1.708.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.395 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 14.002-7.496 14.002-13.986 0-.21 0-.423-.016-.634.962-.689 1.8-1.56 2.46-2.548z"/></svg>
                     </button>
                     <button
                       onClick={() => handleShare('linkedin')}
-                      className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                      title="Share on LinkedIn"
+                      aria-label="Share on LinkedIn"
+                      className="w-8 h-8 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: '#0077B5' }}
                     >
-                      in
+                      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.327-.027-3.037-1.849-3.037-1.851 0-2.132 1.445-2.132 2.939v5.667h-3.554V9h3.414v1.561h.049c.476-.899 1.637-1.849 3.37-1.849 3.602 0 4.267 2.368 4.267 5.455v6.285zM5.337 7.433c-1.144 0-2.069-.926-2.069-2.068 0-1.143.925-2.069 2.069-2.069 1.143 0 2.068.926 2.068 2.069 0 1.142-.925 2.068-2.068 2.068zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.2 24 24 23.229 24 22.271V1.723C24 .771 23.2 0 22.225 0z"/></svg>
                     </button>
                     <button
                       onClick={() => handleShare('whatsapp')}
-                      className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                      title="Share on WhatsApp"
+                      aria-label="Share on WhatsApp"
+                      className="w-8 h-8 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: '#25D366' }}
                     >
-                      wa
+                      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.029-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.151-.174.2-.298.3-.497.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.363.709.306 1.262.489 1.694.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
                     </button>
                   </div>
                 </div>
               </header>
 
               {/* Enhanced Content */}
-              <div className={`prose prose-lg max-w-none ${locale === 'bn' ? 'font-bangla' : ''}`}>
+              <div className={`prose prose-lg max-w-none ${locale === 'bn' ? 'font-bangla' : ''}`} style={{ fontSize: '1.18rem' }}>
                 {contentBlocks.map((block, index) => {
                   switch (block.type) {
                     case 'code':
                       return (
-                        <CodeBlock
-                          key={index}
-                          code={block.content}
-                          language={block.language}
-                          title={block.title}
-                        />
+                        <div key={index} className="my-8">
+                          <CodeBlock
+                            code={block.content}
+                            language={block.language}
+                            title={block.title}
+                          />
+                        </div>
                       );
                     case 'gallery':
                       return (
-                        <ImageGallery
-                          key={index}
-                          images={block.images}
-                          title={block.title}
-                        />
+                        <div key={index} className="my-8">
+                          <ImageGallery
+                            images={block.images}
+                            title={block.title}
+                          />
+                        </div>
                       );
                     case 'image':
                       return (
-                        <div key={index} className="my-6">
+                        <div key={index} className="my-8">
                           <Image
                             src={block.src}
                             alt={block.alt}
@@ -678,17 +678,18 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                       );
                     case 'callout':
                       return (
-                        <Callout
-                          key={index}
-                          type={block.calloutType}
-                          content={block.content}
-                        />
+                        <div key={index} className="my-8">
+                          <Callout
+                            type={block.calloutType}
+                            content={block.content}
+                          />
+                        </div>
                       );
                     default:
                       return (
                         <div
                           key={index}
-                          className="text-gray-800 leading-relaxed text-lg"
+                          className="text-gray-800 leading-relaxed text-lg my-8"
                           dangerouslySetInnerHTML={{ __html: renderMarkdown(block.content) }}
                         />
                       );

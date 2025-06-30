@@ -181,7 +181,6 @@ export default function HomeClient({ locale }) {
                     href={`/${locale}/blogs?category=${category.slug?.[locale] || category.slug?.en || category.slug?.bn || ''}`}
                     className="bg-gray-100 hover:bg-white p-3 sm:p-4 rounded-lg text-center transition-colors flex flex-col items-center">
                     <h3 className={`font-semibold text-gray-900 text-base sm:text-lg ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.name?.[locale] || category.name?.en || category.name?.bn || 'Untitled'}</h3>
-                    <p className={`text-xs sm:text-sm text-gray-700 mt-1 ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.postCount || 0} {t('home.categories.posts')}</p>
                   </Link>
                 ))}
               </div>
