@@ -13,8 +13,7 @@ export default function AdminDashboardPage() {
     publishedBlogs: 0,
     draftBlogs: 0,
     totalUsers: 0,
-    totalCategories: 0,
-    totalMedia: 0
+    totalCategories: 0
   });
   const [recentBlogs, setRecentBlogs] = useState([]);
   const [recentUsers, setRecentUsers] = useState([]);
@@ -29,11 +28,10 @@ export default function AdminDashboardPage() {
     setLoading(true);
     try {
       // Fetch statistics
-      const [blogsRes, usersRes, categoriesRes, mediaRes] = await Promise.all([
+      const [blogsRes, usersRes, categoriesRes] = await Promise.all([
         api.get(`/api/blogs/${locale}?limit=1`),
         api.get('/api/users?limit=1'),
-        api.get('/api/categories?lang=en'),
-        api.get('/api/media?limit=1')
+        api.get('/api/categories?lang=en')
       ]);
 
       const totalBlogs = blogsRes.data.data.total || 0;
@@ -41,15 +39,13 @@ export default function AdminDashboardPage() {
       const draftBlogs = blogsRes.data.data.blogs?.filter(b => b.status === 'draft').length || 0;
       const totalUsers = usersRes.data.data.total || 0;
       const totalCategories = categoriesRes.data.data.categories?.length || 0;
-      const totalMedia = mediaRes.data.data.total || 0;
 
       setStats({
         totalBlogs,
         publishedBlogs,
         draftBlogs,
         totalUsers,
-        totalCategories,
-        totalMedia
+        totalCategories
       });
 
       // Fetch recent blogs
@@ -206,103 +202,63 @@ export default function AdminDashboardPage() {
         <StatCard
           title="Categories"
           value={stats.totalCategories}
-          icon="🏷️"
+          icon="📂"
           color="bg-indigo-100 text-indigo-600"
           href={`/${locale}/admin/categories`}
         />
-        <StatCard
-          title="Media Files"
-          value={stats.totalMedia}
-          icon="🖼️"
-          color="bg-pink-100 text-pink-600"
-          href={`/${locale}/admin/media`}
-        />
-      </div>
-
-      {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Link
-            href={`/${locale}/admin/blogs/create`}
-            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <span className="text-2xl mr-3">➕</span>
-            <div>
-              <p className="font-medium text-gray-900">Create New Blog</p>
-              <p className="text-sm text-gray-600">Write a new blog post</p>
-            </div>
-          </Link>
-          <Link
-            href={`/${locale}/admin/categories`}
-            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <span className="text-2xl mr-3">📂</span>
-            <div>
-              <p className="font-medium text-gray-900">Manage Categories</p>
-              <p className="text-sm text-gray-600">Organize your content</p>
-            </div>
-          </Link>
-          <Link
-            href={`/${locale}/admin/media`}
-            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <span className="text-2xl mr-3">🖼️</span>
-            <div>
-              <p className="font-medium text-gray-900">Media Library</p>
-              <p className="text-sm text-gray-600">Manage your files</p>
-            </div>
-          </Link>
-        </div>
       </div>
 
       {/* Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Blogs */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Recent Blogs</h3>
+          <div className="p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Recent Blogs</h3>
+              <Link
+                href={`/${locale}/admin/blogs`}
+                className="text-sm text-blue-600 hover:text-blue-500"
+              >
+                View all
+              </Link>
+            </div>
           </div>
           <div className="divide-y divide-gray-200">
-            {recentBlogs.length > 0 ? (
+            {recentBlogs.length === 0 ? (
+              <div className="p-6 text-center text-gray-500">
+                No recent blogs
+              </div>
+            ) : (
               recentBlogs.map((blog) => (
                 <RecentItem key={blog._id} item={blog} type="blog" locale={locale} />
               ))
-            ) : (
-              <div className="p-6 text-center text-gray-500">No blogs found</div>
             )}
-          </div>
-          <div className="px-6 py-4 border-t border-gray-200">
-            <Link
-              href={`/${locale}/admin/blogs`}
-              className="text-sm font-medium text-blue-600 hover:text-blue-500"
-            >
-              View all blogs →
-            </Link>
           </div>
         </div>
 
         {/* Recent Users */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">Recent Users</h3>
+          <div className="p-6 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Recent Users</h3>
+              <Link
+                href={`/${locale}/admin/users`}
+                className="text-sm text-blue-600 hover:text-blue-500"
+              >
+                View all
+              </Link>
+            </div>
           </div>
           <div className="divide-y divide-gray-200">
-            {recentUsers.length > 0 ? (
+            {recentUsers.length === 0 ? (
+              <div className="p-6 text-center text-gray-500">
+                No recent users
+              </div>
+            ) : (
               recentUsers.map((user) => (
                 <RecentItem key={user._id} item={user} type="user" locale={locale} />
               ))
-            ) : (
-              <div className="p-6 text-center text-gray-500">No users found</div>
             )}
-          </div>
-          <div className="px-6 py-4 border-t border-gray-200">
-            <Link
-              href={`/${locale}/admin/users`}
-              className="text-sm font-medium text-blue-600 hover:text-blue-500"
-            >
-              View all users →
-            </Link>
           </div>
         </div>
       </div>

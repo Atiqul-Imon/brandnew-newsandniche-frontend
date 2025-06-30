@@ -33,22 +33,17 @@ export default function LoginForm({ locale }) {
     setError('');
 
     try {
-      const response = await api.post('/api/auth/login', formData);
-      
-      if (response.data.success) {
+      const result = await login(formData);
+      if (result.success) {
         // Track successful login
         trackUserLogin('email');
-        
-        // Store token
-        localStorage.setItem('token', response.data.token);
-        
         // Redirect to admin dashboard
         router.push(`/${locale}/admin`);
       } else {
-        setError(response.data.message || t('auth.loginError'));
+        setError(result.message || t('auth.loginError'));
       }
     } catch (err) {
-      setError(err.response?.data?.message || t('auth.loginError'));
+      setError(t('auth.loginError'));
     } finally {
       setIsLoading(false);
     }

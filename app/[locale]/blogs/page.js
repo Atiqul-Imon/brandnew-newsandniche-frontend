@@ -1,5 +1,6 @@
 // SERVER COMPONENT: Fetches initial blog list on the server for SSR and SEO
 import BlogListClient from '../../components/BlogListClient';
+import { API_BASE_URL } from '../../apiConfig';
 
 export default async function BlogsPage(props) {
   const params = props.params;
@@ -15,8 +16,7 @@ export default async function BlogsPage(props) {
   const page = Number(searchParams?.page) || 1;
   const limit = 12;
 
-  // Build API URL
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "https://newsandniche-backend.onrender.com";
+  // Build API URL using centralized config
   const apiParams = new URLSearchParams({
     status,
     sortBy,
@@ -36,7 +36,7 @@ export default async function BlogsPage(props) {
 
   try {
     // Fetch blogs
-    const blogsRes = await fetch(`${apiBase}/api/blogs/${locale}?${apiParams}`, {
+    const blogsRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}?${apiParams}`, {
       next: { revalidate: 60 } // Cache for 1 minute
     });
     const blogsData = await blogsRes.json();
@@ -50,7 +50,7 @@ export default async function BlogsPage(props) {
     }
 
     // Fetch categories
-    const categoriesRes = await fetch(`${apiBase}/api/categories?lang=${locale}`, {
+    const categoriesRes = await fetch(`${API_BASE_URL}/api/categories?lang=${locale}`, {
       next: { revalidate: 300 } // Cache for 5 minutes
     });
     const categoriesData = await categoriesRes.json();

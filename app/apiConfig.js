@@ -1,7 +1,18 @@
 // Centralized API config and axios instance
 import axios from 'axios';
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://newsandniche-backend.onrender.com";
+// Determine API base URL based on environment
+const getApiBaseUrl = () => {
+  // In development, use localhost backend
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:5000';
+  }
+  
+  // In production, use environment variable or fallback to Render backend
+  return process.env.NEXT_PUBLIC_API_BASE_URL || 'https://brandnew-nesandniche-backend.onrender.com';
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 // Create axios instance
 const api = axios.create({

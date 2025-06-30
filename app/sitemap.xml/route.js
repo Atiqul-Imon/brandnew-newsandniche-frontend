@@ -1,26 +1,47 @@
 // Dynamic sitemap for Next.js 15+ (App Router)
+import { API_BASE_URL } from '../apiConfig';
+
 export async function GET() {
   const siteUrl = 'https://newsandniche.com';
   const locales = ['en', 'bn'];
   
-  // Fetch blog data from your API
+  // Fetch blog data from your API with timeout
   let blogs = [];
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/en?status=published&limit=1000`);
-    const data = await res.json();
-    if (data.success) {
-      blogs = data.data.blogs;
-    }
-  } catch (e) {}
-  
   let blogsBn = [];
+  
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/blogs/bn?status=published&limit=1000`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    
+    const res = await fetch(`${API_BASE_URL}/api/blogs/en?status=published&limit=1000`, {
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    
     const data = await res.json();
     if (data.success) {
-      blogsBn = data.data.blogs;
+      blogs = data.data.blogs || [];
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn('Failed to fetch English blogs for sitemap:', e.message);
+  }
+  
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    
+    const res = await fetch(`${API_BASE_URL}/api/blogs/bn?status=published&limit=1000`, {
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    
+    const data = await res.json();
+    if (data.success) {
+      blogsBn = data.data.blogs || [];
+    }
+  } catch (e) {
+    console.warn('Failed to fetch Bengali blogs for sitemap:', e.message);
+  }
 
   // Static pages with their priorities and change frequencies
   const staticPages = [
