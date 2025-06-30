@@ -1,0 +1,17 @@
+/* Custom styles for Tiptap editor area */
+.tiptap-editor .ProseMirror {
+  min-height: 220px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  box-sizing: border-box;
+  font-size: 1.13rem;
+  line-height: 1.8;
+  font-family: inherit;
+  outline: none;
+  background: transparent;
+}
+
+.tiptap-editor .ProseMirror:focus {
+  outline: none;
+  background: #fff;
+} 

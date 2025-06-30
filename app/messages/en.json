@@ -182,7 +182,10 @@
     "sortByDate": "Date",
     "sortByTitle": "Title",
     "sortByViews": "Views",
-    "sortByReadTime": "Read Time"
+    "sortByReadTime": "Read Time",
+    "seoTitleEn": "SEO Title (English)",
+    "seoDescriptionEn": "SEO Description (English)",
+    "seoKeywordsEn": "SEO Keywords (English)"
   },
   "profile": {
     "title": "Profile",

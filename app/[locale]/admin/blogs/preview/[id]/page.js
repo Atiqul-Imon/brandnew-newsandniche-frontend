@@ -225,7 +225,7 @@ export default function BlogPreviewPage() {
             )}
 
             {/* Content */}
-            <div className="prose prose-lg max-w-none">
+            <div className="prose max-w-none">
               {content ? (
                 <div 
                   className="text-gray-800 leading-relaxed"

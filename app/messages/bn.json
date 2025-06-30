@@ -183,7 +183,10 @@
     "sortByDate": "তারিখ",
     "sortByTitle": "শিরোনাম",
     "sortByViews": "দেখা",
-    "sortByReadTime": "পঠন সময়"
+    "sortByReadTime": "পঠন সময়",
+    "seoTitleBn": "এসইও শিরোনাম (বাংলা)",
+    "seoDescriptionBn": "এসইও বিবরণ (বাংলা)",
+    "seoKeywordsBn": "এসইও কীওয়ার্ড (বাংলা)"
   },
   "profile": {
     "title": "প্রোফাইল",

@@ -531,12 +531,16 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                     
                     {/* Author Info */}
                     <div>
-                      <p className="font-medium text-gray-900 text-sm sm:text-base">
-                        {getAuthorField(blog, 'name') || t('blog.anonymous')}
-                      </p>
-                      <p className="text-xs sm:text-sm text-gray-500">
-                        {t('blog.author')}
-                      </p>
+                      <div className="flex items-center gap-2 mt-2 mb-4">
+                        <span className={
+                          !blog.author?.name || blog.author.name.trim() === ''
+                            ? 'font-extrabold text-xl tracking-wide text-gray-900 font-logo'
+                            : 'font-semibold text-gray-700'
+                        }>
+                          {(!blog.author?.name || blog.author.name.trim() === '') ? 'News & Niche' : blog.author.name}
+                        </span>
+                        <span className="text-xs text-gray-500">Author</span>
+                      </div>
                       {/* Author Bio */}
                       {getAuthorField(blog, 'bio') && (
                         <p className="text-xs text-gray-600 mt-1 max-w-xs line-clamp-2">
@@ -689,7 +693,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                       return (
                         <div
                           key={index}
-                          className="text-gray-800 leading-relaxed text-lg my-8"
+                          className="prose max-w-none"
                           dangerouslySetInnerHTML={{ __html: renderMarkdown(block.content) }}
                         />
                       );

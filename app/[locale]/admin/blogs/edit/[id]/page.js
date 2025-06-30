@@ -49,6 +49,9 @@ export default function EditBlogPage() {
   const [categoriesEn, setCategoriesEn] = useState([]);
   const [categoriesBn, setCategoriesBn] = useState([]);
 
+  // 1. Add tab state for language selection
+  const [activeLang, setActiveLang] = useState('en');
+
   useEffect(() => {
     async function fetchBlog() {
       try {
@@ -187,319 +190,211 @@ export default function EditBlogPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('blog.edit')}</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            Edit your blog post and manage its content
-          </p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <Link
-            href={`/${locale}/admin/blogs/preview/${params.id}`}
-            className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            Preview
-          </Link>
-          <Link
-            href={`/${locale}/admin/blogs`}
-            className="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to List
-          </Link>
-        </div>
+    <div className="max-w-[1400px] mx-auto px-2 py-8 bg-gray-50 rounded-lg">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">{t('blog.edit')}</h1>
       </div>
-
       {error && (
-        <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">Error</h3>
-              <div className="mt-2 text-sm text-red-700">{error}</div>
-            </div>
-          </div>
+        <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          {error}
         </div>
       )}
-
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Basic Information */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-6">Basic Information</h2>
-          
-          {/* Title */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {formData.title.en && formData.title.en.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Title (English)</label>
-                <input
-                  type="text"
-                  value={formData.title.en}
-                  onChange={e => handleInputChange('title', 'en', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
-                />
-              </div>
-            )}
-            {formData.title.bn && formData.title.bn.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Title (Bangla)</label>
-                <input
-                  type="text"
-                  value={formData.title.bn}
-                  onChange={e => handleInputChange('title', 'bn', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Slug */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {formData.slug.en && formData.slug.en.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Slug (English)</label>
-                <input
-                  type="text"
-                  value={formData.slug.en}
-                  onChange={e => handleInputChange('slug', 'en', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
-                />
-              </div>
-            )}
-            {formData.slug.bn && formData.slug.bn.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Slug (Bangla)</label>
-                <input
-                  type="text"
-                  value={formData.slug.bn}
-                  onChange={e => handleInputChange('slug', 'bn', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Category Dropdowns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {formData.title.en && formData.title.en.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Category (English)</label>
-                <select
-                  value={formData.category.en || ''}
-                  onChange={e => handleInputChange('category', 'en', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
-                >
-                  <option value="">Select a category</option>
-                  {categoriesEn.map(cat => (
-                    <option key={cat._id} value={cat.slug?.en}>{cat.name?.en}</option>
-                  ))}
-                </select>
-              </div>
-            )}
-            {formData.title.bn && formData.title.bn.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Category (Bangla)</label>
-                <select
-                  value={formData.category.bn || ''}
-                  onChange={e => handleInputChange('category', 'bn', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
-                >
-                  <option value="">একটি বিভাগ নির্বাচন করুন</option>
-                  {categoriesBn.map(cat => (
-                    <option key={cat._id} value={cat.slug?.bn}>{cat.name?.bn}</option>
-                  ))}
-                </select>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-6">Content</h2>
-          
-          {/* Excerpt */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {formData.excerpt.en && formData.excerpt.en.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Excerpt (English)</label>
-                <textarea
-                  value={formData.excerpt.en}
-                  onChange={e => handleInputChange('excerpt', 'en', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
-                />
-              </div>
-            )}
-            {formData.excerpt.bn && formData.excerpt.bn.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Excerpt (Bangla)</label>
-                <textarea
-                  value={formData.excerpt.bn}
-                  onChange={e => handleInputChange('excerpt', 'bn', e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
-                  required
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {formData.content.en && formData.content.en.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Content (English)</label>
+      <div className="flex space-x-2 mb-8">
+        <button
+          type="button"
+          className={`px-4 py-2 rounded-t-lg font-semibold border-b-2 ${activeLang === 'en' ? 'border-gray-900 text-gray-900 bg-gray-50' : 'border-transparent text-gray-500 bg-gray-100'}`}
+          onClick={() => setActiveLang('en')}
+        >
+          Edit English
+        </button>
+        <button
+          type="button"
+          className={`px-4 py-2 rounded-t-lg font-semibold border-b-2 ${activeLang === 'bn' ? 'border-gray-900 text-gray-900 bg-gray-50' : 'border-transparent text-gray-500 bg-gray-100'}`}
+          onClick={() => setActiveLang('bn')}
+        >
+          Edit Bangla
+        </button>
+      </div>
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_400px] gap-6 md:gap-8">
+        <div className="space-y-8 min-h-[700px]">
+          <div className="bg-white rounded-lg shadow p-8 border border-gray-200">
+            <h2 className="text-2xl font-extrabold mb-6 border-b pb-2 tracking-tight">Main Content ({activeLang === 'en' ? 'English' : 'Bangla'})</h2>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t(`blog.title${activeLang === 'en' ? 'En' : 'Bn'}`)} *</label>
+              <input
+                type="text"
+                value={formData.title[activeLang]}
+                onChange={(e) => handleInputChange('title', activeLang, e.target.value)}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder={activeLang === 'en' ? 'Enter your blog title...' : 'আপনার ব্লগের শিরোনাম লিখুন...'}
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t(`blog.excerpt${activeLang === 'en' ? 'En' : 'Bn'}`)} *</label>
+              <textarea
+                value={formData.excerpt[activeLang]}
+                onChange={(e) => handleInputChange('excerpt', activeLang, e.target.value)}
+                rows={8}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg resize-none transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder={activeLang === 'en' ? 'Write a compelling excerpt that summarizes your blog post...' : 'আপনার ব্লগ পোস্টের সারসংক্ষেপ লিখুন...'}
+                required
+                style={{ minHeight: '200px', fontSize: '1.1rem', lineHeight: '1.7', fontFamily: 'inherit' }}
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t(`blog.content${activeLang === 'en' ? 'En' : 'Bn'}`)} *</label>
+              <div className="min-h-[400px]">
                 <RichBlogEditor
-                  value={formData.content.en}
-                  onChange={(value) => handleInputChange('content', 'en', value)}
-                  placeholder="Write your blog content in English..."
-                  language="en"
-                />
-              </div>
-            )}
-            {formData.content.bn && formData.content.bn.trim() !== '' && (
-              <div>
-                <label className="block text-sm font-medium mb-1">Content (Bangla)</label>
-                <RichBlogEditor
-                  value={formData.content.bn}
-                  onChange={(value) => handleInputChange('content', 'bn', value)}
-                  placeholder="বাংলায় আপনার ব্লগের বিষয়বস্তু লিখুন..."
-                  language="bn"
-                />
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Media & Settings */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-6">Media & Settings</h2>
-          
-          {/* Featured Image */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('blog.featuredImage')} *
-            </label>
-            <ImageUpload
-              onImageUploaded={handleImageUploaded}
-              onImageRemoved={handleImageRemoved}
-              initialImage={formData.featuredImage}
-              className="mb-2"
-            />
-            {!formData.featuredImage && (
-              <p className="text-sm text-red-600 mt-1">Featured image is required</p>
-            )}
-          </div>
-
-          {/* Author Information */}
-          <div className="mb-6">
-            <h3 className="text-md font-medium text-gray-900 mb-4">Author Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Author Name *
-                </label>
-                <input
-                  type="text"
-                  value={formData.author?.name || ''}
-                  onChange={(e) => setFormData(prev => ({
+                  value={formData.content[activeLang] || ''}
+                  onChange={val => setFormData(prev => ({
                     ...prev,
-                    author: { ...prev.author, name: e.target.value }
+                    content: {
+                      ...prev.content,
+                      [activeLang]: typeof val === 'string' ? val : ''
+                    }
                   }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter author name"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Author Email
-                </label>
-                <input
-                  type="email"
-                  value={formData.author?.email || ''}
-                  onChange={(e) => setFormData(prev => ({
-                    ...prev,
-                    author: { ...prev.author, email: e.target.value }
-                  }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="author@example.com"
+                  placeholder={activeLang === 'en' ? 'Write your blog content in English...' : 'বাংলায় আপনার ব্লগের বিষয়বস্তু লিখুন...'}
+                  disabled={false}
+                  style={{ minHeight: '400px', fontSize: '1.1rem', lineHeight: '1.7' }}
                 />
               </div>
             </div>
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Author Bio
-              </label>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t(`blog.category${activeLang === 'en' ? 'En' : 'Bn'}`)} *</label>
+              <select
+                value={formData.category[activeLang]}
+                onChange={e => handleInputChange('category', activeLang, e.target.value)}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                required
+              >
+                <option value="">{activeLang === 'en' ? 'Select a category' : 'একটি বিভাগ নির্বাচন করুন'}</option>
+                {(activeLang === 'en' ? categoriesEn : categoriesBn).map(cat => (
+                  <option key={cat._id} value={cat.slug?.[activeLang]}>{cat.name?.[activeLang]}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="space-y-8 md:sticky md:top-8 h-fit">
+          <div className="bg-white rounded-lg shadow p-8 border border-gray-200">
+            <h2 className="text-2xl font-extrabold mb-6 border-b pb-2 tracking-tight">SEO ({activeLang === 'en' ? 'English' : 'Bangla'})</h2>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t(`blog.seoTitle${activeLang === 'en' ? 'En' : 'Bn'}`)} *</label>
+              <input
+                type="text"
+                value={formData.seoTitle[activeLang]}
+                onChange={(e) => handleInputChange('seoTitle', activeLang, e.target.value)}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder={activeLang === 'en' ? 'Enter SEO title (50-60 characters recommended)...' : 'SEO শিরোনাম লিখুন (৫০-৬০ অক্ষর সুপারিশকৃত)...'}
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t(`blog.seoDescription${activeLang === 'en' ? 'En' : 'Bn'}`)} *</label>
+              <textarea
+                value={formData.seoDescription[activeLang]}
+                onChange={(e) => handleInputChange('seoDescription', activeLang, e.target.value)}
+                rows={4}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg resize-none transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder={activeLang === 'en' ? 'Write a compelling SEO description (150-160 characters recommended)...' : 'একটি আকর্ষণীয় SEO বিবরণ লিখুন (১৫০-১৬০ অক্ষর সুপারিশকৃত)...'}
+                required
+                style={{ minHeight: '100px', fontSize: '1.1rem', lineHeight: '1.7', fontFamily: 'inherit' }}
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t(`blog.seoKeywords${activeLang === 'en' ? 'En' : 'Bn'}`)} *</label>
+              <textarea
+                value={formData.seoKeywords[activeLang].join(', ')}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  seoKeywords: {
+                    ...prev.seoKeywords,
+                    [activeLang]: e.target.value.split(',').map(keyword => keyword.trim()).filter(keyword => keyword.length > 0)
+                  }
+                }))}
+                rows={3}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg resize-none transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder={activeLang === 'en' ? 'Enter keywords separated by commas (e.g., technology, programming, web development)' : 'কমা দ্বারা পৃথক করে কীওয়ার্ড লিখুন (যেমন: প্রযুক্তি, প্রোগ্রামিং, ওয়েব ডেভেলপমেন্ট)'}
+                required
+                style={{ minHeight: '80px', fontSize: '1.1rem', lineHeight: '1.7', fontFamily: 'inherit' }}
+              />
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow p-8 border border-gray-200">
+            <h2 className="text-2xl font-extrabold mb-6 border-b pb-2 tracking-tight">Author Info (Optional)</h2>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">Author Name *</label>
+              <input
+                type="text"
+                value={formData.author?.name || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  author: { ...prev.author, name: e.target.value }
+                }))}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder="Enter author name"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">Author Email</label>
+              <input
+                type="email"
+                value={formData.author?.email || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  author: { ...prev.author, email: e.target.value }
+                }))}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder="author@example.com"
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">Author Bio</label>
               <textarea
                 value={formData.author?.bio || ''}
                 onChange={(e) => setFormData(prev => ({
                   ...prev,
                   author: { ...prev.author, bio: e.target.value }
                 }))}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Brief description about the author"
+                rows={4}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg resize-none transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder="Write a brief, professional bio about the author..."
+                style={{ minHeight: '100px', fontSize: '1.1rem', lineHeight: '1.7', fontFamily: 'inherit' }}
               />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Author Avatar URL
-                </label>
-                <input
-                  type="url"
-                  value={formData.author?.avatar || ''}
-                  onChange={(e) => setFormData(prev => ({
-                    ...prev,
-                    author: { ...prev.author, avatar: e.target.value }
-                  }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="https://example.com/avatar.jpg"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Author Website
-                </label>
-                <input
-                  type="url"
-                  value={formData.author?.website || ''}
-                  onChange={(e) => setFormData(prev => ({
-                    ...prev,
-                    author: { ...prev.author, website: e.target.value }
-                  }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="https://author-website.com"
-                />
-              </div>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">Author Avatar URL</label>
+              <input
+                type="url"
+                value={formData.author?.avatar || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  author: { ...prev.author, avatar: e.target.value }
+                }))}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder="https://example.com/avatar.jpg"
+              />
             </div>
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Social Media Links
-              </label>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">Author Website</label>
+              <input
+                type="url"
+                value={formData.author?.website || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  author: { ...prev.author, website: e.target.value }
+                }))}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                placeholder="https://author-website.com"
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">Social Media Links</label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">Twitter</label>
+                  <label className="block text-xs text-gray-600 mb-2">Twitter</label>
                   <input
                     type="url"
                     value={formData.author?.social?.twitter || ''}
@@ -510,12 +405,12 @@ export default function EditBlogPage() {
                         social: { ...prev.author?.social, twitter: e.target.value }
                       }
                     }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
                     placeholder="https://twitter.com/username"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">LinkedIn</label>
+                  <label className="block text-xs text-gray-600 mb-2">LinkedIn</label>
                   <input
                     type="url"
                     value={formData.author?.social?.linkedin || ''}
@@ -526,12 +421,12 @@ export default function EditBlogPage() {
                         social: { ...prev.author?.social, linkedin: e.target.value }
                       }
                     }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
                     placeholder="https://linkedin.com/in/username"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">GitHub</label>
+                  <label className="block text-xs text-gray-600 mb-2">GitHub</label>
                   <input
                     type="url"
                     value={formData.author?.social?.github || ''}
@@ -542,31 +437,27 @@ export default function EditBlogPage() {
                         social: { ...prev.author?.social, github: e.target.value }
                       }
                     }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
                     placeholder="https://github.com/username"
                   />
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Status and Settings */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('blog.status')}
-              </label>
+          <div className="bg-white rounded-lg shadow p-8 border border-gray-200">
+            <h2 className="text-2xl font-extrabold mb-6 border-b pb-2 tracking-tight">Settings</h2>
+            <div className="mb-6">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t('blog.status')}</label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
               >
                 <option value="draft">{t('blog.draft')}</option>
                 <option value="published">{t('blog.published')}</option>
                 <option value="archived">{t('blog.archived')}</option>
               </select>
             </div>
-            
             <div className="flex items-center">
               <input
                 type="checkbox"
@@ -579,53 +470,59 @@ export default function EditBlogPage() {
                 {t('blog.isFeatured')}
               </label>
             </div>
-
-            <div className="flex items-center">
+            <div className="mt-4">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t('blog.readTimeEn')} {activeLang === 'en' && '*'}</label>
               <input
-                type="checkbox"
-                id="autoPublish"
-                checked={formData.status === 'published'}
-                onChange={(e) => setFormData(prev => ({ 
-                  ...prev, 
-                  status: e.target.checked ? 'published' : 'draft',
-                  publishedAt: e.target.checked ? new Date().toISOString() : null
-                }))}
-                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                type="number"
+                value={formData.readTime.en}
+                onChange={(e) => setFormData(prev => ({ ...prev, readTime: { ...prev.readTime, en: Number(e.target.value) } }))}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                required={activeLang === 'en'}
+                disabled={activeLang !== 'en'}
               />
-              <label htmlFor="autoPublish" className="ml-2 block text-sm text-gray-900">
-                Publish immediately
-              </label>
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t('blog.readTimeBn')} {activeLang === 'bn' && '*'}</label>
+              <input
+                type="number"
+                value={formData.readTime.bn}
+                onChange={(e) => setFormData(prev => ({ ...prev, readTime: { ...prev.readTime, bn: Number(e.target.value) } }))}
+                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+                required={activeLang === 'bn'}
+                disabled={activeLang !== 'bn'}
+              />
+            </div>
+            <div className="mt-4">
+              <label className="block text-base font-medium text-gray-700 mb-3">{t('blog.featuredImage')} *</label>
+              <ImageUpload
+                onImageUploaded={handleImageUploaded}
+                onImageRemoved={handleImageRemoved}
+                className="mb-2"
+              />
+              {!formData.featuredImage && (
+                <p className="text-sm text-red-600 mt-1">Featured image is required</p>
+              )}
             </div>
           </div>
         </div>
-
-        {/* Submit Buttons */}
-        <div className="flex justify-end space-x-4">
-          <Link
-            href={`/${locale}/admin/blogs`}
-            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-          >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            disabled={saving}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            {saving ? (
-              <div className="flex items-center">
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Saving...
-              </div>
-            ) : (
-              'Save Changes'
-            )}
-          </button>
-        </div>
       </form>
+      {/* Submit Button - Outside grid but inside form */}
+      <div className="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 font-medium"
+        >
+          {t('common.cancel')}
+        </button>
+        <button
+          type="submit"
+          onClick={handleSubmit}
+          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium transition-colors"
+        >
+          {saving ? t('common.saving') : t('blog.saveChanges')}
+        </button>
+      </div>
     </div>
   );
 } 
