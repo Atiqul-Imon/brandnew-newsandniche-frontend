@@ -35,12 +35,60 @@ export async function generateMetadata(props) {
   if (!supportedLocales.includes(locale)) {
     notFound();
   }
-  
+  const siteUrl = 'https://newsandniche.com';
+  const title = locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche';
+  const description = locale === 'bn' 
+    ? 'বাংলা খবরের সেরা উৎস' 
+    : 'Best source of English news';
+  const keywords = locale === 'bn'
+    ? ['নিউজ', 'বাংলা খবর', 'নিচে', 'বাংলাদেশ', 'সংবাদ']
+    : ['news', 'english news', 'niche', 'bangladesh', 'blog'];
+  const canonical = `${siteUrl}/${locale}`;
+  const alternateLinks = Object.fromEntries(
+    supportedLocales.map(l => [
+      l,
+      `${siteUrl}/${l}`
+    ])
+  );
+  alternateLinks['x-default'] = `${siteUrl}/en`;
   return {
-    title: locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche',
-    description: locale === 'bn' 
-      ? 'বাংলা খবরের সেরা উৎস'
-      : 'Best source of English news',
+    title,
+    description,
+    keywords,
+    alternates: {
+      canonical,
+      languages: alternateLinks,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: 'website',
+      images: [
+        {
+          url: `${siteUrl}/default-og-image.jpg`,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      siteName: 'News&Niche',
+      locale,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [`${siteUrl}/default-og-image.jpg`],
+      site: '@newsandniche',
+      creator: '@newsandniche',
+    },
+    icons: {
+      icon: '/favicon.ico',
+      shortcut: '/favicon.ico',
+      apple: '/favicon.ico',
+    },
+    manifest: '/manifest.json',
   };
 }
 
@@ -58,7 +106,11 @@ export default async function LocaleLayout(props) {
   
   return (
     <html lang={locale} className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider locale={locale} messages={localeMessages}>
           <AuthProvider>
             <div className="flex flex-col min-h-screen">

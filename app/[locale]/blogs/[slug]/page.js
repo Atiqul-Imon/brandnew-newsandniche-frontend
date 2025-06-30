@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
   let slugsByLocale = { en: slug, bn: slug };
   try {
     for (const l of supportedLocales) {
-      const res = await fetch(`${apiBase}/blogs/${l}/slug/${slug}`);
+      const res = await fetch(`${apiBase}/api/blogs/${l}/slug/${slug}`);
       const data = await res.json();
       if (data.success) {
         slugsByLocale[l] = data.data.blog.slug?.[l] || slug;
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }) {
   } catch (e) {}
 
   try {
-    const blogRes = await fetch(`${apiBase}/blogs/${locale}/slug/${slug}`);
+    const blogRes = await fetch(`${apiBase}/api/blogs/${locale}/slug/${slug}`);
     const blogData = await blogRes.json();
     if (blogData.success) {
       const blog = blogData.data.blog;
@@ -102,38 +102,48 @@ export default async function BlogPostPage({ params }) {
   const slug = params?.slug;
   const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+  // Fetch blog data on server
   let blog = null;
   let relatedBlogs = [];
   let error = null;
 
   try {
-    // Fetch the blog by slug
-    const blogRes = await fetch(`${apiBase}/blogs/${locale}/slug/${slug}`, { next: { revalidate: 60 } });
+    // Fetch the main blog
+    const blogRes = await fetch(`${apiBase}/api/blogs/${locale}/slug/${slug}`, {
+      next: { revalidate: 300 } // Cache for 5 minutes
+    });
     const blogData = await blogRes.json();
+    
     if (blogData.success) {
       blog = blogData.data.blog;
+      
       // Fetch related blogs if category exists
-      if (blog && blog.category && blog.category[locale]) {
+      if (blog.category?.[locale]) {
+        const cat = blog.category[locale];
         const relatedRes = await fetch(
-          `${apiBase}/blogs/${locale}?status=published&category=${encodeURIComponent(blog.category[locale])}&limit=3&exclude=${blog._id}`,
-          { next: { revalidate: 60 } }
+          `${apiBase}/api/blogs/${locale}?status=published&category=${encodeURIComponent(cat)}&limit=3&exclude=${blog._id}`,
+          { next: { revalidate: 300 } }
         );
         const relatedData = await relatedRes.json();
-        relatedBlogs = relatedData.data?.blogs || [];
+        if (relatedData.success) {
+          relatedBlogs = relatedData.data.blogs || [];
+        }
       }
     } else {
-      error = blogData.message || 'Blog not found.';
+      error = blogData.message || 'Blog not found';
     }
   } catch (err) {
-    error = err.message || 'Failed to load blog.';
+    error = 'Failed to load blog';
+    console.error('SSR Error:', err);
   }
 
   return (
-    <BlogDetailClient
-      blog={blog}
-      relatedBlogs={relatedBlogs}
+    <BlogDetailClient 
+      locale={locale} 
+      slug={slug}
+      initialBlog={blog}
+      initialRelatedBlogs={relatedBlogs}
       error={error}
-      locale={locale}
     />
   );
 } 

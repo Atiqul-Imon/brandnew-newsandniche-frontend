@@ -26,7 +26,7 @@ export default function AdminUsersPage() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await api.get(`/users?page=${currentPage}&limit=${itemsPerPage}`);
+      const res = await api.get(`/api/users?page=${currentPage}&limit=${itemsPerPage}`);
       setUsers(res.data.data.users);
       setTotalUsers(res.data.data.total || res.data.data.users.length);
       setTotalPages(Math.ceil((res.data.data.total || res.data.data.users.length) / itemsPerPage));
@@ -40,7 +40,7 @@ export default function AdminUsersPage() {
   const handleRoleChange = async (userId, newRole) => {
     setActionLoading(true);
     try {
-      await api.put(`/users/${userId}/role`, { role: newRole });
+      await api.put(`/api/users/${userId}/role`, { role: newRole });
       setUsers(users.map(u => u._id === userId ? { ...u, role: newRole } : u));
       setSnackbar({ open: true, message: t('user.roleUpdated'), severity: 'success' });
     } catch (err) {
@@ -54,7 +54,7 @@ export default function AdminUsersPage() {
   const handleStatusChange = async (userId, isActive) => {
     setActionLoading(true);
     try {
-      await api.put(`/users/${userId}/status`, { isActive });
+      await api.put(`/api/users/${userId}/status`, { isActive });
       setUsers(users.map(u => u._id === userId ? { ...u, isActive } : u));
       setSnackbar({ open: true, message: t('user.statusUpdated'), severity: 'success' });
     } catch (err) {
@@ -68,7 +68,7 @@ export default function AdminUsersPage() {
   const handleDelete = async (userId) => {
     setActionLoading(true);
     try {
-      await api.delete(`/users/${userId}`);
+      await api.delete(`/api/users/${userId}`);
       setUsers(users.filter(u => u._id !== userId));
       setSelectedUsers(selectedUsers.filter(id => id !== userId));
       setSnackbar({ open: true, message: t('user.deleted'), severity: 'success' });
@@ -85,7 +85,7 @@ export default function AdminUsersPage() {
     
     try {
       await Promise.all(
-        selectedUsers.map(id => api.delete(`/users/${id}`))
+        selectedUsers.map(id => api.delete(`/api/users/${id}`))
       );
       setUsers(users.filter(user => !selectedUsers.includes(user._id)));
       setSelectedUsers([]);

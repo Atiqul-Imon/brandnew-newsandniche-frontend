@@ -1,8 +1,9 @@
 "use client";
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { api } from '@/app/apiConfig';
 
 // Code syntax highlighting component
 const CodeBlock = ({ code, language = 'javascript', title }) => {
@@ -56,7 +57,7 @@ const ImageGallery = ({ images, title }) => {
         <Image
           src={images[activeIndex]}
           alt={`${title || 'Gallery image'} ${activeIndex + 1}`}
-          className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-lg"
+          className="w-full h-64 sm:h-80 md:h-96 object-cover"
           fill
           unoptimized
         />
@@ -299,8 +300,39 @@ function getAuthorField(blog, field) {
   return '';
 }
 
-export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) {
+export default function BlogDetailClient({ locale, slug, initialBlog, initialRelatedBlogs, error: initialError }) {
   const t = useTranslations();
+  const [blog, setBlog] = useState(initialBlog);
+  const [relatedBlogs, setRelatedBlogs] = useState(initialRelatedBlogs || []);
+  const [error, setError] = useState(initialError);
+  const [loading, setLoading] = useState(!initialBlog && !initialError);
+
+  useEffect(() => {
+    // Only fetch if we don't have initial data
+    if (initialBlog || initialError || !slug) return;
+    
+    setLoading(true);
+    setError(null);
+    api.get(`/api/blogs/${locale}/slug/${slug}`)
+      .then(res => {
+        if (res.data.success) {
+          setBlog(res.data.data.blog);
+          // Fetch related blogs if category exists
+          const cat = res.data.data.blog.category?.[locale];
+          if (cat) {
+            api.get(`/api/blogs/${locale}?status=published&category=${encodeURIComponent(cat)}&limit=3&exclude=${res.data.data.blog._id}`)
+              .then(relRes => setRelatedBlogs(relRes.data.data.blogs || []))
+              .catch(() => setRelatedBlogs([]));
+          } else {
+            setRelatedBlogs([]);
+          }
+        } else {
+          setError(res.data.message || 'Blog not found.');
+        }
+      })
+      .catch(err => setError(err.response?.data?.message || t('errors.blogNotFound') || 'Failed to load blog.'))
+      .finally(() => setLoading(false));
+  }, [locale, slug, t, initialBlog, initialError]);
 
   const handleShare = (platform) => {
     if (!blog) return;
@@ -326,6 +358,14 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
     }
     window.open(shareUrl, '_blank', 'width=600,height=400');
   };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-gray-100 py-8" aria-label="Main content">
+        <div className="text-gray-600 text-lg">{t('common.loading')}</div>
+      </main>
+    );
+  }
 
   if (error || !blog) {
     return (
@@ -609,7 +649,7 @@ export default function BlogDetailClient({ blog, relatedBlogs, error, locale }) 
                           <Image
                             src={block.src}
                             alt={block.alt}
-                            className="w-full h-auto rounded-lg"
+                            className="w-full h-auto"
                             width={500}
                             height={300}
                             unoptimized

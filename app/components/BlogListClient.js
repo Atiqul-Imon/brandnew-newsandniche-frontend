@@ -15,6 +15,7 @@ export default function BlogListClient(props) {
 
   const initialParams = props.initialParams || {};
   const initialBlogs = props.initialBlogs || [];
+  const initialCategories = props.initialCategories || [];
   const total = props.total || 0;
   const initialHasMore = props.hasMore || false;
   const initialError = props.error || null;
@@ -29,8 +30,8 @@ export default function BlogListClient(props) {
   const limit = Number(initialParams.limit) || 12;
   const page = Number(initialParams.page) || 1;
   const [currentPage, setCurrentPage] = useState(page);
-  const [categories, setCategories] = useState([]);
-  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [categories, setCategories] = useState(initialCategories);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
 
   // Params from searchParams
   const search = searchParams.get("search") || "";
@@ -39,14 +40,16 @@ export default function BlogListClient(props) {
   const sortBy = searchParams.get("sortBy") || "publishedAt";
   const sortOrder = searchParams.get("sortOrder") || "desc";
 
-  // Fetch categories
+  // Only fetch categories if not provided from SSR
   useEffect(() => {
-    setCategoriesLoading(true);
-    api.get(`/api/categories?lang=${locale}`)
-      .then(res => setCategories(res.data.data.categories || []))
-      .catch(() => setCategories([]))
-      .finally(() => setCategoriesLoading(false));
-  }, [locale]);
+    if (initialCategories.length === 0) {
+      setCategoriesLoading(true);
+      api.get(`/api/categories?lang=${locale}`)
+        .then(res => setCategories(res.data.data.categories || []))
+        .catch(() => setCategories([]))
+        .finally(() => setCategoriesLoading(false));
+    }
+  }, [locale, initialCategories.length]);
 
   // Fetch blogs on param change (except first render)
   useEffect(() => {
@@ -179,7 +182,7 @@ export default function BlogListClient(props) {
           >
             {t("category.all")}
           </button>
-          {categoriesLoading ? (
+          {categoriesLoading && initialCategories.length === 0 ? (
             <div className="px-4 py-2 text-gray-500">Loading categories...</div>
           ) : (
             categories.map(cat => (

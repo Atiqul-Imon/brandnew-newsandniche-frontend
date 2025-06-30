@@ -35,6 +35,18 @@ export default function Navigation({ locale }) {
               >
                 {t('blog.allPosts')}
               </Link>
+              <Link
+                href={`/${locale}/about`}
+                className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+              >
+                {locale === 'bn' ? 'আমাদের সম্পর্কে' : 'About'}
+              </Link>
+              <Link
+                href={`/${locale}/contact`}
+                className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+              >
+                {locale === 'bn' ? 'যোগাযোগ' : 'Contact'}
+              </Link>
               {user && (
                 <Link
                   href={`/${locale}/admin/blogs`}
@@ -114,6 +126,20 @@ export default function Navigation({ locale }) {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('blog.allPosts')}
+              </Link>
+              <Link
+                href={`/${locale}/about`}
+                className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {locale === 'bn' ? 'আমাদের সম্পর্কে' : 'About'}
+              </Link>
+              <Link
+                href={`/${locale}/contact`}
+                className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {locale === 'bn' ? 'যোগাযোগ' : 'Contact'}
               </Link>
               {user && (
                 <Link

@@ -52,7 +52,7 @@ export default function EditBlogPage() {
   useEffect(() => {
     async function fetchBlog() {
       try {
-        const res = await api.get(`/blogs/admin/${params.id}`);
+        const res = await api.get(`/api/blogs/admin/${params.id}`);
         setFormData(res.data.data.blog);
       } catch (err) {
         setError(err.response?.data?.message || t('errors.blogNotFound'));
@@ -63,11 +63,11 @@ export default function EditBlogPage() {
     fetchBlog();
 
     // Fetch English categories
-    api.get('/categories?lang=en')
+    api.get('/api/categories?lang=en')
       .then(res => setCategoriesEn(res.data.data.categories || []))
       .catch(() => setCategoriesEn([]));
     // Fetch Bangla categories
-    api.get('/categories?lang=bn')
+    api.get('/api/categories?lang=bn')
       .then(res => setCategoriesBn(res.data.data.categories || []))
       .catch(() => setCategoriesBn([]));
   }, [params.id, t]);
@@ -133,7 +133,7 @@ export default function EditBlogPage() {
       const filteredData = { ...formData };
       if (filteredData.slug && !filteredData.slug.en) delete filteredData.slug.en;
       if (filteredData.slug && !filteredData.slug.bn) delete filteredData.slug.bn;
-      await api.put(`/blogs/${params.id}`, filteredData, {
+      await api.put(`/api/blogs/${params.id}`, filteredData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`

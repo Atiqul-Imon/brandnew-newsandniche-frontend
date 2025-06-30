@@ -1,6 +1,17 @@
 import AdminSidebar from '../../components/AdminSidebar';
 import AdminTopbar from '../../components/AdminTopbar';
 
+export async function generateMetadata() {
+  return {
+    title: 'Admin Dashboard - News&Niche',
+    description: 'Admin dashboard for News&Niche',
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
+}
+
 export default function AdminLayout({ children }) {
   return (
     <div className="flex min-h-screen bg-gray-50">

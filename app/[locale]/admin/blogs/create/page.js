@@ -53,11 +53,11 @@ export default function CreateBlogPage() {
 
   useEffect(() => {
     // Fetch English categories
-    api.get('/categories?lang=en')
+    api.get('/api/categories?lang=en')
       .then(res => setCategoriesEn(res.data.data.categories || []))
       .catch(() => setCategoriesEn([]));
     // Fetch Bangla categories
-    api.get('/categories?lang=bn')
+    api.get('/api/categories?lang=bn')
       .then(res => setCategoriesBn(res.data.data.categories || []))
       .catch(() => setCategoriesBn([]));
   }, []);
@@ -230,7 +230,7 @@ export default function CreateBlogPage() {
       console.log('Sending data to backend:', filteredData);
 
       const token = localStorage.getItem('token');
-      const response = await api.post(`/blogs`, filteredData, {
+      const response = await api.post(`/api/blogs`, filteredData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`

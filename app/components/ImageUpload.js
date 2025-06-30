@@ -42,7 +42,7 @@ export default function ImageUpload({ onImageUploaded, className = '', initialIm
       formData.append('image', file);
 
       const token = localStorage.getItem('token');
-      const response = await api.post('/upload/image', formData, {
+      const response = await api.post('/api/upload/image', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -119,7 +119,7 @@ export default function ImageUpload({ onImageUploaded, className = '', initialIm
             <img
               src={uploadedImage}
               alt="Featured"
-              className="w-full h-48 object-cover rounded-lg border"
+              className="w-full h-48 object-cover border"
               onError={(e) => {
                 e.target.style.display = 'none';
                 setError('Failed to load image');
@@ -127,7 +127,7 @@ export default function ImageUpload({ onImageUploaded, className = '', initialIm
             />
             {/* Overlay for replace functionality */}
             <div
-              className="absolute inset-0 flex items-center justify-center rounded-lg transition-all duration-200"
+              className="absolute inset-0 flex items-center justify-center transition-all duration-200"
               style={{ background: 'rgba(0,0,0,0)', pointerEvents: 'none' }}
             >
               <label

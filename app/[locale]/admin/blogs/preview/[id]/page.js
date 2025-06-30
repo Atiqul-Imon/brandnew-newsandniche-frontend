@@ -20,7 +20,7 @@ export default function BlogPreviewPage() {
     async function fetchBlog() {
       try {
         const token = localStorage.getItem('token');
-        const res = await api.get(`/blogs/admin/${params.id}`, {
+        const res = await api.get(`/api/blogs/admin/${params.id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

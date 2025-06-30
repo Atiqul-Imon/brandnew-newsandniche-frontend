@@ -27,7 +27,7 @@ export default function AdminMediaPage() {
   const fetchMedia = async () => {
     setLoading(true);
     try {
-      const res = await api.get(`/media?page=${currentPage}&limit=${itemsPerPage}`);
+      const res = await api.get(`/api/media?page=${currentPage}&limit=${itemsPerPage}`);
       setMedia(res.data.data.files);
       setTotalMedia(res.data.data.total || res.data.data.files.length);
       setTotalPages(Math.ceil((res.data.data.total || res.data.data.files.length) / itemsPerPage));
@@ -41,7 +41,7 @@ export default function AdminMediaPage() {
   const handleDelete = async (fileId) => {
     setActionLoading(true);
     try {
-      await api.delete(`/media/${fileId}`);
+      await api.delete(`/api/media/${fileId}`);
       setMedia(media.filter(f => f._id !== fileId));
       setSelectedMedia(selectedMedia.filter(id => id !== fileId));
       setSnackbar({ open: true, message: t('media.deleted'), severity: 'success' });
@@ -58,7 +58,7 @@ export default function AdminMediaPage() {
     
     try {
       await Promise.all(
-        selectedMedia.map(id => api.delete(`/media/${id}`))
+        selectedMedia.map(id => api.delete(`/api/media/${id}`))
       );
       setMedia(media.filter(file => !selectedMedia.includes(file._id)));
       setSelectedMedia([]);
@@ -77,7 +77,7 @@ export default function AdminMediaPage() {
     setDialog({ open: true, type: 'usage', file });
     setUsage([]);
     try {
-      const res = await api.get(`/media/${file._id}/usage`);
+      const res = await api.get(`/api/media/${file._id}/usage`);
       setUsage(res.data.data.usage || []);
     } catch {
       setUsage([]);

@@ -37,7 +37,7 @@ export default function AdminCategoriesPage() {
   });
   const [saving, setSaving] = useState(false);
   const [languages, setLanguages] = useState({ en: true, bn: true });
-  const API_URL = '/categories';
+  const API_URL = '/api/categories';
   const [formError, setFormError] = useState('');
 
   useEffect(() => {
