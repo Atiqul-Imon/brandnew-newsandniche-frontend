@@ -50,7 +50,7 @@ export default function BlogFilters({ locale, categories = [], selectedCategory 
           <select
             value={selectedCategory}
             onChange={(e) => handleCategoryChange(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
           >
             <option value="">{t('blog.allCategories')}</option>
             {categories.map((category) => (
@@ -69,7 +69,7 @@ export default function BlogFilters({ locale, categories = [], selectedCategory 
           <select
             value={selectedStatus}
             onChange={(e) => handleStatusChange(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
           >
             <option value="">{t('blog.allStatus')}</option>
             <option value="published">{t('blog.published')}</option>

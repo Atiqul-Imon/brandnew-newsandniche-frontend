@@ -9,6 +9,7 @@
   font-family: inherit;
   outline: none;
   background: transparent;
+  color: #111;
 }
 
 .tiptap-editor .ProseMirror:focus {

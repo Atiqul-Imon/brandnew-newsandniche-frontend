@@ -17,40 +17,28 @@ export default function Navigation({ locale }) {
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
             <Link href={`/${locale}`} className="flex-shrink-0 flex items-center">
-              <h1 className={`text-2xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>
-                {locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche'}
+              <h1 className={`text-2xl sm:text-3xl font-bold sm:font-extrabold tracking-tight text-[#111] ${locale === 'bn' ? 'font-noto-bangla text-3xl sm:text-4xl font-black' : ''}`} style={locale === 'bn' ? { fontFamily: 'Noto Sans Bengali, sans-serif' } : {}}>
+                {locale === 'bn' ? 'News&Niche' : 'News&Niche'}
               </h1>
             </Link>
             
             <div className="hidden md:ml-10 md:flex md:space-x-8">
               <Link
                 href={`/${locale}`}
-                className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                className={`text-gray-700 hover:text-gray-900 px-3 py-2 ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : 'text-sm font-medium'}`}
               >
                 {t('common.home')}
               </Link>
               <Link
                 href={`/${locale}/blogs`}
-                className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                className={`text-gray-700 hover:text-gray-900 px-3 py-2 ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : 'text-sm font-medium'}`}
               >
                 {t('blog.allPosts')}
-              </Link>
-              <Link
-                href={`/${locale}/about`}
-                className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
-              >
-                {locale === 'bn' ? 'আমাদের সম্পর্কে' : 'About'}
-              </Link>
-              <Link
-                href={`/${locale}/contact`}
-                className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
-              >
-                {locale === 'bn' ? 'যোগাযোগ' : 'Contact'}
               </Link>
               {user && (
                 <Link
                   href={`/${locale}/admin/blogs`}
-                  className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                  className={`text-gray-700 hover:text-gray-900 px-3 py-2 ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : 'text-sm font-medium'}`}
                 >
                   {t('admin.dashboard')}
                 </Link>
@@ -63,12 +51,12 @@ export default function Navigation({ locale }) {
             
             {user ? (
               <div className="flex items-center space-x-4">
-                <span className={`text-sm text-gray-700 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>
+                <span className={`text-sm text-gray-700 ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : ''}`}>
                   {t('common.welcome')}, {user.name}
                 </span>
                 <button
                   onClick={logout}
-                  className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                  className={`text-gray-700 hover:text-gray-900 px-3 py-2 ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : 'text-sm font-medium'}`}
                 >
                   {t('auth.logout')}
                 </button>
@@ -77,13 +65,13 @@ export default function Navigation({ locale }) {
               <div className="flex items-center space-x-4">
                 <Link
                   href={`/${locale}/login`}
-                  className={`text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                  className={`text-gray-700 hover:text-gray-900 px-3 py-2 ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : 'text-sm font-medium'}`}
                 >
                   {t('auth.login')}
                 </Link>
                 <Link
                   href={`/${locale}/register`}
-                  className={`bg-gray-900 text-gray-100 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                  className={`bg-gray-900 text-gray-100 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : ''}`}
                 >
                   {t('auth.register')}
                 </Link>
@@ -115,36 +103,22 @@ export default function Navigation({ locale }) {
             <div className="flex flex-col py-2">
               <Link
                 href={`/${locale}`}
-                className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('common.home')}
               </Link>
               <Link
                 href={`/${locale}/blogs`}
-                className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : ''}`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('blog.allPosts')}
               </Link>
-              <Link
-                href={`/${locale}/about`}
-                className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {locale === 'bn' ? 'আমাদের সম্পর্কে' : 'About'}
-              </Link>
-              <Link
-                href={`/${locale}/contact`}
-                className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {locale === 'bn' ? 'যোগাযোগ' : 'Contact'}
-              </Link>
               {user && (
                 <Link
                   href={`/${locale}/admin/blogs`}
-                  className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                  className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : ''}`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t('admin.dashboard')}
@@ -153,10 +127,10 @@ export default function Navigation({ locale }) {
               <div className="border-t border-gray-200 my-2" />
               {user ? (
                 <>
-                  <span className={`px-4 py-2 text-gray-700 text-base ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('common.welcome')}, {user.name}</span>
+                  <span className={`px-4 py-2 text-gray-700 text-base ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : ''}`}>{t('common.welcome')}, {user.name}</span>
                   <button
                     onClick={() => { logout(); setMobileMenuOpen(false); }}
-                    className={`w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                    className={`w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : ''}`}
                   >
                     {t('auth.logout')}
                   </button>
@@ -165,14 +139,14 @@ export default function Navigation({ locale }) {
                 <>
                   <Link
                     href={`/${locale}/login`}
-                    className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                    className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-base font-medium rounded ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : ''}`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {t('auth.login')}
                   </Link>
                   <Link
                     href={`/${locale}/register`}
-                    className={`px-4 py-3 bg-gray-900 text-gray-100 hover:bg-gray-800 text-base font-medium rounded ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
+                    className={`px-4 py-3 bg-gray-900 text-gray-100 hover:bg-gray-800 text-base font-medium rounded ${locale === 'bn' ? 'font-noto-bangla text-xl font-black' : ''}`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {t('auth.register')}

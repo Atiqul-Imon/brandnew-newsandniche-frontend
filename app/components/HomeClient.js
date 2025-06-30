@@ -224,8 +224,8 @@ export default function HomeClient({ locale }) {
                         <span className="mx-2">•</span>
                         <span>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
                       </div>
-                      <h3 className={`text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.title[locale]}</h3>
-                      <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.excerpt[locale]}</p>
+                      <h3 className={`text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla text-2xl sm:text-3xl font-black' : ''}`}>{blog.title[locale]}</h3>
+                      <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla text-lg sm:text-xl font-semibold' : ''}`}>{blog.excerpt[locale]}</p>
                     </div>
                   </Link>
                 ))}

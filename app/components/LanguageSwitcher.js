@@ -38,7 +38,7 @@ export default function LanguageSwitcher() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md transition-colors"
       >
-        <span className="text-lg">{currentLanguage?.flag}</span>
+        {/* <span className="text-lg">{currentLanguage?.flag}</span> */}
         <span>{currentLanguage?.name}</span>
         <svg
           className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
@@ -61,7 +61,7 @@ export default function LanguageSwitcher() {
                   locale === language.code ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
                 }`}
               >
-                <span className="text-lg">{language.flag}</span>
+                {/* <span className="text-lg">{language.flag}</span> */}
                 <span>{language.name}</span>
                 {locale === language.code && (
                   <svg className="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">

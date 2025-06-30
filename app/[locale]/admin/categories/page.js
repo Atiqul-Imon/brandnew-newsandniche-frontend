@@ -11,8 +11,7 @@ function slugify(text) {
   return text
     .toString()
     .normalize('NFKD')
-    .replace(/[\u0300-\u036F]/g, '') // Remove accents
-    .replace(/[^\w\s-]/g, '') // Remove non-word characters
+    .replace(/[^\w\s\u0980-\u09FF-]/g, '') // Allow Bangla Unicode range
     .trim()
     .replace(/\s+/g, '-') // Replace spaces with -
     .replace(/-+/g, '-') // Replace multiple - with single -
@@ -138,6 +137,14 @@ export default function AdminCategoriesPage() {
     e.preventDefault();
     setSaving(true);
     setFormError('');
+    // Custom validation: at least one language must have both name and slug
+    const hasEn = languages.en && form.name.en?.trim() && form.slug.en?.trim();
+    const hasBn = languages.bn && form.name.bn?.trim() && form.slug.bn?.trim();
+    if (!hasEn && !hasBn) {
+      setFormError('At least one language (English or Bangla) must be provided with both name and slug.');
+      setSaving(false);
+      return;
+    }
     try {
       // Filter out unselected or empty language fields
       const filteredForm = { ...form };
@@ -382,8 +389,7 @@ export default function AdminCategoriesPage() {
                       type="text"
                       value={form.name.en}
                       onChange={(e) => handleInputChange("name", "en", e.target.value)}
-                      className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      required={languages.en}
+                      className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                     />
                     {/* Show generated slug */}
                     <div className="text-xs text-gray-400 mt-1">Slug: {form.slug.en}</div>
@@ -396,8 +402,7 @@ export default function AdminCategoriesPage() {
                       type="text"
                       value={form.name.bn}
                       onChange={(e) => handleInputChange("name", "bn", e.target.value)}
-                      className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      required={languages.bn}
+                      className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                     />
                     {/* Show generated slug */}
                     <div className="text-xs text-gray-400 mt-1">Slug: {form.slug.bn}</div>
@@ -410,7 +415,7 @@ export default function AdminCategoriesPage() {
                       value={form.description.en}
                       onChange={(e) => handleInputChange("description", "en", e.target.value)}
                       rows={3}
-                      className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                     />
                   </div>
                 )}
@@ -421,7 +426,7 @@ export default function AdminCategoriesPage() {
                       value={form.description.bn}
                       onChange={(e) => handleInputChange("description", "bn", e.target.value)}
                       rows={3}
-                      className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                     />
                   </div>
                 )}
@@ -438,7 +443,7 @@ export default function AdminCategoriesPage() {
                       type="text"
                       value={form.color}
                       onChange={(e) => handleSimpleChange("color", e.target.value)}
-                      className="flex-1 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="flex-1 border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                     />
                   </div>
                 </div>
@@ -448,7 +453,7 @@ export default function AdminCategoriesPage() {
                     type="text"
                     value={form.icon}
                     onChange={(e) => handleSimpleChange("icon", e.target.value)}
-                    className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                     placeholder="📝"
                   />
                 </div>
@@ -458,7 +463,7 @@ export default function AdminCategoriesPage() {
                     type="number"
                     value={form.sortOrder}
                     onChange={(e) => handleSimpleChange("sortOrder", parseInt(e.target.value))}
-                    className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                   />
                 </div>
                 <div className="flex items-center space-x-2">

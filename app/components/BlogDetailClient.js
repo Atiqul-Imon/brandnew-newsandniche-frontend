@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { api } from '@/app/apiConfig';
 import { useAnalytics } from '../../hooks/useAnalytics';
 
+// --- BBC Inspired Components & Styles ---
+
 // Code syntax highlighting component
 const CodeBlock = ({ code, language = 'javascript', title }) => {
   const [copied, setCopied] = useState(false);
@@ -21,25 +23,25 @@ const CodeBlock = ({ code, language = 'javascript', title }) => {
   };
 
   return (
-    <div className="my-6">
+    <figure className="my-6 rounded-lg overflow-hidden bg-[#161616] border border-[#242424] shadow-bbc">
       {title && (
-        <div className="bg-gray-800 text-gray-200 px-4 py-2 text-sm font-mono rounded-t-lg border-b border-gray-700">
+        <figcaption className="bg-[#242424] text-gray-200 px-4 py-2 text-xs font-mono border-b border-[#333]">
           {title}
-        </div>
+        </figcaption>
       )}
       <div className="relative">
-        <pre className={`${title ? 'rounded-b-lg' : 'rounded-lg'} bg-gray-900 text-gray-100 p-4 overflow-x-auto text-sm font-mono`}>
+        <pre className={`text-[0.92rem] ${title ? 'rounded-b-lg' : 'rounded-lg'} bg-[#161616] text-gray-100 px-4 py-3 overflow-x-auto font-mono`}>
           <code>{code}</code>
         </pre>
         <button
           onClick={copyToClipboard}
-          className="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-gray-300 px-2 py-1 rounded text-xs transition-colors"
+          className="absolute top-2 right-2 bg-[#232323] hover:bg-[#333] text-gray-300 px-2 py-1 rounded text-xs transition-colors"
           title="Copy code"
         >
           {copied ? '✓ Copied' : 'Copy'}
         </button>
       </div>
-    </div>
+    </figure>
   );
 };
 
@@ -50,33 +52,37 @@ const ImageGallery = ({ images, title }) => {
   if (!images || images.length === 0) return null;
 
   return (
-    <div className="my-6">
+    <figure className="my-6 rounded-lg overflow-hidden shadow-bbc bg-white">
       {title && (
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">{title}</h3>
+        <figcaption className="text-base font-semibold text-gray-900 mb-2 px-2 pt-3">{title}</figcaption>
       )}
-      <div className="relative">
+      <div className="relative w-full aspect-video min-h-[210px] bg-[#efefef]">
         <Image
           src={images[activeIndex]}
           alt={`${title || 'Gallery image'} ${activeIndex + 1}`}
-          className="w-full h-64 sm:h-80 md:h-96 object-cover"
+          className="object-cover rounded-t-lg"
           fill
           unoptimized
+          priority
+          sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
         />
         {images.length > 1 && (
           <>
             <button
               onClick={() => setActiveIndex(activeIndex === 0 ? images.length - 1 : activeIndex - 1)}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/70 transition-all"
+              aria-label="Previous image"
             >
-              ←
+              &#8592;
             </button>
             <button
               onClick={() => setActiveIndex(activeIndex === images.length - 1 ? 0 : activeIndex + 1)}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/70 transition-all"
+              aria-label="Next image"
             >
-              →
+              &#8594;
             </button>
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/40 text-white px-2 py-1 rounded text-xs">
               {activeIndex + 1} / {images.length}
             </div>
           </>
@@ -88,14 +94,15 @@ const ImageGallery = ({ images, title }) => {
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                index === activeIndex ? 'bg-gray-800' : 'bg-gray-300'
+              className={`w-2 h-2 rounded-full border transition-colors ${
+                index === activeIndex ? 'bg-black border-black' : 'bg-gray-300 border-gray-400'
               }`}
+              aria-label={`Show image ${index + 1}`}
             />
           ))}
         </div>
       )}
-    </div>
+    </figure>
   );
 };
 
@@ -210,34 +217,34 @@ const renderMarkdown = (text) => {
 
   let html = text
     // Headers
-    .replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold text-gray-900 mt-6 mb-3">$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-semibold text-gray-900 mt-8 mb-4">$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold text-gray-900 mt-8 mb-4">$1</h1>')
-    
+    .replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold text-[#111] mt-6 mb-3">$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-semibold text-[#111] mt-8 mb-4">$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold text-[#111] mt-8 mb-4">$1</h1>')
+
     // Bold and italic
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
     .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-    
+
     // Links
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer">$1</a>')
-    
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-[#174ea6] hover:text-[#111] underline" target="_blank" rel="noopener noreferrer">$1</a>')
+
     // Blockquotes
-    .replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-gray-300 pl-4 my-4 italic text-gray-700">$1</blockquote>')
-    
+    .replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-[#b80000] pl-4 my-4 italic text-[#333] bg-[#f7f7f7]">$1</blockquote>')
+
     // Lists
     .replace(/^\d+\. (.*$)/gim, '<li class="ml-4">$1</li>')
     .replace(/^- (.*$)/gim, '<li class="ml-4">$1</li>')
-    
+
     // Code inline
-    .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">$1</code>')
-    
+    .replace(/`([^`]+)`/g, '<code class="bg-[#ececec] px-1 py-0.5 rounded text-sm font-mono">$1</code>')
+
     // Line breaks
     .replace(/\n\n/g, '</p><p class="mb-4">')
     .replace(/\n/g, '<br>');
 
   // Wrap in paragraph tags
   html = `<p class="mb-4">${html}</p>`;
-  
+
   // Handle lists properly
   html = html.replace(/<li class="ml-4">(.*?)<\/li>/g, (match, content) => {
     return `<ul class="list-disc ml-6 mb-4"><li>${content}</li></ul>`;
@@ -251,15 +258,15 @@ const Callout = ({ type, content }) => {
   const getCalloutStyles = (type) => {
     switch (type.toLowerCase()) {
       case 'warning':
-        return 'bg-yellow-50 border-yellow-200 text-yellow-800';
+        return 'bg-yellow-100 border-yellow-300 text-yellow-900';
       case 'error':
-        return 'bg-red-50 border-red-200 text-red-800';
+        return 'bg-red-100 border-red-300 text-red-900';
       case 'info':
-        return 'bg-blue-50 border-blue-200 text-blue-800';
+        return 'bg-blue-100 border-blue-300 text-blue-900';
       case 'success':
-        return 'bg-green-50 border-green-200 text-green-800';
+        return 'bg-green-100 border-green-300 text-green-900';
       default:
-        return 'bg-gray-50 border-gray-200 text-gray-800';
+        return 'bg-gray-100 border-gray-300 text-gray-900';
     }
   };
 
@@ -279,15 +286,13 @@ const Callout = ({ type, content }) => {
   };
 
   return (
-    <div className={`my-6 p-4 border-l-4 rounded-r-lg ${getCalloutStyles(type)}`}>
-      <div className="flex items-start">
-        <span className="mr-3 text-lg">{getIcon(type)}</span>
-        <div className="flex-1">
-          <p className="font-medium capitalize mb-1">{type}</p>
-          <p className="text-sm">{content}</p>
-        </div>
+    <aside className={`my-6 p-4 border-l-4 rounded-r-lg ${getCalloutStyles(type)} flex gap-3 items-start shadow-bbc`}>
+      <span className="text-2xl">{getIcon(type)}</span>
+      <div>
+        <p className="font-medium capitalize mb-1">{type}</p>
+        <p className="text-sm">{content}</p>
       </div>
-    </div>
+    </aside>
   );
 };
 
@@ -301,27 +306,25 @@ function getAuthorField(blog, field) {
   return '';
 }
 
+// --- Main Blog Detail Component ---
 export default function BlogDetailClient({ locale, slug, initialBlog, initialRelatedBlogs, error: initialError }) {
   const t = useTranslations();
   const [blog, setBlog] = useState(initialBlog);
   const [relatedBlogs, setRelatedBlogs] = useState(initialRelatedBlogs || []);
   const [error, setError] = useState(initialError);
   const [loading, setLoading] = useState(!initialBlog && !initialError);
-  
+
   // Analytics tracking
   const { trackBlogView, trackBlogShare } = useAnalytics();
 
   useEffect(() => {
-    // Only fetch if we don't have initial data
     if (initialBlog || initialError || !slug) return;
-    
     setLoading(true);
     setError(null);
     api.get(`/api/blogs/${locale}/slug/${slug}`)
       .then(res => {
         if (res.data.success) {
           setBlog(res.data.data.blog);
-          // Fetch related blogs if category exists
           const cat = res.data.data.blog.category?.[locale];
           if (cat) {
             api.get(`/api/blogs/${locale}?status=published&category=${encodeURIComponent(cat)}&limit=3&exclude=${res.data.data.blog._id}`)
@@ -338,7 +341,6 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
       .finally(() => setLoading(false));
   }, [locale, slug, t, initialBlog, initialError]);
 
-  // Track blog view when blog loads
   useEffect(() => {
     if (blog) {
       trackBlogView(blog.title[locale], blog.category[locale], blog._id);
@@ -349,7 +351,6 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
     if (!blog) return;
     const url = typeof window !== 'undefined' ? window.location.href : '';
     const title = blog.title[locale];
-    const text = blog.excerpt[locale];
     let shareUrl = '';
     switch (platform) {
       case 'facebook':
@@ -367,32 +368,29 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
       default:
         return;
     }
-    
-    // Track share event
     trackBlogShare(blog.title[locale], platform);
-    
     window.open(shareUrl, '_blank', 'width=600,height=400');
   };
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-gray-100 py-8" aria-label="Main content">
-        <div className="text-gray-600 text-lg">{t('common.loading')}</div>
+      <main className="min-h-screen flex items-center justify-center bg-[#f6f6f6] py-8" aria-label="Main content">
+        <div className="text-[#111] text-lg">{t('common.loading')}</div>
       </main>
     );
   }
 
   if (error || !blog) {
     return (
-      <main className="min-h-screen bg-gray-100 py-8" aria-label="Main content">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="min-h-screen bg-[#f6f6f6] py-8" aria-label="Main content">
+        <div className="max-w-3xl mx-auto px-2 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#b80000] mb-4">
               {error || t('errors.blogNotFound')}
             </h1>
             <Link
               href={`/${locale}/blogs`}
-              className="text-gray-700 hover:text-gray-900"
+              className="text-[#174ea6] hover:underline"
             >
               {t('blog.backToBlogs')}
             </Link>
@@ -435,260 +433,162 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
     keywords: blog.seoKeywords?.[locale]?.join(', '),
   };
 
-  // Parse content into blocks
+  // --- Parse blog content ---
   const contentBlocks = parseContent(blog.content[locale]);
 
+  // --- Responsive/BBC-inspired Layout ---
   return (
     <>
-      {/* JSON-LD Structured Data */}
       <script type="application/ld+json" suppressHydrationWarning>{JSON.stringify(jsonLd)}</script>
-      <main className="min-h-screen bg-gray-100 py-6 sm:py-8" aria-label="Main content">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="min-h-screen bg-[#f6f6f6] py-0" aria-label="Main content">
+        {/* Sticky header on mobile - REMOVE BACK BUTTON */}
+        {/* <nav className="sticky top-0 z-20 bg-[#fff] border-b border-[#e3e3e3] px-2 sm:px-4 py-2 flex items-center justify-between shadow-bbc sm:hidden">
+          <Link ...>...</Link>
+          <span className="font-bold text-[#222] text-lg line-clamp-1">{blog.title[locale]}</span>
+        </nav> */}
+        <div className="max-w-full sm:max-w-[820px] mx-auto sm:px-4 px-0 md:px-0 lg:px-0">
           {/* Breadcrumb */}
-          <nav className="mb-6 sm:mb-8" aria-label="Breadcrumb">
-            <ol className="flex flex-wrap items-center space-x-2 text-xs sm:text-sm text-gray-500" itemScope itemType="https://schema.org/BreadcrumbList">
+          <nav className="hidden sm:flex mt-6 mb-4 px-2 text-xs text-[#555] gap-1" aria-label="Breadcrumb">
+            <ol className="flex items-center flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
               <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-                <Link href={`/${locale}`} className="hover:text-gray-700" itemProp="item">
+                <Link href={`/${locale}`} className="hover:underline" itemProp="item">
                   <span itemProp="name">{t('common.home')}</span>
                 </Link>
                 <meta itemProp="position" content="1" />
               </li>
-              <li aria-hidden="true">/</li>
+              <li aria-hidden="true" className="mx-1">/</li>
               <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-                <Link href={`/${locale}/blogs`} className="hover:text-gray-700" itemProp="item">
+                <Link href={`/${locale}/blogs`} className="hover:underline" itemProp="item">
                   <span itemProp="name">{t('blog.allPosts')}</span>
                 </Link>
                 <meta itemProp="position" content="2" />
               </li>
-              <li aria-hidden="true">/</li>
-              <li className="text-gray-900 line-clamp-1" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+              <li aria-hidden="true" className="mx-1">/</li>
+              <li className="text-[#111] line-clamp-1" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
                 <span itemProp="name">{blog.title[locale]}</span>
                 <meta itemProp="position" content="3" />
               </li>
             </ol>
           </nav>
 
-          {/* Article */}
-          <article className="bg-gray-50 overflow-hidden border border-gray-200 shadow-md" itemScope itemType="https://schema.org/Article">
-            {/* Featured Image */}
+          <article className="bg-[#fff] rounded-none">
+            {/* Featured Image (no rounded corners, no extra background, flush to top) */}
             {blog.featuredImage && (
-              <div className="relative w-full h-64 sm:h-80 md:h-[500px]">
+              <div className="relative w-full aspect-video min-h-[210px] bg-transparent rounded-none overflow-visible p-0 m-0">
                 <Image
                   src={blog.featuredImage}
                   alt={blog.title[locale]}
-                  className="object-cover"
-                  style={{ WebkitFontSmoothing: 'antialiased' }}
+                  className="object-cover rounded-none"
                   fill
+                  priority
+                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   unoptimized
                 />
               </div>
             )}
 
-            <div className="p-4 sm:p-8">
-              {/* Header */}
-              <header className="mb-6 sm:mb-8">
-                <div className="flex flex-wrap items-center text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
-                  <span className="capitalize bg-gray-200 text-gray-800 px-2 sm:px-3 py-1 rounded-full">
-                    {blog.category[locale]}
-                  </span>
-                  <span className="mx-2">•</span>
+            <div className="px-2 sm:px-8 pb-2 pt-4 sm:pt-8">
+              {/* Meta info / header */}
+              <header className="mb-5">
+                <div className="flex flex-wrap items-center text-xs sm:text-sm text-[#444] mb-2 sm:mb-3 gap-x-2 gap-y-1">
+                  <span className="capitalize bg-[#ededed] text-[#b80000] px-2 py-1 rounded-full font-medium">{blog.category[locale]}</span>
+                  <span className="hidden sm:inline">•</span>
                   <span>{blog.readTime[locale]} {t('blog.minRead')}</span>
-                  <span className="mx-2">•</span>
-                  <span>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
+                  <span className="hidden sm:inline">•</span>
+                  <span>{new Date(blog.publishedAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                   {blog.isFeatured && (
                     <>
-                      <span className="mx-2">•</span>
-                      <span className="bg-gray-300 text-gray-800 px-2 py-1 rounded-full text-xs">
-                        {t('blog.featured')}
-                      </span>
+                      <span className="hidden sm:inline">•</span>
+                      <span className="bg-[#b80000] text-white px-2 py-1 rounded-full text-xs font-bold ml-1">{t('blog.featured')}</span>
                     </>
                   )}
                 </div>
-                
-                <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight ${locale === 'bn' ? 'font-bangla' : ''}`}
-                  id="blog-title">
-                  {blog.title[locale]}
-                </h1>
-                
-                <p className={`text-base sm:text-xl text-gray-700 mb-5 sm:mb-6 leading-relaxed ${locale === 'bn' ? 'font-bangla' : ''}`}
-                  id="blog-excerpt">
-                  {blog.excerpt[locale]}
-                </p>
-
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+                <h1 className={`text-2xl sm:text-4xl md:text-5xl ${locale === 'bn' ? 'font-bangla-blog-heading' : 'font-bbc-heading'} text-[#111] leading-tight mb-2 sm:mb-3`}>{blog.title[locale]}</h1>
+                <p className={`text-lg sm:text-2xl text-[#444] mb-4 sm:mb-6 leading-relaxed ${locale === 'bn' ? 'font-bangla-blog' : 'font-bbc'}`}>{blog.excerpt[locale]}</p>
+                <div className="flex items-center gap-4 flex-col sm:flex-row sm:gap-7 mb-2">
+                  {/* Author */}
                   <div className="flex items-center">
-                    {/* Author Avatar */}
                     {getAuthorField(blog, 'avatar') && (
                       <Image
                         src={getAuthorField(blog, 'avatar')}
                         alt={getAuthorField(blog, 'name') || 'Author'}
-                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover mr-3 sm:mr-4"
+                        className="w-10 h-10 sm:w-12 sm:h-12 object-cover mr-3"
                         width={48}
                         height={48}
                         unoptimized
                       />
                     )}
-                    
-                    {/* Author Info */}
                     <div>
-                      <div className="flex items-center gap-2 mt-2 mb-4">
-                        <span className={
-                          !blog.author?.name || blog.author.name.trim() === ''
-                            ? 'font-extrabold text-xl tracking-wide text-gray-900 font-logo'
-                            : 'font-semibold text-gray-700'
-                        }>
-                          {(!blog.author?.name || blog.author.name.trim() === '') ? 'News & Niche' : blog.author.name}
-                        </span>
-                        <span className="text-xs text-gray-500">Author</span>
-                      </div>
-                      {/* Author Bio */}
+                      <span className="text-[#b80000] font-extrabold text-lg sm:text-xl">{getAuthorField(blog, 'name') || 'News & Niche'}</span>
                       {getAuthorField(blog, 'bio') && (
-                        <p className="text-xs text-gray-600 mt-1 max-w-xs line-clamp-2">
-                          {getAuthorField(blog, 'bio')}
-                        </p>
+                        <p className="text-xs text-[#666] mt-1 max-w-xs line-clamp-2 font-medium">{getAuthorField(blog, 'bio')}</p>
                       )}
-                      {/* Author Website */}
                       {getAuthorField(blog, 'website') && (
-                        <a
-                          href={getAuthorField(blog, 'website')}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-blue-600 hover:text-blue-800 mt-1 block"
-                        >
-                          🌐 Visit Website
-                        </a>
+                        <a href={getAuthorField(blog, 'website')} target="_blank" rel="noopener noreferrer"
+                          className="text-xs text-[#174ea6] hover:underline block mt-1">🌐 Visit Website</a>
                       )}
                     </div>
                   </div>
-
-                  {/* Author Social Links */}
-                  {getAuthorField(blog, 'social') && (getAuthorField(blog, 'social').twitter || getAuthorField(blog, 'social').linkedin || getAuthorField(blog, 'social').github) && (
-                    <div className="flex items-center space-x-2 mt-3 sm:mt-0">
+                  {/* Author Social */}
+                  {getAuthorField(blog, 'social') && (
+                    <div className="flex items-center gap-2 mt-2 sm:mt-0">
                       {getAuthorField(blog, 'social').twitter && (
-                        <a
-                          href={getAuthorField(blog, 'social').twitter}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                          title="Twitter"
-                        >
-                          𝕏
-                        </a>
+                        <a href={getAuthorField(blog, 'social').twitter} target="_blank" rel="noopener noreferrer"
+                          className="w-8 h-8 bg-[#e5e5e5] text-[#174ea6] rounded-full flex items-center justify-center hover:bg-[#dbe6f8]" title="Twitter">𝕏</a>
                       )}
                       {getAuthorField(blog, 'social').linkedin && (
-                        <a
-                          href={getAuthorField(blog, 'social').linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                          title="LinkedIn"
-                        >
-                          in
-                        </a>
+                        <a href={getAuthorField(blog, 'social').linkedin} target="_blank" rel="noopener noreferrer"
+                          className="w-8 h-8 bg-[#e5e5e5] text-[#174ea6] rounded-full flex items-center justify-center hover:bg-[#dbe6f8]" title="LinkedIn">in</a>
                       )}
                       {getAuthorField(blog, 'social').github && (
-                        <a
-                          href={getAuthorField(blog, 'social').github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-8 h-8 bg-gray-200 text-gray-700 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
-                          title="GitHub"
-                        >
-                          GH
-                        </a>
+                        <a href={getAuthorField(blog, 'social').github} target="_blank" rel="noopener noreferrer"
+                          className="w-8 h-8 bg-[#e5e5e5] text-[#111] rounded-full flex items-center justify-center hover:bg-[#e4e4e4]" title="GitHub">GH</a>
                       )}
                     </div>
                   )}
-
-                  {/* Social Share Buttons (grayscale) */}
-                  <div className="flex items-center space-x-2 mt-3 sm:mt-0">
-                    <span className="text-xs sm:text-sm text-gray-500 mr-2">{t('blog.shareThis')}:</span>
-                    <button
-                      onClick={() => handleShare('facebook')}
-                      aria-label="Share on Facebook"
-                      className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: '#1877F3' }}
-                    >
-                      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.127V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/></svg>
+                  {/* Social Share */}
+                  <div className="flex items-center gap-2 mt-2 sm:mt-0 ml-auto">
+                    <button onClick={() => handleShare('facebook')} aria-label="Share on Facebook" className="hover:scale-110 transition-transform" style={{ color: '#1877F3', background: 'none', border: 'none', padding: 0 }}>
+                      <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.127V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/></svg>
                     </button>
-                    <button
-                      onClick={() => handleShare('twitter')}
-                      aria-label="Share on Twitter"
-                      className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: '#000000' }}
-                    >
-                      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.72 0-4.924 2.206-4.924 4.924 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.424.729-.666 1.577-.666 2.476 0 1.708.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.395 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 14.002-7.496 14.002-13.986 0-.21 0-.423-.016-.634.962-.689 1.8-1.56 2.46-2.548z"/></svg>
+                    <button onClick={() => handleShare('twitter')} aria-label="Share on Twitter" className="hover:scale-110 transition-transform" style={{ color: '#1da1f2', background: 'none', border: 'none', padding: 0 }}>
+                      <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.72 0-4.924 2.206-4.924 4.924 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.424.729-.666 1.577-.666 2.476 0 1.708.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.395 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 14.002-7.496 14.002-13.986 0-.21 0-.423-.016-.634.962-.689 1.8-1.56 2.46-2.548z"/></svg>
                     </button>
-                    <button
-                      onClick={() => handleShare('linkedin')}
-                      aria-label="Share on LinkedIn"
-                      className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: '#0077B5' }}
-                    >
-                      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.327-.027-3.037-1.849-3.037-1.851 0-2.132 1.445-2.132 2.939v5.667h-3.554V9h3.414v1.561h.049c.476-.899 1.637-1.849 3.37-1.849 3.602 0 4.267 2.368 4.267 5.455v6.285zM5.337 7.433c-1.144 0-2.069-.926-2.069-2.068 0-1.143.925-2.069 2.069-2.069 1.143 0 2.068.926 2.068 2.069 0 1.142-.925 2.068-2.068 2.068zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.2 24 24 23.229 24 22.271V1.723C24 .771 23.2 0 22.225 0z"/></svg>
+                    <button onClick={() => handleShare('linkedin')} aria-label="Share on LinkedIn" className="hover:scale-110 transition-transform" style={{ color: '#0077B5', background: 'none', border: 'none', padding: 0 }}>
+                      <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.327-.027-3.037-1.849-3.037-1.851 0-2.132 1.445-2.132 2.939v5.667h-3.554V9h3.414v1.561h.049c.476-.899 1.637-1.849 3.37-1.849 3.602 0 4.267 2.368 4.267 5.455v6.285zM5.337 7.433c-1.144 0-2.069-.926-2.069-2.068 0-1.143.925-2.069 2.069-2.069 1.143 0 2.068.926 2.068 2.069 0 1.142-.925 2.068-2.068 2.068zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.2 24 24 23.229 24 22.271V1.723C24 .771 23.2 0 22.225 0z"/></svg>
                     </button>
-                    <button
-                      onClick={() => handleShare('whatsapp')}
-                      aria-label="Share on WhatsApp"
-                      className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: '#25D366' }}
-                    >
-                      <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.029-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.151-.174.2-.298.3-.497.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.363.709.306 1.262.489 1.694.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+                    <button onClick={() => handleShare('whatsapp')} aria-label="Share on WhatsApp" className="hover:scale-110 transition-transform" style={{ color: '#25D366', background: 'none', border: 'none', padding: 0 }}>
+                      <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.029-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.151-.174.2-.298.3-.497.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.363.709.306 1.262.489 1.694.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
                     </button>
                   </div>
                 </div>
               </header>
-
-              {/* Enhanced Content */}
-              <div className={`prose prose-lg max-w-none ${locale === 'bn' ? 'font-bangla' : ''}`} style={{ fontSize: '1.18rem' }}>
+              {/* Content */}
+              <div className={`prose prose-lg max-w-none ${locale === 'bn' ? 'font-bangla-blog' : 'font-bbc'} prose-headings:${locale === 'bn' ? 'font-bangla-blog-heading' : 'font-bbc-heading'} prose-a:text-[#174ea6] prose-a:underline prose-blockquote:bg-[#f7f7f7] prose-blockquote:border-[#b80000] prose-blockquote:text-[#333]`} style={{ fontSize: '1.22rem', fontWeight: 400, lineHeight: '1.5', letterSpacing: 'normal' }}>
                 {contentBlocks.map((block, index) => {
                   switch (block.type) {
                     case 'code':
-                      return (
-                        <div key={index} className="my-8">
-                          <CodeBlock
-                            code={block.content}
-                            language={block.language}
-                            title={block.title}
-                          />
-                        </div>
-                      );
+                      return <CodeBlock key={index} code={block.content} language={block.language} title={block.title} />;
                     case 'gallery':
-                      return (
-                        <div key={index} className="my-8">
-                          <ImageGallery
-                            images={block.images}
-                            title={block.title}
-                          />
-                        </div>
-                      );
+                      return <ImageGallery key={index} images={block.images} title={block.title} />;
                     case 'image':
                       return (
-                        <div key={index} className="my-8">
+                        <figure key={index} className="my-6 rounded-lg overflow-hidden shadow-bbc bg-white">
                           <Image
                             src={block.src}
                             alt={block.alt}
-                            className="w-full h-auto"
-                            width={500}
-                            height={300}
+                            className="w-full h-auto object-cover"
+                            width={600}
+                            height={350}
                             unoptimized
                           />
                           {block.alt && (
-                            <p className="text-sm text-gray-600 mt-2 text-center italic">
-                              {block.alt}
-                            </p>
+                            <figcaption className="text-sm text-gray-600 mt-2 text-center italic">{block.alt}</figcaption>
                           )}
-                        </div>
+                        </figure>
                       );
                     case 'callout':
-                      return (
-                        <div key={index} className="my-8">
-                          <Callout
-                            type={block.calloutType}
-                            content={block.content}
-                          />
-                        </div>
-                      );
+                      return <Callout key={index} type={block.calloutType} content={block.content} />;
                     default:
                       return (
                         <div
@@ -700,18 +600,17 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                   }
                 })}
               </div>
-
               {/* Tags */}
               {blog.tags && blog.tags.length > 0 && (
-                <div className="mt-8 pt-8 border-t border-gray-200">
-                  <h3 className={`text-lg font-semibold text-gray-900 mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+                <div className="mt-8 pt-8 border-t border-[#e3e3e3]">
+                  <h3 className={`text-base font-bold text-[#b80000] mb-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                     {t('blog.tags')}:
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {blog.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors"
+                        className="bg-[#f6f6f6] text-[#b80000] px-3 py-1 rounded-full text-xs hover:bg-[#ececec] transition-colors"
                       >
                         {tag[locale]}
                       </span>
@@ -719,59 +618,50 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                   </div>
                 </div>
               )}
-
-              {/* Footer */}
-              <footer className="mt-8 pt-8 border-t border-gray-200">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <button className="flex items-center space-x-2 text-gray-500 hover:text-gray-700">
-                      <span>👁️</span>
-                      <span>{blog.viewCount || 0} {t('blog.views')}</span>
-                    </button>
-                  </div>
-                  <Link
-                    href={`/${locale}/blogs`}
-                    className="text-gray-700 hover:text-gray-900 font-medium"
-                  >
-                    ← {t('blog.backToBlogs')}
-                  </Link>
+              {/* Footer - REMOVE BACK BUTTON */}
+              <footer className="mt-10 pt-6 border-t border-[#e3e3e3] flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-[#555] text-sm">👁️ {blog.viewCount || 0} {t('blog.views')}</span>
                 </div>
+                {/* <Link href={`/${locale}/blogs`} className="text-[#174ea6] hover:underline font-medium text-sm">
+                  &#8592; {t('blog.backToBlogs')}
+                </Link> */}
               </footer>
             </div>
           </article>
-
           {/* Related Posts */}
           {relatedBlogs.length > 0 && (
-            <section className="mt-12">
-              <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+            <section className="mt-10 px-2 sm:px-0">
+              <h2 className={`text-xl font-bold text-[#111] mb-4 sm:mb-6 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                 {t('blog.relatedPosts')}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                 {relatedBlogs.map((relatedBlog) => (
                   <Link
                     key={relatedBlog._id}
                     href={`/${locale}/blogs/${relatedBlog.slug[locale]}`}
-                    className="bg-white shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 block group"
+                    className="bg-white shadow-bbc overflow-hidden hover:shadow-lg transition-shadow duration-300 block group rounded-lg border border-[#e3e3e3]"
                     style={{ textDecoration: 'none' }}
                   >
-                    <div className="relative w-full h-40 sm:h-48">
+                    <div className="relative w-full aspect-video min-h-[120px] bg-[#efefef]">
                       <Image
                         src={relatedBlog.featuredImage}
                         alt={relatedBlog.title[locale]}
-                        className="w-full object-cover"
+                        className="object-cover rounded-t-lg"
                         fill
                         unoptimized
+                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                       />
                     </div>
-                    <div className="p-6">
-                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                    <div className="p-4">
+                      <div className="flex items-center text-xs text-[#b80000] mb-2 gap-2 font-semibold">
                         <span className="capitalize">{relatedBlog.category[locale]}</span>
-                        <span className="mx-2">•</span>
+                        <span>•</span>
                         <span>{relatedBlog.readTime[locale]} {t('blog.minRead')}</span>
                       </div>
-                      <h3 className={`text-lg font-semibold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.title[locale]}</h3>
-                      <p className={`text-gray-700 mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.excerpt[locale]}</p>
-                      <span className="text-gray-700 hover:text-gray-900 font-medium text-sm group-hover:underline">{t('blog.readMore')} →</span>
+                      <h3 className={`text-base font-bold text-[#111] mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.title[locale]}</h3>
+                      <p className={`text-[#444] mb-3 line-clamp-2 text-sm ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.excerpt[locale]}</p>
+                      <span className="text-[#174ea6] hover:underline font-medium text-xs">{t('blog.readMore')} &#8594;</span>
                     </div>
                   </Link>
                 ))}
@@ -780,6 +670,34 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
           )}
         </div>
       </main>
+      {/* --- Extra Styles for BBC shadow and line clamp --- */}
+      <style jsx global>{`
+        .shadow-bbc {
+          --tw-shadow: 0 2px 12px 0 rgba(41, 41, 41, 0.08);
+          box-shadow: var(--tw-shadow);
+        }
+        @media (max-width: 640px) {
+          .prose {
+            font-size: 1rem !important;
+          }
+          main {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+          }
+        }
+        .line-clamp-1 {
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      `}</style>
     </>
   );
-} 
+}

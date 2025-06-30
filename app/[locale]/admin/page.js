@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { api } from '@/app/apiConfig';
-import AnalyticsDashboard from '@/app/components/AnalyticsDashboard';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 
@@ -179,12 +178,6 @@ export default function AdminDashboardPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-gray-600">Welcome back! Here&apos;s what&apos;s happening with your site.</p>
-      </div>
-
-      {/* Analytics Dashboard */}
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Analytics Overview</h2>
-        <AnalyticsDashboard locale={locale} />
       </div>
 
       {/* Statistics Grid */}

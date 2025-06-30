@@ -521,11 +521,11 @@ export default function AdminBlogsPage() {
                               value={blog.status}
                               onChange={(e) => handleStatusChange(blog._id, e.target.value)}
                               disabled={updatingId === blog._id}
-                              className="text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50"
+                              className="text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-50 text-gray-900"
                             >
-                              <option value="draft">Draft</option>
-                              <option value="published">Published</option>
-                              <option value="archived">Archived</option>
+                              <option value="draft" className="text-gray-900">Draft</option>
+                              <option value="published" className="text-gray-900">Published</option>
+                              <option value="archived" className="text-gray-900">Archived</option>
                             </select>
                           </div>
                         </td>
