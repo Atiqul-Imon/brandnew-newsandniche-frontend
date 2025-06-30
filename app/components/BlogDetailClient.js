@@ -440,13 +440,8 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning>{JSON.stringify(jsonLd)}</script>
-      <main className="min-h-screen bg-[#f6f6f6] py-0" aria-label="Main content">
-        {/* Sticky header on mobile - REMOVE BACK BUTTON */}
-        {/* <nav className="sticky top-0 z-20 bg-[#fff] border-b border-[#e3e3e3] px-2 sm:px-4 py-2 flex items-center justify-between shadow-bbc sm:hidden">
-          <Link ...>...</Link>
-          <span className="font-bold text-[#222] text-lg line-clamp-1">{blog.title[locale]}</span>
-        </nav> */}
-        <div className="max-w-full sm:max-w-[820px] mx-auto sm:px-4 px-0 md:px-0 lg:px-0">
+      <div className="w-full bg-gray-100 py-6 sm:py-8" aria-label="Main content">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav className="hidden sm:flex mt-6 mb-4 px-2 text-xs text-[#555] gap-1" aria-label="Breadcrumb">
             <ol className="flex items-center flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
@@ -669,7 +664,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
             </section>
           )}
         </div>
-      </main>
+      </div>
       {/* --- Extra Styles for BBC shadow and line clamp --- */}
       <style jsx global>{`
         .shadow-bbc {

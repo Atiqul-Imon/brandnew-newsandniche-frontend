@@ -146,7 +146,7 @@ export default async function LocaleLayout(props) {
           <AuthProvider>
             <div className="flex flex-col min-h-screen">
               <Navigation locale={locale} />
-              <main className="flex-grow">
+              <main className="flex-grow bg-gray-100" style={{ border: 'none', background: 'transparent' }}>
                 {children}
               </main>
               <Footer />

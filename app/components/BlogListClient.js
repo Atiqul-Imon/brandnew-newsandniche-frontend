@@ -275,7 +275,7 @@ export default function BlogListClient(props) {
                       <span className="mx-2">•</span>
                       <span>{blog.readTime?.[locale] || 5} {t('blog.minRead')}</span>
                     </div>
-                    <h2 className={`text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla text-2xl sm:text-3xl font-black' : ''}`}>
+                    <h2 className={`text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-noto-bangla text-2xl sm:text-3xl font-extrabold' : ''}`}>
                       {blog.title?.[locale] || 'Untitled'}
                     </h2>
                     <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>

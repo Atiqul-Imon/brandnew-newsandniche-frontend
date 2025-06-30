@@ -169,25 +169,6 @@ export default function HomeClient({ locale }) {
           </section>
         )}
 
-        {/* Categories Section */}
-        {categories.length > 0 && (
-          <section className="py-10 sm:py-16 bg-white" aria-label="Categories">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.categories.title')}</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
-                {categories.map((category, index) => (
-                  <Link
-                    key={index}
-                    href={`/${locale}/blogs?category=${category.slug?.[locale] || category.slug?.en || category.slug?.bn || ''}`}
-                    className="bg-gray-100 hover:bg-white p-3 sm:p-4 rounded-lg text-center transition-colors flex flex-col items-center">
-                    <h3 className={`font-semibold text-gray-900 text-base sm:text-lg ${locale === 'bn' ? 'font-bangla' : ''}`}>{category.name?.[locale] || category.name?.en || category.name?.bn || 'Untitled'}</h3>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
         {/* Recent Blogs Section */}
         {recentBlogs.length > 0 && (
           <section className="py-10 sm:py-16" aria-label="Recent blogs">
@@ -224,7 +205,7 @@ export default function HomeClient({ locale }) {
                         <span className="mx-2">•</span>
                         <span>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
                       </div>
-                      <h3 className={`text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla text-2xl sm:text-3xl font-black' : ''}`}>{blog.title[locale]}</h3>
+                      <h3 className={`text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-noto-bangla text-2xl sm:text-3xl font-extrabold' : ''}`}>{blog.title[locale]}</h3>
                       <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla text-lg sm:text-xl font-semibold' : ''}`}>{blog.excerpt[locale]}</p>
                     </div>
                   </Link>
