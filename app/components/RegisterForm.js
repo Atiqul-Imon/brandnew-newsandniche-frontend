@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { useTranslations } from 'next-intl';
+import { api } from '../apiConfig';
+import { trackUserRegistration } from '../../lib/gtag';
 
 export default function RegisterForm({ locale }) {
   const [formData, setFormData] = useState({
@@ -64,7 +66,11 @@ export default function RegisterForm({ locale }) {
     const result = await register(userData);
     
     if (result.success) {
-      router.push(`/${locale}`);
+      // Track successful registration
+      trackUserRegistration('email');
+      
+      // Redirect to login page
+      router.push(`/${locale}/login?message=${encodeURIComponent(t('auth.registrationSuccess'))}`);
     }
     
     setIsLoading(false);

@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { trackSearch } from '../../lib/gtag';
 
-export default function SearchBar({ onSearch, placeholder, className = '' }) {
+export default function SearchBar({ onSearch, placeholder, className = '', locale }) {
   const t = useTranslations();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -33,8 +34,14 @@ export default function SearchBar({ onSearch, placeholder, className = '' }) {
     return () => clearTimeout(timer);
   }, [query, searchParams]);
 
-  const handleSearch = () => {
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+
     setIsSearching(true);
+    
+    // Track search event
+    trackSearch(query.trim());
     
     const params = new URLSearchParams(searchParams);
     if (query.trim()) {
@@ -46,7 +53,9 @@ export default function SearchBar({ onSearch, placeholder, className = '' }) {
     // Reset to first page when searching
     params.delete('page');
     
-    router.push(`?${params.toString()}`);
+    // Navigate to search results
+    const searchUrl = `/${locale}/blogs?search=${encodeURIComponent(query.trim())}`;
+    router.push(searchUrl);
     
     if (onSearch) {
       onSearch(query.trim());
@@ -82,6 +91,7 @@ export default function SearchBar({ onSearch, placeholder, className = '' }) {
             onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder || t('blog.searchPlaceholder')}
             className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+            disabled={isSearching}
           />
           
           {/* Search Icon */}
@@ -128,7 +138,7 @@ export default function SearchBar({ onSearch, placeholder, className = '' }) {
         {/* Search Button */}
         <button
           type="submit"
-          disabled={isSearching}
+          disabled={isSearching || !query.trim()}
           className="absolute right-1 top-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isSearching ? (

@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { useTranslations } from 'next-intl';
+import { api } from '../apiConfig';
+import { trackUserLogin } from '../../lib/gtag';
 
 export default function LoginForm({ locale }) {
   const [formData, setFormData] = useState({
@@ -12,17 +14,11 @@ export default function LoginForm({ locale }) {
     password: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   
-  const { login, user, error, clearError } = useAuth();
+  const { login, user, clearError } = useAuth();
   const router = useRouter();
   const t = useTranslations();
-
-  useEffect(() => {
-    if (user) {
-      router.push(`/${locale}`);
-    }
-    clearError();
-  }, [user, router, clearError, locale]);
 
   const handleChange = (e) => {
     setFormData({
@@ -34,14 +30,28 @@ export default function LoginForm({ locale }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
 
-    const result = await login(formData);
-    
-    if (result.success) {
-      router.push(`/${locale}`);
+    try {
+      const response = await api.post('/api/auth/login', formData);
+      
+      if (response.data.success) {
+        // Track successful login
+        trackUserLogin('email');
+        
+        // Store token
+        localStorage.setItem('token', response.data.token);
+        
+        // Redirect to admin dashboard
+        router.push(`/${locale}/admin`);
+      } else {
+        setError(response.data.message || t('auth.loginError'));
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || t('auth.loginError'));
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (

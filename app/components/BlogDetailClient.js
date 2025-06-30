@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { api } from '@/app/apiConfig';
+import { useAnalytics } from '../../hooks/useAnalytics';
 
 // Code syntax highlighting component
 const CodeBlock = ({ code, language = 'javascript', title }) => {
@@ -306,6 +307,9 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
   const [relatedBlogs, setRelatedBlogs] = useState(initialRelatedBlogs || []);
   const [error, setError] = useState(initialError);
   const [loading, setLoading] = useState(!initialBlog && !initialError);
+  
+  // Analytics tracking
+  const { trackBlogView, trackBlogShare } = useAnalytics();
 
   useEffect(() => {
     // Only fetch if we don't have initial data
@@ -334,6 +338,13 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
       .finally(() => setLoading(false));
   }, [locale, slug, t, initialBlog, initialError]);
 
+  // Track blog view when blog loads
+  useEffect(() => {
+    if (blog) {
+      trackBlogView(blog.title[locale], blog.category[locale], blog._id);
+    }
+  }, [blog, locale, trackBlogView]);
+
   const handleShare = (platform) => {
     if (!blog) return;
     const url = typeof window !== 'undefined' ? window.location.href : '';
@@ -356,6 +367,10 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
       default:
         return;
     }
+    
+    // Track share event
+    trackBlogShare(blog.title[locale], platform);
+    
     window.open(shareUrl, '_blank', 'width=600,height=400');
   };
 

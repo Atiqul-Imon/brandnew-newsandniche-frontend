@@ -3,6 +3,7 @@
 import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { trackLanguageSwitch } from '../../lib/gtag';
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
@@ -18,8 +19,13 @@ export default function LanguageSwitcher() {
   const currentLanguage = languages.find(lang => lang.code === locale);
 
   const handleLanguageChange = (newLocale) => {
+    if (newLocale === locale) return;
+    
+    // Track language switch event
+    trackLanguageSwitch(locale, newLocale);
+    
     // Remove the current locale from the pathname
-    const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
+    const pathWithoutLocale = pathname.replace(`/${locale}`, '');
     
     // Navigate to the new locale
     router.push(`/${newLocale}${pathWithoutLocale}`);

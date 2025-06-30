@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { api } from '@/app/apiConfig';
+import AnalyticsDashboard from '@/app/components/AnalyticsDashboard';
 
 export default function AdminDashboardPage() {
   const t = useTranslations();
@@ -166,6 +167,12 @@ export default function AdminDashboardPage() {
         <p className="text-gray-600">Welcome back! Here&apos;s what&apos;s happening with your site.</p>
       </div>
 
+      {/* Analytics Dashboard */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Analytics Overview</h2>
+        <AnalyticsDashboard locale={locale} />
+      </div>
+
       {/* Statistics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <StatCard
@@ -199,7 +206,7 @@ export default function AdminDashboardPage() {
         <StatCard
           title="Categories"
           value={stats.totalCategories}
-          icon="📂"
+          icon="🏷️"
           color="bg-indigo-100 text-indigo-600"
           href={`/${locale}/admin/categories`}
         />
@@ -253,53 +260,49 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Blogs */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Recent Blogs</h2>
-              <Link
-                href={`/${locale}/admin/blogs`}
-                className="text-sm text-blue-600 hover:text-blue-800"
-              >
-                View all
-              </Link>
-            </div>
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-medium text-gray-900">Recent Blogs</h3>
           </div>
-          <div className="p-6">
-            {recentBlogs.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">No blogs yet</p>
+          <div className="divide-y divide-gray-200">
+            {recentBlogs.length > 0 ? (
+              recentBlogs.map((blog) => (
+                <RecentItem key={blog._id} item={blog} type="blog" locale={locale} />
+              ))
             ) : (
-              <div className="space-y-3">
-                {recentBlogs.map((blog) => (
-                  <RecentItem key={blog._id} item={blog} type="blog" locale={locale} />
-                ))}
-              </div>
+              <div className="p-6 text-center text-gray-500">No blogs found</div>
             )}
+          </div>
+          <div className="px-6 py-4 border-t border-gray-200">
+            <Link
+              href={`/${locale}/admin/blogs`}
+              className="text-sm font-medium text-blue-600 hover:text-blue-500"
+            >
+              View all blogs →
+            </Link>
           </div>
         </div>
 
         {/* Recent Users */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Recent Users</h2>
-              <Link
-                href={`/${locale}/admin/users`}
-                className="text-sm text-blue-600 hover:text-blue-800"
-              >
-                View all
-              </Link>
-            </div>
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-medium text-gray-900">Recent Users</h3>
           </div>
-          <div className="p-6">
-            {recentUsers.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">No users yet</p>
+          <div className="divide-y divide-gray-200">
+            {recentUsers.length > 0 ? (
+              recentUsers.map((user) => (
+                <RecentItem key={user._id} item={user} type="user" locale={locale} />
+              ))
             ) : (
-              <div className="space-y-3">
-                {recentUsers.map((user) => (
-                  <RecentItem key={user._id} item={user} type="user" locale={locale} />
-                ))}
-              </div>
+              <div className="p-6 text-center text-gray-500">No users found</div>
             )}
+          </div>
+          <div className="px-6 py-4 border-t border-gray-200">
+            <Link
+              href={`/${locale}/admin/users`}
+              className="text-sm font-medium text-blue-600 hover:text-blue-500"
+            >
+              View all users →
+            </Link>
           </div>
         </div>
       </div>
