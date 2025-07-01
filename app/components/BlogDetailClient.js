@@ -327,7 +327,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
           setBlog(res.data.data.blog);
           const cat = res.data.data.blog.category?.[locale];
           if (cat) {
-            api.get(`/api/blogs/${locale}?status=published&category=${encodeURIComponent(cat)}&limit=3&exclude=${res.data.data.blog._id}`)
+            api.get(`/api/blogs?language=${locale}&status=published&category=${encodeURIComponent(cat)}&limit=3&exclude=${res.data.data.blog._id}`)
               .then(relRes => setRelatedBlogs(relRes.data.data.blogs || []))
               .catch(() => setRelatedBlogs([]));
           } else {

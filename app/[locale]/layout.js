@@ -106,55 +106,16 @@ export default async function LocaleLayout(props) {
   const localeMessages = messages[locale] || messages.en;
   
   return (
-    <html lang={locale} className={`${geistSans.variable} ${geistMono.variable}`}>
-      <head>
-        <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.svg?v=2" />
-        <link rel="manifest" href="/manifest.json" />
-      </head>
-      
-      {/* Google Analytics */}
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-      />
-      <Script
-        id="gtag-init"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-              page_title: document.title,
-              page_location: window.location.href,
-              custom_map: {
-                'custom_parameter_1': 'locale',
-                'custom_parameter_2': 'page_type'
-              }
-            });
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-              locale: '${locale}',
-              page_type: '${locale === 'bn' ? 'bengali' : 'english'}'
-            });
-          `,
-        }}
-      />
-      
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <NextIntlClientProvider locale={locale} messages={localeMessages}>
-          <AuthProvider>
-            <div className="flex flex-col min-h-screen">
-              <Navigation locale={locale} />
-              <main className="flex-grow bg-gray-100" style={{ border: 'none', background: 'transparent' }}>
-                {children}
-              </main>
-              <Footer />
-            </div>
-          </AuthProvider>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider locale={locale} messages={localeMessages}>
+      <AuthProvider>
+        <div className="flex flex-col min-h-screen">
+          <Navigation locale={locale} />
+          <main className="flex-grow bg-gray-100" style={{ border: 'none', background: 'transparent' }}>
+            {children}
+          </main>
+          <Footer />
+        </div>
+      </AuthProvider>
+    </NextIntlClientProvider>
   );
 } 

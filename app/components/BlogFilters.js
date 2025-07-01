@@ -54,8 +54,8 @@ export default function BlogFilters({ locale, categories = [], selectedCategory 
           >
             <option value="">{t('blog.allCategories')}</option>
             {categories.map((category) => (
-              <option key={category._id} value={category.name[locale]}>
-                {category.name[locale]}
+              <option key={category._id} value={category[`name.${locale}`] || category.name?.[locale] || ''}>
+                {category[`name.${locale}`] || category.name?.[locale] || 'Unnamed Category'}
               </option>
             ))}
           </select>

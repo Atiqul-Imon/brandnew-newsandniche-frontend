@@ -22,6 +22,15 @@ export default function AdminUsersPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
   const [itemsPerPage] = useState(10);
+  const [pagination, setPagination] = useState({});
+  const [roleStats, setRoleStats] = useState({});
+  const [filters, setFilters] = useState({
+    page: 1,
+    limit: 20,
+    role: '',
+    search: '',
+    sort: 'createdAt'
+  });
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -40,6 +49,8 @@ export default function AdminUsersPage() {
       setUsers(res.data.data.users);
       setTotalUsers(res.data.data.total || res.data.data.users.length);
       setTotalPages(Math.ceil((res.data.data.total || res.data.data.users.length) / itemsPerPage));
+      setPagination(res.data.data.pagination);
+      setRoleStats(res.data.data.roleStats);
     } catch (err) {
       setError(t('errors.serverError'));
     } finally {
@@ -52,6 +63,13 @@ export default function AdminUsersPage() {
     try {
       await api.put(`/api/users/${userId}/role`, { role: newRole });
       setUsers(users.map(u => u._id === userId ? { ...u, role: newRole } : u));
+      setRoleStats(prev => {
+        const oldRole = users.find(u => u._id === userId)?.role;
+        const newStats = { ...prev };
+        if (oldRole) newStats[oldRole] = Math.max(0, (newStats[oldRole] || 0) - 1);
+        newStats[newRole] = (newStats[newRole] || 0) + 1;
+        return newStats;
+      });
       setSnackbar({ open: true, message: t('user.roleUpdated'), severity: 'success' });
     } catch (err) {
       setSnackbar({ open: true, message: t('errors.serverError'), severity: 'error' });
@@ -209,6 +227,14 @@ export default function AdminUsersPage() {
         </div>
       </div>
     );
+  };
+
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value,
+      page: 1 // Reset to first page when filters change
+    }));
   };
 
   if (authLoading || !user) {

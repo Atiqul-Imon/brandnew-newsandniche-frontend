@@ -76,11 +76,12 @@ export default function BlogListClient(props) {
       sortBy,
       sortOrder,
       limit: limit.toString(),
-      page: searchParams.get("page") || page.toString()
+      page: searchParams.get("page") || page.toString(),
+      lang: locale
     });
     if (search) params.append("search", search);
     if (category) params.append("category", category);
-    api.get(`/api/blogs/${locale}?${params}`)
+    api.get(`/api/blogs?${params}`)
       .then(res => {
         setBlogs(res.data.data.blogs || []);
         setHasMore(res.data.data.hasMore);
@@ -104,11 +105,12 @@ export default function BlogListClient(props) {
       sortBy,
       sortOrder,
       limit: limit.toString(),
-      page: nextPage.toString()
+      page: nextPage.toString(),
+      lang: locale
     });
     if (search) params.append("search", search);
     if (category) params.append("category", category);
-    api.get(`/api/blogs/${locale}?${params}`)
+    api.get(`/api/blogs?${params}`)
       .then(res => {
         setBlogs(prev => [...prev, ...(res.data.data.blogs || [])]);
         setHasMore(res.data.data.hasMore);
@@ -188,14 +190,14 @@ export default function BlogListClient(props) {
             categories.map(cat => (
               <button
                 key={cat._id}
-                className={`px-4 py-2 rounded-full border ${category === cat.slug?.[locale] ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"}`}
+                className={`px-4 py-2 rounded-full border ${category === (cat[`slug.${locale}`] || cat.slug?.[locale]) ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"}`}
                 onClick={() => {
                   const params = new URLSearchParams(searchParams.toString());
-                  params.set("category", cat.slug?.[locale]);
+                  params.set("category", cat[`slug.${locale}`] || cat.slug?.[locale]);
                   router.push(`${pathname}?${params.toString()}`);
                 }}
               >
-                {cat.name?.[locale]}
+                {cat[`name.${locale}`] || cat.name?.[locale] || 'Unnamed Category'}
               </button>
             ))
           )}
@@ -270,7 +272,9 @@ export default function BlogListClient(props) {
                   <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <span className="capitalize">
-                        {categories.find(c => c.slug?.[locale] === blog.category?.[locale])?.name?.[locale] || blog.category?.[locale] || 'Uncategorized'}
+                        {categories.find(c => (c[`slug.${locale}`] || c.slug?.[locale]) === blog.category?.[locale])?.[`name.${locale}`] || 
+                         categories.find(c => c.slug?.[locale] === blog.category?.[locale])?.name?.[locale] || 
+                         blog.category?.[locale] || 'Uncategorized'}
                       </span>
                       <span className="mx-2">•</span>
                       <span>{blog.readTime?.[locale] || 5} {t('blog.minRead')}</span>

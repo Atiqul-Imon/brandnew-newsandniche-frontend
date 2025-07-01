@@ -3,9 +3,9 @@ import BlogListClient from '../../components/BlogListClient';
 import { API_BASE_URL } from '../../apiConfig';
 
 export default async function BlogsPage(props) {
-  const params = props.params;
-  const searchParams = props.searchParams;
-  const locale = params?.locale || 'en';
+  const params = await props.params;
+  const searchParams = await props.searchParams;
+  const { locale } = params;
   
   // Get search parameters
   const search = searchParams?.search || '';
@@ -22,7 +22,8 @@ export default async function BlogsPage(props) {
     sortBy,
     sortOrder,
     limit: limit.toString(),
-    page: page.toString()
+    page: page.toString(),
+    lang: locale
   });
   if (search) apiParams.append("search", search);
   if (category) apiParams.append("category", category);
@@ -36,7 +37,7 @@ export default async function BlogsPage(props) {
 
   try {
     // Fetch blogs
-    const blogsRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}?${apiParams}`, {
+    const blogsRes = await fetch(`${API_BASE_URL}/api/blogs?${apiParams}`, {
       next: { revalidate: 60 } // Cache for 1 minute
     });
     const blogsData = await blogsRes.json();
@@ -91,7 +92,7 @@ export default async function BlogsPage(props) {
 export async function generateMetadata(props) {
   const params = await props.params;
   const searchParams = await props.searchParams;
-  const locale = params?.locale || 'en';
+  const { locale } = params;
   const siteUrl = 'https://newsandniche.com';
   
   // Get search parameters for dynamic metadata

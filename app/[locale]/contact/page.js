@@ -1,8 +1,8 @@
 // SERVER COMPONENT: Contact page with SSR for SEO
 import ContactForm from '@/app/components/ContactForm';
 
-export default function ContactPage({ params }) {
-  const locale = params?.locale || 'en';
+export default async function ContactPage({ params }) {
+  const { locale } = await params;
   
   const content = {
     en: {
@@ -225,7 +225,7 @@ export default function ContactPage({ params }) {
 }
 
 export async function generateMetadata({ params }) {
-  const locale = params?.locale || 'en';
+  const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   
   const title = locale === 'bn' 

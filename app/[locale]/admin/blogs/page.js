@@ -45,7 +45,7 @@ export default function AdminBlogsPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await api.get(`/api/blogs/${locale}/categories`);
+      const res = await api.get(`/api/categories?lang=${locale}`);
       setCategories(res.data.data.categories);
     } catch (err) {
       console.error('Failed to fetch categories:', err);
@@ -58,10 +58,11 @@ export default function AdminBlogsPage() {
       const params = new URLSearchParams({
         ...filters,
         page: currentPage,
-        limit: itemsPerPage
+        limit: itemsPerPage,
+        language: locale
       });
       
-      const res = await api.get(`/api/blogs/${locale}?${params}`);
+      const res = await api.get(`/api/blogs?${params}`);
       setBlogs(res.data.data.blogs);
       setTotalBlogs(res.data.data.total || res.data.data.blogs.length);
       setTotalPages(Math.ceil((res.data.data.total || res.data.data.blogs.length) / itemsPerPage));

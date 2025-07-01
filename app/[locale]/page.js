@@ -12,12 +12,12 @@ export default async function HomePage({ params }) {
 
   try {
     // Fetch featured blogs
-    const featuredRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}?status=published&featured=true&limit=3`, { next: { revalidate: 60 } });
+    const featuredRes = await fetch(`${API_BASE_URL}/api/blogs?lang=${locale}&status=published&featured=true&limit=3`, { next: { revalidate: 60 } });
     const featuredData = await featuredRes.json();
     featuredBlogs = featuredData.data?.blogs || [];
 
     // Fetch recent blogs
-    const recentRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}?status=published&limit=6`, { next: { revalidate: 60 } });
+    const recentRes = await fetch(`${API_BASE_URL}/api/blogs?lang=${locale}&status=published&limit=6`, { next: { revalidate: 60 } });
     const recentData = await recentRes.json();
     recentBlogs = recentData.data?.blogs || [];
 

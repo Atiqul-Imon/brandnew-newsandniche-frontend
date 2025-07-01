@@ -20,8 +20,8 @@ export default function HomeClient({ locale }) {
     setLoadingData(true);
     setError(null);
     Promise.all([
-      api.get(`/api/blogs/${locale}?status=published&featured=true&limit=3`),
-      api.get(`/api/blogs/${locale}?status=published&limit=6`),
+      api.get(`/api/blogs?lang=${locale}&status=published&featured=true&limit=3`),
+      api.get(`/api/blogs?lang=${locale}&status=published&limit=6`),
       api.get(`/api/categories?lang=${locale}`)
     ])
       .then(([featuredRes, recentRes, categoriesRes]) => {

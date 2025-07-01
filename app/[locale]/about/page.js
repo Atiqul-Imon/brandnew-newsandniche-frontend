@@ -1,8 +1,8 @@
 // SERVER COMPONENT: About Us page with SSR for SEO
 import Link from 'next/link';
 
-export default function AboutPage({ params }) {
-  const locale = params?.locale || 'en';
+export default async function AboutPage({ params }) {
+  const { locale } = await params;
   
   const content = {
     en: {
@@ -202,7 +202,7 @@ export default function AboutPage({ params }) {
 }
 
 export async function generateMetadata({ params }) {
-  const locale = params?.locale || 'en';
+  const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   
   const title = locale === 'bn' 

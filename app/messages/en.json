@@ -82,7 +82,8 @@
     "signInExisting": "Sign in to existing account",
     "fullName": "Full Name",
     "namePlaceholder": "Enter your full name",
-    "confirmPasswordPlaceholder": "Confirm your password"
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "creatingAccount": "Creating account..."
   },
   "home": {
     "hero": {

@@ -35,7 +35,7 @@ export default function Navigation({ locale }) {
               >
                 {t('blog.allPosts')}
               </Link>
-              {user && (
+              {user && (user.role === 'admin' || user.role === 'moderator' || user.role === 'editor') && (
                 <Link
                   href={`/${locale}/admin/blogs`}
                   className={`text-gray-700 hover:text-gray-900 px-2 sm:px-3 py-2 ${locale === 'bn' ? 'font-noto-bangla text-lg sm:text-xl font-black' : 'text-sm font-medium'} nav-link`}
@@ -115,7 +115,7 @@ export default function Navigation({ locale }) {
               >
                 {t('blog.allPosts')}
               </Link>
-              {user && (
+              {user && (user.role === 'admin' || user.role === 'moderator' || user.role === 'editor') && (
                 <Link
                   href={`/${locale}/admin/blogs`}
                   className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-sm sm:text-base font-medium rounded ${locale === 'bn' ? 'font-noto-bangla text-lg sm:text-xl font-black' : ''}`}

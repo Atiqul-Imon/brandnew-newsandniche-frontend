@@ -1,14 +1,14 @@
 // SERVER COMPONENT: Register page with noindex for SEO
 import RegisterForm from '../../components/RegisterForm';
 
-export default function RegisterPage({ params }) {
-  const locale = params?.locale || 'en';
+export default async function RegisterPage({ params }) {
+  const { locale } = await params;
   
   return <RegisterForm locale={locale} />;
 }
 
 export async function generateMetadata({ params }) {
-  const locale = params?.locale || 'en';
+  const { locale } = await params;
   
   return {
     title: locale === 'bn' ? 'নিবন্ধন - নিউজ&নিচে' : 'Register - News&Niche',

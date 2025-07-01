@@ -13,7 +13,7 @@ export async function GET() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
     
-    const res = await fetch(`${API_BASE_URL}/api/blogs/en?status=published&limit=1000`, {
+    const res = await fetch(`${API_BASE_URL}/api/blogs?language=en&status=published&limit=1000`, {
       signal: controller.signal
     });
     clearTimeout(timeoutId);
@@ -30,7 +30,7 @@ export async function GET() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
     
-    const res = await fetch(`${API_BASE_URL}/api/blogs/bn?status=published&limit=1000`, {
+    const res = await fetch(`${API_BASE_URL}/api/blogs?language=bn&status=published&limit=1000`, {
       signal: controller.signal
     });
     clearTimeout(timeoutId);

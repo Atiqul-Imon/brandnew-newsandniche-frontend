@@ -24,8 +24,12 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!authLoading && !user) {
-      router.replace(`/${locale}/login?redirect=/${locale}/admin`);
+    if (!authLoading) {
+      if (!user) {
+        router.replace(`/${locale}/login?redirect=/${locale}/admin`);
+      } else if (user.role !== 'admin') {
+        router.replace(`/${locale}`); // or a not-authorized page
+      }
     }
   }, [authLoading, user, router, locale]);
 
@@ -38,9 +42,9 @@ export default function AdminDashboardPage() {
     try {
       // Fetch statistics
       const [blogsRes, usersRes, categoriesRes] = await Promise.all([
-        api.get(`/api/blogs/${locale}?limit=1`),
+        api.get(`/api/blogs?lang=${locale}&limit=1`),
         api.get('/api/users?limit=1'),
-        api.get('/api/categories?lang=en')
+        api.get(`/api/categories?lang=${locale}`)
       ]);
 
       const totalBlogs = blogsRes.data.data.total || 0;
@@ -58,7 +62,7 @@ export default function AdminDashboardPage() {
       });
 
       // Fetch recent blogs
-      const recentBlogsRes = await api.get(`/api/blogs/${locale}?limit=5&sortBy=createdAt&sortOrder=desc`);
+      const recentBlogsRes = await api.get(`/api/blogs?lang=${locale}&limit=5&sortBy=createdAt&sortOrder=desc`);
       setRecentBlogs(recentBlogsRes.data.data.blogs || []);
 
       // Fetch recent users
