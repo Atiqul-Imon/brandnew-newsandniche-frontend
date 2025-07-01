@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { api } from '../apiConfig';
 
@@ -10,6 +10,11 @@ export default function ImageUpload({ onImageUploaded, className = '', initialIm
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState('');
   const [uploadedImage, setUploadedImage] = useState(initialImage);
+
+  // Update uploadedImage when initialImage prop changes
+  useEffect(() => {
+    setUploadedImage(initialImage);
+  }, [initialImage]);
 
   const handleFileSelect = async (file) => {
     if (!file) return;

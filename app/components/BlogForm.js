@@ -388,7 +388,12 @@ export default function BlogForm({
                   <span className="ml-1 text-xs">↗</span>
                 </a>
               </div>
-              <ImageUpload onImageUploaded={handleImageUploaded} onImageRemoved={handleImageRemoved} className="mb-2" />
+              <ImageUpload 
+                onImageUploaded={handleImageUploaded} 
+                onImageRemoved={handleImageRemoved} 
+                initialImage={formData.featuredImage}
+                className="mb-2" 
+              />
               {!formData.featuredImage && (<p className="text-sm text-red-600 mt-1">Featured image is required</p>)}
             </div>
           </div>

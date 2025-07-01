@@ -54,6 +54,12 @@ export default function Navigation({ locale }) {
                 <span className={`text-xs sm:text-sm text-gray-700 ${locale === 'bn' ? 'font-noto-bangla text-lg sm:text-xl font-black' : ''}`}>
                   {t('common.welcome')}, {user.name}
                 </span>
+                <Link
+                  href={`/${locale}/profile`}
+                  className={`text-gray-700 hover:text-gray-900 px-2 sm:px-3 py-2 ${locale === 'bn' ? 'font-noto-bangla text-lg sm:text-xl font-black' : 'text-sm font-medium'} nav-link`}
+                >
+                  Profile
+                </Link>
                 <button
                   onClick={logout}
                   className={`text-gray-700 hover:text-gray-900 px-2 sm:px-3 py-2 ${locale === 'bn' ? 'font-noto-bangla text-lg sm:text-xl font-black' : 'text-sm font-medium'} nav-link`}
@@ -128,6 +134,13 @@ export default function Navigation({ locale }) {
               {user ? (
                 <>
                   <span className={`px-4 py-2 text-gray-700 text-sm sm:text-base ${locale === 'bn' ? 'font-noto-bangla text-lg sm:text-xl font-black' : ''}`}>{t('common.welcome')}, {user.name}</span>
+                  <Link
+                    href={`/${locale}/profile`}
+                    className={`w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 text-sm sm:text-base font-medium rounded ${locale === 'bn' ? 'font-noto-bangla text-lg sm:text-xl font-black' : ''}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
                   <button
                     onClick={() => { logout(); setMobileMenuOpen(false); }}
                     className={`w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 text-sm sm:text-base font-medium rounded ${locale === 'bn' ? 'font-noto-bangla text-lg sm:text-xl font-black' : ''}`}
