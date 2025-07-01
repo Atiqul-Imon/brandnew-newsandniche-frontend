@@ -440,10 +440,10 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning>{JSON.stringify(jsonLd)}</script>
-      <div className="w-full bg-white py-8 sm:py-12" aria-label="Main content">
+      <div className="w-full bg-white py-6 sm:py-8 md:py-12" aria-label="Main content">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           {/* Breadcrumb */}
-          <nav className="hidden sm:flex mt-6 mb-6 px-0 sm:px-2 text-sm text-[#757575] gap-2" aria-label="Breadcrumb">
+          <nav className="hidden sm:flex mt-4 sm:mt-6 mb-4 sm:mb-6 px-0 sm:px-2 text-xs sm:text-sm text-[#757575] gap-2" aria-label="Breadcrumb">
             <ol className="flex items-center flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
               <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
                 <Link href={`/${locale}`} className="hover:text-[#292929] transition-colors" itemProp="item">
@@ -467,60 +467,65 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
           </nav>
 
           <article className="rounded-none">
-            {/* Featured Image (no rounded corners, no extra background, flush to top) */}
+            {/* Featured Image - Fixed height for tablets */}
             {blog.featuredImage && (
-              <div className="relative w-full aspect-video min-h-[210px] bg-transparent rounded-none overflow-visible p-0 m-0">
-                <Image
-                  src={blog.featuredImage}
-                  alt={blog.title[locale]}
-                  className="object-cover rounded-none"
-                  fill
-                  priority
-                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  unoptimized
-                />
+              <div className="relative w-full bg-transparent rounded-none overflow-visible p-0 m-0">
+                {/* Mobile: aspect-video, Tablet: fixed height, Desktop: aspect-video */}
+                <div className="relative w-full bg-transparent rounded-none overflow-hidden">
+                  <div className="aspect-video sm:aspect-video md:h-[400px] lg:aspect-video xl:aspect-video min-h-[250px] sm:min-h-[300px] md:min-h-[400px] lg:min-h-[450px]">
+                    <Image
+                      src={blog.featuredImage}
+                      alt={blog.title[locale]}
+                      className="object-cover rounded-none"
+                      fill
+                      priority
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      unoptimized
+                    />
+                  </div>
+                </div>
               </div>
             )}
 
-            <div className="px-0 sm:px-8 pb-2 pt-4 sm:pt-8">
+            <div className="px-0 sm:px-4 md:px-6 lg:px-8 pb-2 pt-4 sm:pt-6 md:pt-8">
               {/* Meta info / header */}
               <header className="mb-5">
-                <div className="flex flex-wrap items-center text-sm text-[#757575] mb-4 sm:mb-6 gap-x-3 gap-y-1">
-                  <span className="capitalize bg-[#f2f2f2] text-[#292929] px-3 py-1 rounded-full font-medium text-sm">{blog.category[locale]}</span>
+                <div className="flex flex-wrap items-center text-sm text-[#757575] mb-4 sm:mb-5 md:mb-6 gap-x-2 sm:gap-x-3 gap-y-1">
+                  <span className="capitalize bg-[#f2f2f2] text-[#292929] px-2 sm:px-3 py-1 rounded-full font-medium text-xs sm:text-sm">{blog.category[locale]}</span>
                   <span className="hidden sm:inline text-[#757575]">·</span>
-                  <span className="text-[#757575]">{blog.readTime[locale]} {t('blog.minRead')}</span>
+                  <span className="text-[#757575] text-xs sm:text-sm">{blog.readTime[locale]} {t('blog.minRead')}</span>
                   <span className="hidden sm:inline text-[#757575]">·</span>
-                  <span className="text-[#757575]">{new Date(blog.publishedAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                  <span className="text-[#757575] text-xs sm:text-sm">{new Date(blog.publishedAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                   {blog.isFeatured && (
                     <>
                       <span className="hidden sm:inline text-[#757575]">·</span>
-                      <span className="bg-[#1a8917] text-white px-3 py-1 rounded-full text-sm font-medium">{t('blog.featured')}</span>
+                      <span className="bg-[#1a8917] text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium">{t('blog.featured')}</span>
                     </>
                   )}
                 </div>
-                <h1 className={`text-3xl sm:text-5xl md:text-6xl ${locale === 'bn' ? 'font-bangla-blog-heading' : 'font-medium-heading'} text-[#292929] leading-tight mb-4 sm:mb-6 tracking-tight`}>{blog.title[locale]}</h1>
-                <p className={`text-xl sm:text-2xl text-[#757575] mb-6 sm:mb-8 leading-relaxed ${locale === 'bn' ? 'font-bangla-blog' : 'font-medium-style'} font-normal`}>{blog.excerpt[locale]}</p>
-                <div className="flex items-center gap-4 flex-col sm:flex-row sm:gap-7 mb-2">
+                <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl ${locale === 'bn' ? 'font-bangla-blog-heading' : 'font-medium-heading'} text-[#292929] leading-tight mb-3 sm:mb-4 md:mb-6 tracking-tight`}>{blog.title[locale]}</h1>
+                <p className={`text-lg sm:text-xl md:text-2xl text-[#757575] mb-4 sm:mb-6 md:mb-8 leading-relaxed ${locale === 'bn' ? 'font-bangla-blog' : 'font-medium-style'} font-normal`}>{blog.excerpt[locale]}</p>
+                <div className="flex items-center gap-3 sm:gap-4 md:gap-7 flex-col sm:flex-row mb-2">
                   {/* Author */}
                   <div className="flex items-center">
                     {getAuthorField(blog, 'avatar') && (
                       <Image
                         src={getAuthorField(blog, 'avatar')}
                         alt={getAuthorField(blog, 'name') || 'Author'}
-                        className="w-10 h-10 sm:w-12 sm:h-12 object-cover mr-3"
+                        className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-cover mr-2 sm:mr-3"
                         width={48}
                         height={48}
                         unoptimized
                       />
                     )}
                     <div>
-                      <span className="text-[#292929] font-semibold text-lg sm:text-xl">{getAuthorField(blog, 'name') || 'News & Niche'}</span>
+                      <span className={`text-[#292929] font-semibold ${locale === 'bn' ? 'font-bangla-ui' : ''} text-base sm:text-lg md:text-xl`}>{getAuthorField(blog, 'name') || 'News & Niche'}</span>
                       {getAuthorField(blog, 'bio') && (
-                        <p className="text-sm text-[#757575] mt-1 max-w-xs line-clamp-2 font-normal">{getAuthorField(blog, 'bio')}</p>
+                        <p className={`text-xs sm:text-sm text-[#757575] mt-1 max-w-xs line-clamp-2 font-normal ${locale === 'bn' ? 'font-bangla' : ''}`}>{getAuthorField(blog, 'bio')}</p>
                       )}
                       {getAuthorField(blog, 'website') && (
                         <a href={getAuthorField(blog, 'website')} target="_blank" rel="noopener noreferrer"
-                          className="text-sm text-[#1a8917] hover:text-[#0f5a0f] border-b border-[#1a8917] hover:border-[#0f5a0f] pb-0.5 transition-colors block mt-1">🌐 Visit Website</a>
+                          className={`text-xs sm:text-sm text-[#1a8917] hover:text-[#0f5a0f] border-b border-[#1a8917] hover:border-[#0f5a0f] pb-0.5 transition-colors block mt-1 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>🌐 Visit Website</a>
                       )}
                     </div>
                   </div>
@@ -529,31 +534,31 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                     <div className="flex items-center gap-2 mt-2 sm:mt-0">
                       {getAuthorField(blog, 'social').twitter && (
                         <a href={getAuthorField(blog, 'social').twitter} target="_blank" rel="noopener noreferrer"
-                          className="w-8 h-8 bg-[#e5e5e5] text-[#174ea6] rounded-full flex items-center justify-center hover:bg-[#dbe6f8]" title="Twitter">𝕏</a>
+                          className="w-6 h-6 sm:w-8 sm:h-8 bg-[#e5e5e5] text-[#174ea6] rounded-full flex items-center justify-center hover:bg-[#dbe6f8]" title="Twitter">𝕏</a>
                       )}
                       {getAuthorField(blog, 'social').linkedin && (
                         <a href={getAuthorField(blog, 'social').linkedin} target="_blank" rel="noopener noreferrer"
-                          className="w-8 h-8 bg-[#e5e5e5] text-[#174ea6] rounded-full flex items-center justify-center hover:bg-[#dbe6f8]" title="LinkedIn">in</a>
+                          className="w-6 h-6 sm:w-8 sm:h-8 bg-[#e5e5e5] text-[#174ea6] rounded-full flex items-center justify-center hover:bg-[#dbe6f8]" title="LinkedIn">in</a>
                       )}
                       {getAuthorField(blog, 'social').github && (
                         <a href={getAuthorField(blog, 'social').github} target="_blank" rel="noopener noreferrer"
-                          className="w-8 h-8 bg-[#e5e5e5] text-[#111] rounded-full flex items-center justify-center hover:bg-[#e4e4e4]" title="GitHub">GH</a>
+                          className="w-6 h-6 sm:w-8 sm:h-8 bg-[#e5e5e5] text-[#111] rounded-full flex items-center justify-center hover:bg-[#e4e4e4]" title="GitHub">GH</a>
                       )}
                     </div>
                   )}
                   {/* Social Share */}
-                  <div className="flex items-center gap-3 mt-2 sm:mt-0 ml-auto">
-                    <button onClick={() => handleShare('facebook')} aria-label="Share on Facebook" className="hover:scale-105 transition-transform p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#1877F3', background: 'none', border: 'none' }}>
-                      <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.127V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/></svg>
+                  <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-0 ml-auto">
+                    <button onClick={() => handleShare('facebook')} aria-label="Share on Facebook" className="hover:scale-105 transition-transform p-1.5 sm:p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#1877F3', background: 'none', border: 'none' }}>
+                      <svg width="20" height="20" className="sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.127V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/></svg>
                     </button>
-                    <button onClick={() => handleShare('twitter')} aria-label="Share on Twitter" className="hover:scale-105 transition-transform p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#1da1f2', background: 'none', border: 'none' }}>
-                      <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.72 0-4.924 2.206-4.924 4.924 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.424.729-.666 1.577-.666 2.476 0 1.708.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.395 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 14.002-7.496 14.002-13.986 0-.21 0-.423-.016-.634.962-.689 1.8-1.56 2.46-2.548z"/></svg>
+                    <button onClick={() => handleShare('twitter')} aria-label="Share on Twitter" className="hover:scale-105 transition-transform p-1.5 sm:p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#1da1f2', background: 'none', border: 'none' }}>
+                      <svg width="20" height="20" className="sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.72 0-4.924 2.206-4.924 4.924 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.424.729-.666 1.577-.666 2.476 0 1.708.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.395 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 14.002-7.496 14.002-13.986 0-.21 0-.423-.016-.634.962-.689 1.8-1.56 2.46-2.548z"/></svg>
                     </button>
-                    <button onClick={() => handleShare('linkedin')} aria-label="Share on LinkedIn" className="hover:scale-105 transition-transform p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#0077B5', background: 'none', border: 'none' }}>
-                      <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.327-.027-3.037-1.849-3.037-1.851 0-2.132 1.445-2.132 2.939v5.667h-3.554V9h3.414v1.561h.049c.476-.899 1.637-1.849 3.37-1.849 3.602 0 4.267 2.368 4.267 5.455v6.285zM5.337 7.433c-1.144 0-2.069-.926-2.069-2.068 0-1.143.925-2.069 2.069-2.069 1.143 0 2.068.926 2.068 2.069 0 1.142-.925 2.068-2.068 2.068zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.2 24 24 23.229 24 22.271V1.723C24 .771 23.2 0 22.225 0z"/></svg>
+                    <button onClick={() => handleShare('linkedin')} aria-label="Share on LinkedIn" className="hover:scale-105 transition-transform p-1.5 sm:p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#0077B5', background: 'none', border: 'none' }}>
+                      <svg width="20" height="20" className="sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.327-.027-3.037-1.849-3.037-1.851 0-2.132 1.445-2.132 2.939v5.667h-3.554V9h3.414v1.561h.049c.476-.899 1.637-1.849 3.37-1.849 3.602 0 4.267 2.368 4.267 5.455v6.285zM5.337 7.433c-1.144 0-2.069-.926-2.069-2.068 0-1.143.925-2.069 2.069-2.069 1.143 0 2.068.926 2.068 2.069 0 1.142-.925 2.068-2.068 2.068zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.2 24 24 23.229 24 22.271V1.723C24 .771 23.2 0 22.225 0z"/></svg>
                     </button>
-                    <button onClick={() => handleShare('whatsapp')} aria-label="Share on WhatsApp" className="hover:scale-105 transition-transform p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#25D366', background: 'none', border: 'none' }}>
-                      <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.029-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.151-.174.2-.298.3-.497.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.363.709.306 1.262.489 1.694.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+                    <button onClick={() => handleShare('whatsapp')} aria-label="Share on WhatsApp" className="hover:scale-105 transition-transform p-1.5 sm:p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#25D366', background: 'none', border: 'none' }}>
+                      <svg width="20" height="20" className="sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.029-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.151-.174.2-.298.3-.497.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.363.709.306 1.262.489 1.694.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
                     </button>
                   </div>
                 </div>
@@ -632,11 +637,11 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
           </article>
           {/* Related Posts */}
           {relatedBlogs.length > 0 && (
-            <section className="mt-12 px-0 sm:px-0">
-              <h2 className={`text-2xl font-semibold text-[#292929] mb-6 sm:mb-8 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+            <section className="mt-8 sm:mt-12 px-0 sm:px-0">
+              <h2 className={`text-xl sm:text-2xl font-semibold text-[#292929] mb-4 sm:mb-6 md:mb-8 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                 {t('blog.relatedPosts')}
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
                 {relatedBlogs.map((relatedBlog) => (
                   <Link
                     key={relatedBlog._id}
@@ -644,25 +649,25 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                     className="bg-white overflow-hidden hover:shadow-lg transition-shadow duration-300 block group border border-[#e6e6e6] rounded-lg"
                     style={{ textDecoration: 'none' }}
                   >
-                    <div className="relative w-full aspect-video min-h-[120px] bg-[#f2f2f2]">
+                    <div className="relative w-full aspect-video min-h-[120px] sm:min-h-[140px] md:min-h-[160px] bg-[#f2f2f2]">
                       <Image
                         src={relatedBlog.featuredImage}
                         alt={relatedBlog.title[locale]}
                         className="object-cover rounded-t-lg"
                         fill
                         unoptimized
-                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       />
                     </div>
-                    <div className="p-5">
-                      <div className="flex items-center text-sm text-[#757575] mb-3 gap-2 font-normal">
+                    <div className="p-3 sm:p-4 md:p-5">
+                      <div className="flex items-center text-xs sm:text-sm text-[#757575] mb-2 sm:mb-3 gap-1 sm:gap-2 font-normal">
                         <span className="capitalize">{relatedBlog.category[locale]}</span>
                         <span>·</span>
                         <span>{relatedBlog.readTime[locale]} {t('blog.minRead')}</span>
                       </div>
-                      <h3 className={`text-lg font-semibold text-[#292929] mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.title[locale]}</h3>
-                      <p className={`text-[#757575] mb-4 line-clamp-2 text-sm ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.excerpt[locale]}</p>
-                      <span className="text-[#1a8917] hover:text-[#0f5a0f] border-b border-[#1a8917] hover:border-[#0f5a0f] pb-0.5 transition-colors font-medium text-sm">{t('blog.readMore')} &#8594;</span>
+                      <h3 className={`text-base sm:text-lg font-semibold text-[#292929] mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.title[locale]}</h3>
+                      <p className={`text-[#757575] mb-3 sm:mb-4 line-clamp-2 text-xs sm:text-sm ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.excerpt[locale]}</p>
+                      <span className={`text-[#1a8917] hover:text-[#0f5a0f] border-b border-[#1a8917] hover:border-[#0f5a0f] pb-0.5 transition-colors font-medium text-xs sm:text-sm ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('blog.readMore')} &#8594;</span>
                     </div>
                   </Link>
                 ))}

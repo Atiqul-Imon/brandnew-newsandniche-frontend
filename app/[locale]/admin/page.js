@@ -220,7 +220,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Recent Blogs */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="p-6 border-b border-gray-200">
@@ -270,6 +270,80 @@ export default function AdminDashboardPage() {
                 <RecentItem key={user._id} item={user} type="user" locale={locale} />
               ))
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Tools */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="p-6 border-b border-gray-200">
+          <h3 className="text-lg font-medium text-gray-900">Quick Tools</h3>
+          <p className="text-sm text-gray-600">Essential tools for content management</p>
+        </div>
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a
+              href="https://squoosh.app/editor"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-all group"
+            >
+              <div className="flex-shrink-0 mr-4">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                  <span className="text-2xl">🖼️</span>
+                </div>
+              </div>
+              <div className="flex-1">
+                <h4 className="text-sm font-medium text-gray-900 group-hover:text-green-700">Image Optimizer</h4>
+                <p className="text-xs text-gray-500 group-hover:text-green-600">Optimize image size and quality</p>
+                <div className="flex items-center mt-1">
+                  <span className="text-xs text-green-600 font-medium">Squoosh.app</span>
+                  <span className="ml-1 text-xs text-gray-400 group-hover:text-green-500">↗</span>
+                </div>
+              </div>
+            </a>
+            
+            <a
+              href="https://www.google.com/recaptcha/admin"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all group"
+            >
+              <div className="flex-shrink-0 mr-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <span className="text-2xl">🔒</span>
+                </div>
+              </div>
+              <div className="flex-1">
+                <h4 className="text-sm font-medium text-gray-900 group-hover:text-blue-700">reCAPTCHA</h4>
+                <p className="text-xs text-gray-500 group-hover:text-blue-600">Manage security settings</p>
+                <div className="flex items-center mt-1">
+                  <span className="text-xs text-blue-600 font-medium">Google Admin</span>
+                  <span className="ml-1 text-xs text-gray-400 group-hover:text-blue-500">↗</span>
+                </div>
+              </div>
+            </a>
+            
+            <a
+              href="https://analytics.google.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-all group"
+            >
+              <div className="flex-shrink-0 mr-4">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                  <span className="text-2xl">📊</span>
+                </div>
+              </div>
+              <div className="flex-1">
+                <h4 className="text-sm font-medium text-gray-900 group-hover:text-purple-700">Analytics</h4>
+                <p className="text-xs text-gray-500 group-hover:text-purple-600">View website statistics</p>
+                <div className="flex items-center mt-1">
+                  <span className="text-xs text-purple-600 font-medium">Google Analytics</span>
+                  <span className="ml-1 text-xs text-gray-400 group-hover:text-purple-500">↗</span>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
       </div>

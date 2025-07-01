@@ -15,7 +15,33 @@ export default function BlogForm({
   const t = useTranslations();
   const locale = useLocale();
   const router = useRouter();
-  const [formData, setFormData] = useState(initialData);
+  
+  // Default form data structure
+  const defaultFormData = {
+    title: { en: '', bn: '' },
+    content: { en: '', bn: '' },
+    excerpt: { en: '', bn: '' },
+    slug: { en: '', bn: '' },
+    category: { en: '', bn: '' },
+    tags: [],
+    featuredImage: '',
+    status: 'draft',
+    readTime: { en: 5, bn: 5 },
+    isFeatured: false,
+    seoTitle: { en: '', bn: '' },
+    seoDescription: { en: '', bn: '' },
+    seoKeywords: { en: [], bn: [] },
+    author: {
+      name: '',
+      email: '',
+      bio: '',
+      avatar: '',
+      website: '',
+      social: { twitter: '', linkedin: '', github: '' }
+    }
+  };
+  
+  const [formData, setFormData] = useState(defaultFormData);
   const [categoriesEn, setCategoriesEn] = useState([]);
   const [categoriesBn, setCategoriesBn] = useState([]);
   const [activeLang, setActiveLang] = useState('en');
@@ -23,7 +49,69 @@ export default function BlogForm({
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setFormData(initialData);
+    console.log('📝 BlogForm received initialData:', initialData);
+    if (initialData) {
+      // Ensure all required fields exist with proper structure
+      const processedData = {
+        title: {
+          en: initialData.title?.en || '',
+          bn: initialData.title?.bn || ''
+        },
+        content: {
+          en: initialData.content?.en || '',
+          bn: initialData.content?.bn || ''
+        },
+        excerpt: {
+          en: initialData.excerpt?.en || '',
+          bn: initialData.excerpt?.bn || ''
+        },
+        slug: {
+          en: initialData.slug?.en || '',
+          bn: initialData.slug?.bn || ''
+        },
+        category: {
+          en: initialData.category?.en || '',
+          bn: initialData.category?.bn || ''
+        },
+        seoTitle: {
+          en: initialData.seoTitle?.en || '',
+          bn: initialData.seoTitle?.bn || ''
+        },
+        seoDescription: {
+          en: initialData.seoDescription?.en || '',
+          bn: initialData.seoDescription?.bn || ''
+        },
+        seoKeywords: {
+          en: initialData.seoKeywords?.en || [],
+          bn: initialData.seoKeywords?.bn || []
+        },
+        readTime: {
+          en: initialData.readTime?.en || 5,
+          bn: initialData.readTime?.bn || 5
+        },
+        tags: initialData.tags || [],
+        featuredImage: initialData.featuredImage || '',
+        status: initialData.status || 'draft',
+        isFeatured: initialData.isFeatured || false,
+        author: {
+          name: initialData.author?.name || '',
+          email: initialData.author?.email || '',
+          bio: initialData.author?.bio || '',
+          avatar: initialData.author?.avatar || '',
+          website: initialData.author?.website || '',
+          social: {
+            twitter: initialData.author?.social?.twitter || '',
+            linkedin: initialData.author?.social?.linkedin || '',
+            github: initialData.author?.social?.github || ''
+          }
+        }
+      };
+      console.log('✅ Processed form data:', processedData);
+      setFormData(processedData);
+    } else {
+      console.log('📝 No initialData provided, using default structure');
+      setFormData(defaultFormData);
+    }
   }, [initialData]);
 
   // Fetch categories
@@ -286,7 +374,20 @@ export default function BlogForm({
               <input type="number" value={formData.readTime.bn} onChange={e => setFormData(prev => ({ ...prev, readTime: { ...prev.readTime, bn: Number(e.target.value) } }))} className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg text-gray-900 transition-all duration-200 ease-in-out bg-white shadow-sm hover:shadow-md focus:shadow-lg" required={activeLang === 'bn'} disabled={activeLang !== 'bn'} />
             </div>
             <div className="mt-4">
-              <label className="block text-base font-medium text-gray-700 mb-3">{t('blog.featuredImage')} *</label>
+              <div className="flex items-center justify-between mb-3">
+                <label className="block text-base font-medium text-gray-700">{t('blog.featuredImage')} *</label>
+                <a
+                  href="https://squoosh.app/editor"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-sm text-green-600 hover:text-green-700 font-medium transition-colors"
+                  title="Optimize image size and quality"
+                >
+                  <span className="mr-1">🖼️</span>
+                  Image Optimizer
+                  <span className="ml-1 text-xs">↗</span>
+                </a>
+              </div>
               <ImageUpload onImageUploaded={handleImageUploaded} onImageRemoved={handleImageRemoved} className="mb-2" />
               {!formData.featuredImage && (<p className="text-sm text-red-600 mt-1">Featured image is required</p>)}
             </div>

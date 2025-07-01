@@ -21,10 +21,73 @@ export default function EditBlogPage() {
   useEffect(() => {
     async function fetchBlog() {
       try {
+        console.log('🔍 Fetching blog with ID:', params.id);
         const res = await api.get(`/api/blogs/admin/${params.id}`);
-        setInitialData(res.data.data.blog);
+        console.log('📄 Blog data received:', res.data.data.blog);
+        
+        const blogData = res.data.data.blog;
+        
+        // Ensure all required fields exist with proper structure
+        const processedData = {
+          title: {
+            en: blogData.title?.en || '',
+            bn: blogData.title?.bn || ''
+          },
+          content: {
+            en: blogData.content?.en || '',
+            bn: blogData.content?.bn || ''
+          },
+          excerpt: {
+            en: blogData.excerpt?.en || '',
+            bn: blogData.excerpt?.bn || ''
+          },
+          slug: {
+            en: blogData.slug?.en || '',
+            bn: blogData.slug?.bn || ''
+          },
+          category: {
+            en: blogData.category?.en || '',
+            bn: blogData.category?.bn || ''
+          },
+          seoTitle: {
+            en: blogData.seoTitle?.en || '',
+            bn: blogData.seoTitle?.bn || ''
+          },
+          seoDescription: {
+            en: blogData.seoDescription?.en || '',
+            bn: blogData.seoDescription?.bn || ''
+          },
+          seoKeywords: {
+            en: blogData.seoKeywords?.en || [],
+            bn: blogData.seoKeywords?.bn || []
+          },
+          readTime: {
+            en: blogData.readTime?.en || 5,
+            bn: blogData.readTime?.bn || 5
+          },
+          tags: blogData.tags || [],
+          featuredImage: blogData.featuredImage || '',
+          status: blogData.status || 'draft',
+          isFeatured: blogData.isFeatured || false,
+          author: {
+            name: blogData.author?.name || '',
+            email: blogData.author?.email || '',
+            bio: blogData.author?.bio || '',
+            avatar: blogData.author?.avatar || '',
+            website: blogData.author?.website || '',
+            social: {
+              twitter: blogData.author?.social?.twitter || '',
+              linkedin: blogData.author?.social?.linkedin || '',
+              github: blogData.author?.social?.github || ''
+            }
+          }
+        };
+        
+        console.log('✅ Processed blog data:', processedData);
+        setInitialData(processedData);
       } catch (err) {
-        setError(err.response?.data?.message || t('errors.blogNotFound'));
+        console.error('❌ Error fetching blog:', err);
+        setError(err.response?.data?.message || t('errors.blogNotFound') || 'Blog not found');
       } finally {
         setLoading(false);
       }
@@ -36,6 +99,8 @@ export default function EditBlogPage() {
     setLoading(true);
     setError(null);
     try {
+      console.log('🔄 Updating blog with data:', formData);
+      
       // Merge the updated formData with the existing initialData
       const mergedData = {
         ...initialData,
@@ -55,6 +120,9 @@ export default function EditBlogPage() {
         readTime: { ...initialData.readTime, ...formData.readTime },
         isFeatured: typeof formData.isFeatured === 'boolean' ? formData.isFeatured : initialData.isFeatured,
       };
+      
+      console.log('📝 Merged data for update:', mergedData);
+      
       // Validate required fields for the active language
       const errors = [];
       if (!mergedData.title[activeLang]) errors.push('Title is required');
@@ -69,12 +137,16 @@ export default function EditBlogPage() {
         setLoading(false);
         return;
       }
+      
       const token = localStorage.getItem('token');
-      await api.put(`/api/blogs/${params.id}`, mergedData, {
+      const response = await api.put(`/api/blogs/${params.id}`, mergedData, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
+      
+      console.log('✅ Blog updated successfully:', response.data);
       router.push(`/${locale}/admin/blogs`);
     } catch (err) {
+      console.error('❌ Error updating blog:', err);
       setError(err.response?.data?.message || 'Update failed');
     } finally {
       setLoading(false);
@@ -82,19 +154,61 @@ export default function EditBlogPage() {
   };
 
   if (loading) {
-    return <div className="text-center py-8">{t('common.loading')}</div>;
-  }
-  if (error) {
     return (
-      <div className="text-center py-8">
-        <div className="text-red-600 mb-4">{error}</div>
-        <button onClick={() => router.back()} className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">{t('common.goBack')}</button>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">{t('common.loading') || 'Loading...'}</p>
+        </div>
       </div>
     );
   }
+  
+  if (error) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="text-red-800 text-lg font-medium mb-4">Error Loading Blog</div>
+          <div className="text-red-700 mb-6">{error}</div>
+          <div className="flex space-x-4">
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+            >
+              Try Again
+            </button>
+            <button 
+              onClick={() => router.back()} 
+              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
+            >
+              {t('common.goBack') || 'Go Back'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!initialData) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+          <div className="text-yellow-800 text-lg font-medium mb-4">No Blog Data Found</div>
+          <div className="text-yellow-700 mb-6">The blog data could not be loaded properly.</div>
+          <button 
+            onClick={() => router.back()} 
+            className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors"
+          >
+            {t('common.goBack') || 'Go Back'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <BlogForm
-      initialData={initialData ? JSON.parse(JSON.stringify(initialData)) : null}
+      initialData={initialData}
       onSubmit={handleUpdate}
       submitLabel="Save Changes"
       autosaveKey={`blog-edit-draft-${params.id}`}
