@@ -28,7 +28,9 @@ export async function generateMetadata({ params }) {
         slugsByLocale[l] = data.data.blog.slug?.[l] || slug;
       }
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error('Error fetching locale slugs:', e);
+  }
 
   try {
     const blogRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}/slug/${slug}`);
@@ -36,14 +38,35 @@ export async function generateMetadata({ params }) {
     if (blogData.success) {
       const blog = blogData.data.blog;
       title = blog.title?.[locale] || title;
-      description = blog.seoDescription?.[locale] || blog.excerpt?.[locale] || description;
+      
+      // Enhanced description handling with better fallbacks
+      let blogDescription = blog.seoDescription?.[locale] || blog.excerpt?.[locale];
+      
+      // If no description from blog, create one from title
+      if (!blogDescription && blog.title?.[locale]) {
+        blogDescription = `Read "${blog.title[locale]}" on News&Niche. Get the latest insights and updates.`;
+      }
+      
+      // Final fallback
+      description = blogDescription || description;
+      
+      // Ensure description is not too long (max 160 characters for SEO)
+      if (description.length > 160) {
+        description = description.substring(0, 157) + '...';
+      }
+      
       image = blog.featuredImage || image;
       canonical = `${siteUrl}/${locale}/blogs/${blog.slug?.[locale] || slug}`;
       publishedTime = blog.publishedAt || null;
       author = blog.author?.name || author;
       keywords = blog.seoKeywords?.[locale] || [];
+      
+      console.log('Meta description generated:', description);
+    } else {
+      console.error('Blog not found or API error:', blogData.message);
     }
   } catch (err) {
+    console.error('Error fetching blog data:', err);
     // Use fallback values
   }
 

@@ -10,6 +10,35 @@ const inter = Inter({
   variable: '--font-inter'
 });
 
+export const metadata = {
+  title: {
+    default: 'News&Niche',
+    template: '%s | News&Niche'
+  },
+  description: 'Latest news, insights, and stories from News&Niche.',
+  icons: {
+    icon: [
+      { url: '/favicon.svg?v=2', type: 'image/svg+xml' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.svg?v=2', type: 'image/svg+xml' }
+    ],
+    shortcut: '/favicon.svg?v=2'
+  },
+  manifest: '/manifest.json',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
+
 export default async function RootLayout({ children, params: { locale } }) {
   const messages = await getMessages();
   

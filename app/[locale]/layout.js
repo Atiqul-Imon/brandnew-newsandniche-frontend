@@ -85,9 +85,9 @@ export async function generateMetadata(props) {
       creator: '@newsandniche',
     },
     icons: {
-      icon: '/favicon.ico',
-      shortcut: '/favicon.ico',
-      apple: '/favicon.ico',
+      icon: '/favicon.svg',
+      shortcut: '/favicon.svg',
+      apple: '/apple-touch-icon.svg',
     },
     manifest: '/manifest.json',
   };
@@ -108,7 +108,8 @@ export default async function LocaleLayout(props) {
   return (
     <html lang={locale} className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.svg?v=2" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       
