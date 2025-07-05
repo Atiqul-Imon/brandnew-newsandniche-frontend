@@ -20,8 +20,8 @@ export default function HomeClient({ locale }) {
     setLoadingData(true);
     setError(null);
     Promise.all([
-      api.get(`/api/blogs?lang=${locale}&status=published&featured=true&limit=3`),
-      api.get(`/api/blogs?lang=${locale}&status=published&limit=6`),
+      api.get(`/api/blogs?lang=${locale}&status=published&featured=true&limit=7`),
+      api.get(`/api/blogs?lang=${locale}&status=published&limit=9`),
       api.get(`/api/categories?lang=${locale}`)
     ])
       .then(([featuredRes, recentRes, categoriesRes]) => {
@@ -107,50 +107,57 @@ export default function HomeClient({ locale }) {
       </script>
       
       <main className="min-h-screen bg-gray-100" aria-label="Main content">
-        {/* Hero Section */}
-        <section className="bg-gray-900 text-gray-100 py-12 sm:py-20" aria-label="Hero">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className={`text-3xl sm:text-5xl font-bold mb-4 sm:mb-6 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.hero.title')}</h1>
-            <p className={`text-base sm:text-xl mb-6 sm:mb-8 max-w-3xl mx-auto ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.hero.subtitle')}</p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <Link
-                href={`/${locale}/blogs`}
-                className={`bg-gray-100 text-gray-900 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-white transition-colors text-base sm:text-lg ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
-              >
-                {t('home.hero.browseBlogs')}
-              </Link>
-              {!user && (
-                <Link
-                  href={`/${locale}/register`}
-                  className={`border-2 border-gray-100 text-gray-100 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 hover:text-gray-900 transition-colors text-base sm:text-lg ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
-                >
-                  {t('home.hero.joinUs')}
-                </Link>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Blogs Section */}
+        {/* --- Featured Blogs Section (Hero Replacement) --- */}
         {featuredBlogs.length > 0 && (
-          <section className="py-10 sm:py-16" aria-label="Featured blogs">
+          <section className="py-8 sm:py-12" aria-label="Featured blogs">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.featured.title')}</h2>
+              {/* Lead Featured Blog */}
+              <div className="mb-8">
+                <Link
+                  href={`/${locale}/blogs/${featuredBlogs[0].slug[locale]}`}
+                  className="block group bg-white overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <div className="relative w-full aspect-[3/2] bg-[#f2f2f2]">
+                    <Image
+                      src={featuredBlogs[0].featuredImage}
+                      alt={featuredBlogs[0].title[locale]}
+                      className="object-cover"
+                      fill
+                      unoptimized
+                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                      <span className="capitalize">{featuredBlogs[0].category[locale]}</span>
+                      <span className="mx-2">•</span>
+                      <span>{featuredBlogs[0].readTime[locale]} {t('blog.minRead')}</span>
+                      <span className="mx-2">•</span>
+                      <span>{new Date(featuredBlogs[0].publishedAt).toLocaleDateString(locale)}</span>
+                    </div>
+                    <h3 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{featuredBlogs[0].title[locale]}</h3>
+                    <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 text-lg ${locale === 'bn' ? 'font-bangla' : ''}`}>{featuredBlogs[0].excerpt[locale]}</p>
+                  </div>
+                </Link>
+              </div>
+              {/* Grid of next 6 featured blogs */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                {featuredBlogs.map((blog) => (
+                {featuredBlogs.slice(1, 7).map((blog) => (
                   <Link
                     key={blog._id}
                     href={`/${locale}/blogs/${blog.slug[locale]}`}
-                    className="bg-white flex flex-col cursor-pointer group"
+                    className="bg-white flex flex-col cursor-pointer group overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300"
                     style={{ textDecoration: 'none' }}
                   >
-                    <div className="relative w-full h-56 sm:h-64">
+                    <div className="relative w-full aspect-[3/2] bg-[#f2f2f2]">
                       <Image
                         src={blog.featuredImage}
                         alt={blog.title[locale]}
-                        className="w-full object-cover"
+                        className="object-cover"
                         fill
                         unoptimized
+                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                       />
                     </div>
                     <div className="p-4 sm:p-6 flex flex-col flex-1">
@@ -158,6 +165,8 @@ export default function HomeClient({ locale }) {
                         <span className="capitalize">{blog.category[locale]}</span>
                         <span className="mx-2">•</span>
                         <span>{blog.readTime[locale]} {t('blog.minRead')}</span>
+                        <span className="mx-2">•</span>
+                        <span>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
                       </div>
                       <h3 className={`text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.title[locale]}</h3>
                       <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.excerpt[locale]}</p>
@@ -168,8 +177,7 @@ export default function HomeClient({ locale }) {
             </div>
           </section>
         )}
-
-        {/* Recent Blogs Section */}
+        {/* --- Recent Blogs Section --- */}
         {recentBlogs.length > 0 && (
           <section className="py-10 sm:py-16" aria-label="Recent blogs">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -183,20 +191,21 @@ export default function HomeClient({ locale }) {
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                {recentBlogs.slice(0, 6).map((blog) => (
+                {recentBlogs.slice(0, 9).map((blog) => (
                   <Link
                     key={blog._id}
                     href={`/${locale}/blogs/${blog.slug[locale]}`}
-                    className="bg-white flex flex-col cursor-pointer group"
+                    className="bg-white flex flex-col cursor-pointer group overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300"
                     style={{ textDecoration: 'none' }}
                   >
-                    <div className="relative w-full h-56 sm:h-64">
+                    <div className="relative w-full aspect-[3/2] bg-[#f2f2f2]">
                       <Image
                         src={blog.featuredImage}
                         alt={blog.title[locale]}
-                        className="w-full object-cover"
+                        className="object-cover"
                         fill
                         unoptimized
+                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                       />
                     </div>
                     <div className="p-4 sm:p-6 flex flex-col flex-1">
@@ -214,20 +223,6 @@ export default function HomeClient({ locale }) {
             </div>
           </section>
         )}
-
-        {/* Call to Action */}
-        <section className="py-10 sm:py-16 bg-gray-900 text-gray-100" aria-label="Call to action">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className={`text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.cta.title')}</h2>
-            <p className={`text-base sm:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.cta.subtitle')}</p>
-            <Link
-              href={`/${locale}/blogs`}
-              className={`bg-gray-100 text-gray-900 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-white transition-colors text-base sm:text-lg ${locale === 'bn' ? 'font-bangla-ui' : ''}`}
-            >
-              {t('home.cta.button')}
-            </Link>
-          </div>
-        </section>
       </main>
     </>
   );
