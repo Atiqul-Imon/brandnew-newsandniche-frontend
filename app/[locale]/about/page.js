@@ -37,16 +37,7 @@ export default async function AboutPage({ params }) {
           }
         ]
       },
-      team: {
-        title: "Our Team",
-        content: "Our team consists of experienced journalists, writers, and content creators who are passionate about delivering quality news and insights. We work together to bring you the most relevant and engaging content."
-      },
-      stats: [
-        { number: "1000+", label: "Articles Published" },
-        { number: "50K+", label: "Happy Readers" },
-        { number: "24/7", label: "News Coverage" },
-        { number: "100%", label: "Fact-Checked" }
-      ],
+
       cta: {
         title: "Join Our Community",
         content: "Stay connected with us for the latest news, insights, and updates. Follow us on social media and subscribe to our newsletter.",
@@ -85,16 +76,7 @@ export default async function AboutPage({ params }) {
           }
         ]
       },
-      team: {
-        title: "আমাদের দল",
-        content: "আমাদের দল অভিজ্ঞ সাংবাদিক, লেখক এবং বিষয়বস্তু স্রষ্টাদের নিয়ে গঠিত যারা গুণগত খবর ও অন্তর্দৃষ্টি প্রদানে আগ্রহী। আমরা একসাথে কাজ করি আপনাকে সবচেয়ে প্রাসঙ্গিক এবং আকর্ষক বিষয়বস্তু আনতে।"
-      },
-      stats: [
-        { number: "১০০০+", label: "প্রকাশিত নিবন্ধ" },
-        { number: "৫০K+", label: "সন্তুষ্ট পাঠক" },
-        { number: "২৪/৭", label: "খবরের কভারেজ" },
-        { number: "১০০%", label: "তথ্য যাচাইকৃত" }
-      ],
+
       cta: {
         title: "আমাদের সম্প্রদায়ে যোগ দিন",
         content: "সর্বশেষ খবর, অন্তর্দৃষ্টি এবং আপডেটের জন্য আমাদের সাথে সংযুক্ত থাকুন। সোশ্যাল মিডিয়ায় আমাদের অনুসরণ করুন এবং আমাদের নিউজলেটার সাবস্ক্রাইব করুন।",
@@ -157,29 +139,7 @@ export default async function AboutPage({ params }) {
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-          {currentContent.stats.map((stat, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
-              <div className={`text-2xl sm:text-3xl font-bold text-blue-600 mb-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>
-                {stat.number}
-              </div>
-              <div className={`text-sm text-gray-600 ${locale === 'bn' ? 'font-bangla' : ''}`}>
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
 
-        {/* Team */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-12">
-          <h2 className={`text-2xl font-semibold text-gray-900 mb-4 text-center ${locale === 'bn' ? 'font-bangla' : ''}`}>
-            {currentContent.team.title}
-          </h2>
-          <p className={`text-gray-600 text-center max-w-2xl mx-auto ${locale === 'bn' ? 'font-bangla' : ''}`}>
-            {currentContent.team.content}
-          </p>
-        </div>
 
         {/* CTA */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-sm p-8 text-center text-white">

@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "./context/AuthContext";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
+import CookieConsent from './components/CookieConsent';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -55,6 +56,7 @@ export default async function RootLayout({ children, params: { locale } }) {
         <AuthProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             {children}
+            <CookieConsent locale={locale} />
           </NextIntlClientProvider>
         </AuthProvider>
       </body>

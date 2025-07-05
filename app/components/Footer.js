@@ -130,7 +130,7 @@ export default function Footer() {
               © {currentYear} {locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche'}. {t('footer.copyright')}
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 mt-2 sm:mt-0">
-              <Link href="#" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">
+              <Link href={`/${locale}/privacy`} className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">
                 {t('footer.privacyPolicy')}
               </Link>
               <Link href="#" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">
