@@ -13,8 +13,12 @@ export default function ImageUpload({ onImageUploaded, className = '', initialIm
 
   // Update uploadedImage when initialImage prop changes
   useEffect(() => {
-    setUploadedImage(initialImage);
-  }, [initialImage]);
+    console.log('🔄 ImageUpload initialImage changed:', initialImage);
+    if (initialImage && initialImage !== uploadedImage) {
+      setUploadedImage(initialImage);
+      setError(''); // Clear any previous errors
+    }
+  }, [initialImage, uploadedImage]);
 
   const handleFileSelect = async (file) => {
     if (!file) return;
@@ -29,9 +33,9 @@ export default function ImageUpload({ onImageUploaded, className = '', initialIm
       return;
     }
 
-    // Validate file size (100KB)
-    if (file.size > 100 * 1024) {
-      setError('File size must be 100KB or less');
+    // Validate file size (5MB - matches backend)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('File size must be 5MB or less');
       return;
     }
 

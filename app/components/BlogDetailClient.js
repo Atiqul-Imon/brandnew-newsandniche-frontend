@@ -56,11 +56,11 @@ const ImageGallery = ({ images, title }) => {
       {title && (
         <figcaption className="text-base font-semibold text-gray-900 mb-2 px-2 pt-3">{title}</figcaption>
       )}
-      <div className="relative w-full aspect-video min-h-[210px] bg-[#efefef]">
+      <div className="relative w-full aspect-[1/2] min-h-[300px] bg-[#efefef]">
         <Image
           src={images[activeIndex]}
           alt={`${title || 'Gallery image'} ${activeIndex + 1}`}
-          className="object-cover rounded-t-lg"
+          className="object-contain rounded-t-lg"
           fill
           unoptimized
           priority
@@ -440,26 +440,26 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning>{JSON.stringify(jsonLd)}</script>
-      <div className="w-full bg-white py-6 sm:py-8 md:py-12" aria-label="Main content">
+      <div className="w-full bg-white pt-2 sm:pt-4 md:pt-6 pb-0" aria-label="Main content">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           {/* Breadcrumb */}
-          <nav className="hidden sm:flex mt-4 sm:mt-6 mb-4 sm:mb-6 px-0 sm:px-2 text-xs sm:text-sm text-[#757575] gap-2" aria-label="Breadcrumb">
+          <nav className="hidden sm:flex mt-2 sm:mt-3 mb-2 sm:mb-3 px-0 sm:px-2 text-xs sm:text-sm text-[#757575] gap-2" aria-label="Breadcrumb">
             <ol className="flex items-center flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
               <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-                <Link href={`/${locale}`} className="hover:text-[#292929] transition-colors" itemProp="item">
+                <Link href={`/${locale}`} className="hover:text-[#111] transition-colors" itemProp="item">
                   <span itemProp="name">{t('common.home')}</span>
                 </Link>
                 <meta itemProp="position" content="1" />
               </li>
               <li aria-hidden="true" className="mx-2">·</li>
               <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-                <Link href={`/${locale}/blogs`} className="hover:text-[#292929] transition-colors" itemProp="item">
+                <Link href={`/${locale}/blogs`} className="hover:text-[#111] transition-colors" itemProp="item">
                   <span itemProp="name">{t('blog.allPosts')}</span>
                 </Link>
                 <meta itemProp="position" content="2" />
               </li>
               <li aria-hidden="true" className="mx-2">·</li>
-              <li className="text-[#292929] line-clamp-1" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+              <li className="text-[#111] line-clamp-1" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
                 <span itemProp="name">{blog.title[locale]}</span>
                 <meta itemProp="position" content="3" />
               </li>
@@ -467,31 +467,26 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
           </nav>
 
           <article className="rounded-none">
-            {/* Featured Image - Fixed height for tablets */}
+            {/* Featured Image - 2:1 ratio, aligned with content, never crop */}
             {blog.featuredImage && (
-              <div className="relative w-full bg-transparent rounded-none overflow-visible p-0 m-0">
-                {/* Mobile: aspect-video, Tablet: fixed height, Desktop: aspect-video */}
-                <div className="relative w-full bg-transparent rounded-none overflow-hidden">
-                  <div className="aspect-video sm:aspect-video md:h-[400px] lg:aspect-video xl:aspect-video min-h-[250px] sm:min-h-[300px] md:min-h-[400px] lg:min-h-[450px]">
-                    <Image
-                      src={blog.featuredImage}
-                      alt={blog.title[locale]}
-                      className="object-cover rounded-none"
-                      fill
-                      priority
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                      unoptimized
-                    />
-                  </div>
-                </div>
+              <div className="relative w-full aspect-[2/1] bg-[#f2f2f2] rounded-none shadow-bbc overflow-hidden mb-6">
+                <Image
+                  src={blog.featuredImage}
+                  alt={blog.title[locale]}
+                  className="object-contain"
+                  fill
+                  priority
+                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  unoptimized
+                />
               </div>
             )}
 
-            <div className="px-0 sm:px-4 md:px-6 lg:px-8 pb-2 pt-4 sm:pt-6 md:pt-8">
+            <div className="px-0 sm:px-4 md:px-6 lg:px-8 pb-2 pt-0 sm:pt-2 md:pt-4">
               {/* Meta info / header */}
               <header className="mb-5">
                 <div className="flex flex-wrap items-center text-sm text-[#757575] mb-4 sm:mb-5 md:mb-6 gap-x-2 sm:gap-x-3 gap-y-1">
-                  <span className="capitalize bg-[#f2f2f2] text-[#292929] px-2 sm:px-3 py-1 rounded-full font-medium text-xs sm:text-sm">{blog.category[locale]}</span>
+                  <span className="capitalize bg-[#f2f2f2] text-[#111] px-2 sm:px-3 py-1 rounded-full font-medium text-xs sm:text-sm">{blog.category[locale]}</span>
                   <span className="hidden sm:inline text-[#757575]">·</span>
                   <span className="text-[#757575] text-xs sm:text-sm">{blog.readTime[locale]} {t('blog.minRead')}</span>
                   <span className="hidden sm:inline text-[#757575]">·</span>
@@ -503,7 +498,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                     </>
                   )}
                 </div>
-                <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl ${locale === 'bn' ? 'font-bangla-blog-heading' : 'font-medium-heading'} text-[#292929] leading-tight mb-3 sm:mb-4 md:mb-6 tracking-tight`}>{blog.title[locale]}</h1>
+                <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl ${locale === 'bn' ? 'font-bangla-blog-heading' : 'font-medium-heading'} text-[#111] leading-tight mb-3 sm:mb-4 md:mb-6 tracking-tight`}>{blog.title[locale]}</h1>
                 <p className={`text-lg sm:text-xl md:text-2xl text-[#757575] mb-4 sm:mb-6 md:mb-8 leading-relaxed ${locale === 'bn' ? 'font-bangla-blog' : 'font-medium-style'} font-normal`}>{blog.excerpt[locale]}</p>
                 <div className="flex items-center gap-3 sm:gap-4 md:gap-7 flex-col sm:flex-row mb-2">
                   {/* Author */}
@@ -519,7 +514,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                       />
                     )}
                     <div>
-                      <span className={`text-[#292929] font-semibold ${locale === 'bn' ? 'font-bangla-ui' : ''} text-base sm:text-lg md:text-xl`}>{getAuthorField(blog, 'name') || 'News & Niche'}</span>
+                      <span className={`text-[#111] font-semibold ${locale === 'bn' ? 'font-bangla-ui' : ''} text-base sm:text-lg md:text-xl`}>{getAuthorField(blog, 'name') || 'News & Niche'}</span>
                       {getAuthorField(blog, 'bio') && (
                         <p className={`text-xs sm:text-sm text-[#757575] mt-1 max-w-xs line-clamp-2 font-normal ${locale === 'bn' ? 'font-bangla' : ''}`}>{getAuthorField(blog, 'bio')}</p>
                       )}
@@ -552,7 +547,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                       <svg width="20" height="20" className="sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.127V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/></svg>
                     </button>
                     <button onClick={() => handleShare('twitter')} aria-label="Share on Twitter" className="hover:scale-105 transition-transform p-1.5 sm:p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#1da1f2', background: 'none', border: 'none' }}>
-                      <svg width="20" height="20" className="sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.72 0-4.924 2.206-4.924 4.924 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-5.144-.424.729-.666 1.577-.666 2.476 0 1.708.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.395 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 14.002-7.496 14.002-13.986 0-.21 0-.423-.016-.634.962-.689 1.8-1.56 2.46-2.548z"/></svg>
+                      <svg width="20" height="20" className="sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.72 0-4.924 2.206-4.924 4.924 0 .39.045.765.127 1.124-4.09-.205-7.719-2.165-10.148-.424.729-.666 1.577-.666 2.476 0 1.708.87 3.216 2.188 4.099-.807-.026-1.566-.247-2.228-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.395 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 14.002-7.496 14.002-13.986 0-.21 0-.423-.016-.634.962-.689 1.8-1.56 2.46-2.548z"/></svg>
                     </button>
                     <button onClick={() => handleShare('linkedin')} aria-label="Share on LinkedIn" className="hover:scale-105 transition-transform p-1.5 sm:p-2 rounded-full hover:bg-[#f2f2f2]" style={{ color: '#0077B5', background: 'none', border: 'none' }}>
                       <svg width="20" height="20" className="sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.327-.027-3.037-1.849-3.037-1.851 0-2.132 1.445-2.132 2.939v5.667h-3.554V9h3.414v1.561h.049c.476-.899 1.637-1.849 3.37-1.849 3.602 0 4.267 2.368 4.267 5.455v6.285zM5.337 7.433c-1.144 0-2.069-.926-2.069-2.068 0-1.143.925-2.069 2.069-2.069 1.143 0 2.068.926 2.068 2.069 0 1.142-.925 2.068-2.068 2.068zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.2 24 24 23.229 24 22.271V1.723C24 .771 23.2 0 22.225 0z"/></svg>
@@ -564,12 +559,12 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                 </div>
               </header>
               {/* Content */}
-              <div className={`prose prose-lg max-w-none ${locale === 'bn' ? 'font-bangla-blog' : 'font-medium-style'} prose-headings:${locale === 'bn' ? 'font-bangla-blog-heading' : 'font-medium-heading'} prose-a:text-[#1a8917] prose-a:no-underline prose-a:border-b prose-a:border-[#1a8917] prose-a:pb-0.5 prose-blockquote:bg-[#fafafa] prose-blockquote:border-l-[#1a8917] prose-blockquote:text-[#292929] prose-blockquote:font-normal prose-blockquote:not-italic prose-strong:text-[#292929] prose-strong:font-semibold prose-em:text-[#292929] prose-em:italic prose-hr:border-[#e6e6e6] prose-hr:my-8`} style={{ 
+              <div className={`prose prose-lg max-w-none ${locale === 'bn' ? 'font-bangla-blog' : 'font-medium-style'} prose-headings:${locale === 'bn' ? 'font-bangla-blog-heading' : 'font-medium-heading'} prose-a:text-[#1a8917] prose-a:no-underline prose-a:border-b prose-a:border-[#1a8917] prose-a:pb-0.5 prose-blockquote:bg-[#fafafa] prose-blockquote:border-l-[#1a8917] prose-blockquote:text-[#111] prose-blockquote:font-normal prose-blockquote:not-italic prose-strong:text-[#111] prose-strong:font-semibold prose-em:text-[#111] prose-em:italic prose-hr:border-[#e6e6e6] prose-hr:my-8`} style={{ 
                 fontSize: '1.25rem', 
                 fontWeight: 400, 
                 lineHeight: '1.8', 
                 letterSpacing: '0.003em',
-                color: '#292929'
+                color: '#111'
               }}>
                 {contentBlocks.map((block, index) => {
                   switch (block.type) {
@@ -583,9 +578,9 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                           <Image
                             src={block.src}
                             alt={block.alt}
-                            className="w-full h-auto object-cover"
+                            className="w-full h-auto object-contain"
                             width={600}
-                            height={350}
+                            height={1200}
                             unoptimized
                           />
                           {block.alt && (
@@ -609,14 +604,14 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
               {/* Tags */}
               {blog.tags && blog.tags.length > 0 && (
                 <div className="mt-10 pt-8 border-t border-[#e6e6e6]">
-                  <h3 className={`text-base font-semibold text-[#292929] mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+                  <h3 className={`text-base font-semibold text-[#111] mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                     {t('blog.tags')}:
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {blog.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="bg-[#f2f2f2] text-[#292929] px-3 py-1.5 rounded-full text-sm hover:bg-[#e6e6e6] transition-colors font-normal"
+                        className="bg-[#f2f2f2] text-[#111] px-3 py-1.5 rounded-full text-sm hover:bg-[#e6e6e6] transition-colors font-normal"
                       >
                         {tag[locale]}
                       </span>
@@ -638,7 +633,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
           {/* Related Posts */}
           {relatedBlogs.length > 0 && (
             <section className="mt-8 sm:mt-12 px-0 sm:px-0">
-              <h2 className={`text-xl sm:text-2xl font-semibold text-[#292929] mb-4 sm:mb-6 md:mb-8 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+              <h2 className={`text-xl sm:text-2xl font-semibold text-[#111] mb-4 sm:mb-6 md:mb-8 ${locale === 'bn' ? 'font-bangla' : ''}`}>
                 {t('blog.relatedPosts')}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
@@ -665,7 +660,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                         <span>·</span>
                         <span>{relatedBlog.readTime[locale]} {t('blog.minRead')}</span>
                       </div>
-                      <h3 className={`text-base sm:text-lg font-semibold text-[#292929] mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.title[locale]}</h3>
+                      <h3 className={`text-base sm:text-lg font-semibold text-[#111] mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.title[locale]}</h3>
                       <p className={`text-[#757575] mb-3 sm:mb-4 line-clamp-2 text-xs sm:text-sm ${locale === 'bn' ? 'font-bangla' : ''}`}>{relatedBlog.excerpt[locale]}</p>
                       <span className={`text-[#1a8917] hover:text-[#0f5a0f] border-b border-[#1a8917] hover:border-[#0f5a0f] pb-0.5 transition-colors font-medium text-xs sm:text-sm ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('blog.readMore')} &#8594;</span>
                     </div>

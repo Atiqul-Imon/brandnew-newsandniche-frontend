@@ -87,7 +87,15 @@ export default function EditBlogPage() {
         setInitialData(processedData);
       } catch (err) {
         console.error('❌ Error fetching blog:', err);
-        setError(err.response?.data?.message || t('errors.blogNotFound') || 'Blog not found');
+        if (err.response?.status === 404) {
+          setError('Blog not found. It may have been deleted or you may not have permission to edit it.');
+        } else if (err.response?.data?.message) {
+          setError(err.response.data.message);
+        } else if (err.message === 'Network Error') {
+          setError('Network error. Please check your connection and try again.');
+        } else {
+          setError('Failed to load blog. Please try again.');
+        }
       } finally {
         setLoading(false);
       }
@@ -125,11 +133,11 @@ export default function EditBlogPage() {
       
       // Validate required fields for the active language
       const errors = [];
-      if (!mergedData.title[activeLang]) errors.push('Title is required');
-      if (!mergedData.content[activeLang]) errors.push('Content is required');
-      if (!mergedData.excerpt[activeLang]) errors.push('Excerpt is required');
-      if (!mergedData.slug[activeLang]) errors.push('Slug is required');
-      if (!mergedData.category[activeLang]) errors.push('Category is required');
+      if (!mergedData.title[activeLang]) errors.push(`Title (${activeLang === 'en' ? 'English' : 'Bangla'}) is required`);
+      if (!mergedData.content[activeLang]) errors.push(`Content (${activeLang === 'en' ? 'English' : 'Bangla'}) is required`);
+      if (!mergedData.excerpt[activeLang]) errors.push(`Excerpt (${activeLang === 'en' ? 'English' : 'Bangla'}) is required`);
+      if (!mergedData.slug[activeLang]) errors.push(`Slug (${activeLang === 'en' ? 'English' : 'Bangla'}) is required`);
+      if (!mergedData.category[activeLang]) errors.push(`Category (${activeLang === 'en' ? 'English' : 'Bangla'}) is required`);
       if (!mergedData.author?.name) errors.push('Author name is required');
       if (!mergedData.featuredImage) errors.push('Featured image is required');
       if (errors.length > 0) {
@@ -147,7 +155,12 @@ export default function EditBlogPage() {
       router.push(`/${locale}/admin/blogs`);
     } catch (err) {
       console.error('❌ Error updating blog:', err);
-      setError(err.response?.data?.message || 'Update failed');
+      // Handle specific slug error
+      if (err.response?.data?.message?.includes('slug already exists')) {
+        setError(`Slug already exists. Please change the ${activeLang === 'en' ? 'English' : 'Bangla'} slug to something unique.`);
+      } else {
+        setError(err.response?.data?.message || 'Update failed');
+      }
     } finally {
       setLoading(false);
     }

@@ -186,7 +186,12 @@
     "sortByReadTime": "Read Time",
     "seoTitleEn": "SEO Title (English)",
     "seoDescriptionEn": "SEO Description (English)",
-    "seoKeywordsEn": "SEO Keywords (English)"
+    "seoKeywordsEn": "SEO Keywords (English)",
+    "seoTitleBn": "SEO Title (Bangla)",
+    "seoDescriptionBn": "SEO Description (Bangla)",
+    "seoKeywordsBn": "SEO Keywords (Bangla)",
+    "slugEn": "Slug (English)",
+    "slugBn": "Slug (Bangla)"
   },
   "profile": {
     "title": "Profile",

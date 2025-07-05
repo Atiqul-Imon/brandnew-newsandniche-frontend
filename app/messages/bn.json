@@ -186,7 +186,12 @@
     "sortByReadTime": "পঠন সময়",
     "seoTitleBn": "এসইও শিরোনাম (বাংলা)",
     "seoDescriptionBn": "এসইও বিবরণ (বাংলা)",
-    "seoKeywordsBn": "এসইও কীওয়ার্ড (বাংলা)"
+    "seoKeywordsBn": "এসইও কীওয়ার্ড (বাংলা)",
+    "seoTitleEn": "এসইও শিরোনাম (ইংরেজি)",
+    "seoDescriptionEn": "এসইও বিবরণ (ইংরেজি)",
+    "seoKeywordsEn": "এসইও কীওয়ার্ড (ইংরেজি)",
+    "slugEn": "স্লাগ (ইংরেজি)",
+    "slugBn": "স্লাগ (বাংলা)"
   },
   "profile": {
     "title": "প্রোফাইল",
