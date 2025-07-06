@@ -90,7 +90,7 @@ export default function SearchBar({ onSearch, placeholder, className = '', local
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder || t('blog.searchPlaceholder')}
-            className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+            className={`w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-input' : ''}`}
             disabled={isSearching}
           />
           
@@ -139,7 +139,7 @@ export default function SearchBar({ onSearch, placeholder, className = '', local
         <button
           type="submit"
           disabled={isSearching || !query.trim()}
-          className="absolute right-1 top-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className={`absolute right-1 top-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
         >
           {isSearching ? (
             <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">

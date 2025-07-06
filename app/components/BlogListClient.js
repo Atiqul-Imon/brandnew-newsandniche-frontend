@@ -130,7 +130,7 @@ export default function BlogListClient(props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">{t("common.loading")}</p>
+            <p className={`mt-4 text-gray-600 ${locale === 'bn' ? 'font-bangla-ui bangla-loading' : ''}`}>{t("common.loading")}</p>
           </div>
         </div>
       </main>
@@ -147,10 +147,10 @@ export default function BlogListClient(props) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
-            <p className="text-red-600 text-lg">{error}</p>
+            <p className={`text-red-600 text-lg ${locale === 'bn' ? 'font-bangla-ui bangla-error' : ''}`}>{error}</p>
             <button 
               onClick={() => router.refresh()}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className={`mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
             >
               {t("common.retry") || "Retry"}
             </button>
@@ -164,11 +164,11 @@ export default function BlogListClient(props) {
     <main className="min-h-screen bg-gray-100 py-6 sm:py-8" aria-label="Main content">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className={`text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 ${locale === 'bn' ? 'font-bangla' : ''}`}
+          <h1 className={`text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}
             id="blog-list-title">
             {t("blog.allPosts")}
           </h1>
-          <p className={`text-base sm:text-xl text-gray-700 ${locale === 'bn' ? 'font-bangla' : ''}`}
+          <p className={`text-base sm:text-xl text-gray-700 ${locale === 'bn' ? 'font-bangla-blog bangla-subtitle bangla-text-spacing' : ''}`}
             id="blog-list-desc">
             {t("blog.discoverStories")}
           </p>
@@ -177,7 +177,7 @@ export default function BlogListClient(props) {
         {/* Category Filter Bar */}
         <div className="mb-6 sm:mb-8 flex flex-wrap gap-2 justify-center">
           <button
-            className={`px-4 py-2 rounded-full border ${!category ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"}`}
+            className={`px-4 py-2 rounded-full border transition-colors duration-200 ${!category ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
             onClick={() => {
               router.push(pathname);
             }}
@@ -185,12 +185,12 @@ export default function BlogListClient(props) {
             {t("category.all")}
           </button>
           {categoriesLoading && initialCategories.length === 0 ? (
-            <div className="px-4 py-2 text-gray-500">Loading categories...</div>
+            <div className={`px-4 py-2 text-gray-500 ${locale === 'bn' ? 'font-bangla-ui bangla-loading' : ''}`}>Loading categories...</div>
           ) : (
             categories.map(cat => (
               <button
                 key={cat._id}
-                className={`px-4 py-2 rounded-full border ${category === (cat[`slug.${locale}`] || cat.slug?.[locale]) ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"}`}
+                className={`px-4 py-2 rounded-full border transition-colors duration-200 ${category === (cat[`slug.${locale}`] || cat.slug?.[locale]) ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
                 onClick={() => {
                   const params = new URLSearchParams(searchParams.toString());
                   params.set("category", cat[`slug.${locale}`] || cat.slug?.[locale]);
@@ -210,14 +210,14 @@ export default function BlogListClient(props) {
               <SearchBar onSearch={() => {}} />
             </div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-gray-600 mt-2 sm:mt-0">
-              <span>{totalBlogs} {t("blog.allPosts").toLowerCase()}</span>
+              <span className={locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}>{totalBlogs} {t("blog.allPosts").toLowerCase()}</span>
               {search && (
-                <span className="bg-gray-200 text-gray-800 px-2 py-1 rounded">
+                <span className={`bg-gray-200 text-gray-800 px-2 py-1 rounded ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
                   &quot;{search}&quot;
                 </span>
               )}
               {category && (
-                <span className="bg-gray-200 text-gray-800 px-2 py-1 rounded">
+                <span className={`bg-gray-200 text-gray-800 px-2 py-1 rounded ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
                   {category}
                 </span>
               )}
@@ -228,7 +228,7 @@ export default function BlogListClient(props) {
         {/* Error message (if any) */}
         {error && (
           <div className="mb-6 p-4 bg-gray-200 border border-gray-300 rounded-lg">
-            <p className="text-gray-800">{error}</p>
+            <p className={`text-gray-800 ${locale === 'bn' ? 'font-bangla-ui bangla-error' : ''}`}>{error}</p>
           </div>
         )}
 
@@ -239,9 +239,9 @@ export default function BlogListClient(props) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <p className="text-gray-500 text-lg">{t("blog.noPosts")}</p>
+            <p className={`text-gray-500 text-lg ${locale === 'bn' ? 'font-bangla-ui bangla-error' : ''}`}>{t("blog.noPosts")}</p>
             {search && (
-              <p className="text-gray-400 mt-2">
+              <p className={`text-gray-400 mt-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
                 {locale === "bn"
                   ? `&quot;${search}&quot; এর জন্য কোন ফলাফল পাওয়া যায়নি`
                   : `No results found for &quot;${search}&quot;`
@@ -270,19 +270,19 @@ export default function BlogListClient(props) {
                     />
                   </div>
                   <div className="p-4 sm:p-6 flex flex-col flex-1">
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
-                      <span className="capitalize">
+                    <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
+                      <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
                         {categories.find(c => (c[`slug.${locale}`] || c.slug?.[locale]) === blog.category?.[locale])?.[`name.${locale}`] || 
                          categories.find(c => c.slug?.[locale] === blog.category?.[locale])?.name?.[locale] || 
                          blog.category?.[locale] || 'Uncategorized'}
                       </span>
                       <span className="mx-2">•</span>
-                      <span>{blog.readTime?.[locale] || 5} {t('blog.minRead')}</span>
+                      <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime?.[locale] || 5} {t('blog.minRead')}</span>
                     </div>
-                    <h2 className={`text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-noto-bangla text-2xl sm:text-3xl font-extrabold' : ''}`}>
+                    <h2 className={`text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>
                       {blog.title?.[locale] || 'Untitled'}
                     </h2>
-                    <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>
+                    <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>
                       {blog.excerpt?.[locale] || blog.content?.[locale]?.substring(0, 150) || 'No excerpt available'}
                     </p>
                   </div>
@@ -296,7 +296,7 @@ export default function BlogListClient(props) {
                 <button
                   onClick={handleLoadMore}
                   disabled={loading}
-                  className="px-6 py-3 bg-gray-900 text-gray-100 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed text-base sm:text-lg"
+                  className={`px-6 py-3 bg-gray-900 text-gray-100 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed text-base sm:text-lg transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
                 >
                   {loading ? t("common.loading") : t("blog.loadMore")}
                 </button>
