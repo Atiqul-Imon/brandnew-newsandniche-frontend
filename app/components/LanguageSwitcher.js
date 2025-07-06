@@ -24,11 +24,8 @@ export default function LanguageSwitcher() {
     // Track language switch event
     trackLanguageSwitch(locale, newLocale);
     
-    // Remove the current locale from the pathname
-    const pathWithoutLocale = pathname.replace(`/${locale}`, '');
-    
-    // Navigate to the new locale
-    router.push(`/${newLocale}${pathWithoutLocale}`);
+    // Always navigate to homepage of the new locale
+    router.push(`/${newLocale}`);
     setIsOpen(false);
   };
 

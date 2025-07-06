@@ -16,11 +16,18 @@ export default function Navigation({ locale }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 sm:h-16 items-center">
           <div className="flex items-center">
-            <Link href={`/${locale}`} className="flex-shrink-0 flex items-center">
+            <a 
+              href={`/${locale}`} 
+              className="flex-shrink-0 flex items-center cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = `/${locale}`;
+              }}
+            >
               <h1 className={`text-xl sm:text-2xl md:text-3xl font-bold sm:font-extrabold tracking-tight text-[#111] ${locale === 'bn' ? 'font-bangla-bold text-2xl sm:text-3xl md:text-4xl font-black bangla-heading-spacing' : ''}`}>
                 News&Niche
               </h1>
-            </Link>
+            </a>
             
             <div className="hidden md:ml-8 lg:ml-10 md:flex md:space-x-6 lg:space-x-8 nav-links">
               <Link
