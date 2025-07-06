@@ -7,14 +7,14 @@ export default async function AboutPage({ params }) {
   const content = {
     en: {
       title: "About News&Niche",
-      subtitle: "Your Trusted Source for Quality News and Insights",
+      subtitle: "A Platform for Quality News and Insights",
       mission: {
         title: "Our Mission",
         content: "At News&Niche, we believe in delivering accurate, timely, and insightful news that matters. Our mission is to provide readers with comprehensive coverage of current events, in-depth analysis, and thought-provoking content that helps them stay informed and make better decisions."
       },
       vision: {
         title: "Our Vision",
-        content: "We envision a world where everyone has access to reliable, unbiased information. Through our commitment to journalistic integrity and quality content, we strive to be the go-to platform for news and insights that readers can trust."
+        content: "We envision a world where everyone has access to reliable, unbiased information. Through our commitment to journalistic integrity and quality content, we strive to be a platform for news and insights."
       },
       values: {
         title: "Our Values",
@@ -46,14 +46,14 @@ export default async function AboutPage({ params }) {
     },
     bn: {
       title: "About News&Niche",
-      subtitle: "Your trusted source for quality news and analysis",
+      subtitle: "A platform for quality news and analysis",
       mission: {
         title: "Our Mission",
         content: "At News&Niche, we believe in delivering important, timely, and insightful news. Our goal is to provide readers with comprehensive coverage of current events, in-depth analysis, and thought-provoking content that helps them stay informed and make better decisions."
       },
       vision: {
         title: "আমাদের দৃষ্টিভঙ্গি",
-        content: "আমরা এমন একটি বিশ্বের কল্পনা করি যেখানে প্রত্যেকের কাছে নির্ভরযোগ্য, নিরপেক্ষ তথ্যের প্রবেশাধিকার রয়েছে। সাংবাদিকতায় সততা এবং গুণগত বিষয়বস্তুর প্রতি আমাদের প্রতিশ্রুতির মাধ্যমে, আমরা এমন একটি প্ল্যাটফর্ম হওয়ার চেষ্টা করি যেখানে পাঠকরা বিশ্বাস করতে পারেন।"
+        content: "আমরা এমন একটি বিশ্বের কল্পনা করি যেখানে প্রত্যেকের কাছে নির্ভরযোগ্য, নিরপেক্ষ তথ্যের প্রবেশাধিকার রয়েছে। সাংবাদিকতায় সততা এবং গুণগত বিষয়বস্তুর প্রতি আমাদের প্রতিশ্রুতির মাধ্যমে, আমরা সংবাদ এবং অন্তর্দৃষ্টির জন্য একটি প্ল্যাটফর্ম হওয়ার চেষ্টা করি।"
       },
       values: {
         title: "আমাদের মূল্যবোধ",
@@ -165,7 +165,7 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   
-  const title = 'About News&Niche - Your Trusted Source for News';
+  const title = 'About News&Niche - A Platform for News';
   const description = 'Learn about News&Niche. Discover our mission, vision, and values that drive us to deliver quality news and insights.';
   const keywords = ['About News&Niche', 'Bangla News', 'News Site', 'Bangla News', 'About Us'];
   

@@ -39,8 +39,8 @@ export async function generateMetadata(props) {
   const siteUrl = 'https://newsandniche.com';
   const title = 'News&Niche';
   const description = locale === 'bn' 
-    ? 'বাংলা খবরের সেরা উৎস' 
-    : 'Best source of English news';
+    ? 'সংবাদ এবং অন্তর্দৃষ্টির জন্য একটি প্ল্যাটফর্ম' 
+    : 'A platform for news and insights';
   const keywords = locale === 'bn'
     ? ['নিউজ', 'বাংলা খবর', 'নিচে', 'বাংলাদেশ', 'সংবাদ']
     : ['news', 'english news', 'niche', 'bangladesh', 'blog'];

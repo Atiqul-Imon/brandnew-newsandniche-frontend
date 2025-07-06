@@ -20,8 +20,8 @@ export default function Footer() {
             </h3>
             <p className={`text-gray-300 mb-6 max-w-md ${locale === 'bn' ? 'font-bangla-blog bangla-description bangla-text-spacing' : ''}`}>
               {locale === 'bn' 
-                ? 'আপনার বিশ্বস্ত সংবাদ উৎস। মানসম্পন্ন বিষয়বস্তু এবং অন্তর্দৃষ্টি সহ সর্বশেষ খবর পান।'
-                : 'Your trusted source for news. Get the latest stories with quality content and insights.'
+                ? 'সংবাদ এবং অন্তর্দৃষ্টির জন্য একটি প্ল্যাটফর্ম। মানসম্পন্ন বিষয়বস্তু সহ গল্পগুলি পড়ুন।'
+                : 'A platform for news and insights. Read stories with quality content.'
               }
             </p>
             <div className="flex space-x-4">

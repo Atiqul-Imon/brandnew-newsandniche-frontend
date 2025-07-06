@@ -88,7 +88,7 @@
   "home": {
     "hero": {
       "title": "Welcome to News&Niche",
-      "subtitle": "Your premier destination for curated news, insights, and stories that matter",
+      "subtitle": "A platform for curated news, insights, and stories that matter",
       "browseBlogs": "Browse Blogs",
       "joinUs": "Join Us",
       "getStarted": "Get Started",
@@ -107,7 +107,7 @@
     },
     "cta": {
       "title": "Stay Informed with Quality Content",
-      "subtitle": "Join thousands of readers who trust us for their daily dose of news and insights",
+      "subtitle": "Join readers who visit us for news and insights",
       "button": "Start Reading"
     },
     "features": {

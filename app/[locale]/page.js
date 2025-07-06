@@ -44,8 +44,8 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   const supportedLocales = ['en', 'bn'];
-  const title = 'News&Niche - Best Source for News & Insights';
-  const description = 'News&Niche brings you the latest news, analysis, and stories from around the world.';
+  const title = 'News&Niche - A Platform for News & Insights';
+  const description = 'News&Niche brings you news, analysis, and stories from around the world.';
   const image = `${siteUrl}/default-og-image.jpg`;
   const canonical = `${siteUrl}/${locale}`;
   const keywords = locale === 'bn'

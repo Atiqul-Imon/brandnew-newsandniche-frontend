@@ -54,8 +54,8 @@ export default function HomeClient({ locale }) {
       height: 512,
     },
     description: locale === 'bn' 
-      ? 'বাংলা খবরের সেরা উৎস'
-      : 'Best source for news and insights',
+      ? 'সংবাদ এবং অন্তর্দৃষ্টির জন্য একটি প্ল্যাটফর্ম'
+      : 'A platform for news and insights',
     foundingDate: '2024',
     address: {
       '@type': 'PostalAddress',
