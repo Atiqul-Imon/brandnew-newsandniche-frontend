@@ -18,7 +18,7 @@ export default function Navigation({ locale }) {
           <div className="flex items-center">
             <Link href={`/${locale}`} className="flex-shrink-0 flex items-center">
               <h1 className={`text-xl sm:text-2xl md:text-3xl font-bold sm:font-extrabold tracking-tight text-[#111] ${locale === 'bn' ? 'font-bangla-bold text-2xl sm:text-3xl md:text-4xl font-black bangla-heading-spacing' : ''}`}>
-                {locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche'}
+                News&Niche
               </h1>
             </Link>
             

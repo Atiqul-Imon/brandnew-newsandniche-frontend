@@ -45,11 +45,11 @@ export default async function AboutPage({ params }) {
       }
     },
     bn: {
-      title: "নিউজ&নিচে সম্পর্কে",
-      subtitle: "গুণগত খবর ও বিশ্লেষণের আপনার বিশ্বস্ত উৎস",
+      title: "About News&Niche",
+      subtitle: "Your trusted source for quality news and analysis",
       mission: {
-        title: "আমাদের লক্ষ্য",
-        content: "নিউজ&নিচে-তে আমরা বিশ্বাস করি যে গুরুত্বপূর্ণ, সময়োপযোগী এবং অন্তর্দৃষ্টিপূর্ণ খবর প্রদানে। আমাদের লক্ষ্য হল পাঠকদের বর্তমান ঘটনাবলীর বিস্তৃত কভারেজ, গভীর বিশ্লেষণ এবং চিন্তা-উদ্দীপক বিষয়বস্তু প্রদান করা যা তাদের অবগত থাকতে এবং ভাল সিদ্ধান্ত নিতে সাহায্য করে।"
+        title: "Our Mission",
+        content: "At News&Niche, we believe in delivering important, timely, and insightful news. Our goal is to provide readers with comprehensive coverage of current events, in-depth analysis, and thought-provoking content that helps them stay informed and make better decisions."
       },
       vision: {
         title: "আমাদের দৃষ্টিভঙ্গি",
@@ -165,17 +165,9 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   
-  const title = locale === 'bn' 
-    ? 'নিউজ&নিচে সম্পর্কে - আপনার বিশ্বস্ত খবরের উৎস'
-    : 'About News&Niche - Your Trusted Source for News';
-  
-  const description = locale === 'bn'
-    ? 'নিউজ&নিচে সম্পর্কে জানুন। আমাদের লক্ষ্য, দৃষ্টিভঙ্গি এবং মূল্যবোধ সম্পর্কে জানুন।'
-    : 'Learn about News&Niche. Discover our mission, vision, and values that drive us to deliver quality news and insights.';
-  
-  const keywords = locale === 'bn'
-    ? ['নিউজ&নিচে', 'বাংলা খবর', 'নিউজ সাইট', 'বাংলা সংবাদ', 'আমাদের সম্পর্কে']
-    : ['about us', 'news site', 'journalism', 'news company', 'our story'];
+  const title = 'About News&Niche - Your Trusted Source for News';
+  const description = 'Learn about News&Niche. Discover our mission, vision, and values that drive us to deliver quality news and insights.';
+  const keywords = ['About News&Niche', 'Bangla News', 'News Site', 'Bangla News', 'About Us'];
   
   const canonical = `${siteUrl}/${locale}/about`;
   

@@ -16,7 +16,7 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
             <h3 className={`text-2xl font-bold mb-4 ${locale === 'bn' ? 'font-bangla-heading bangla-section-title bangla-heading-spacing' : ''}`}>
-              {locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche'}
+              News&Niche
             </h3>
             <p className={`text-gray-300 mb-6 max-w-md ${locale === 'bn' ? 'font-bangla-blog bangla-description bangla-text-spacing' : ''}`}>
               {locale === 'bn' 
@@ -127,7 +127,7 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
             <p className={`text-gray-400 text-xs sm:text-sm text-center sm:text-left ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
-              © {currentYear} {locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche'}. {t('footer.copyright')}
+              © {currentYear} News&Niche. {t('footer.copyright')}
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 mt-2 sm:mt-0">
               <Link href={`/${locale}/privacy`} className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>

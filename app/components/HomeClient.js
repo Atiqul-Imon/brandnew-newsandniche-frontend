@@ -45,7 +45,7 @@ export default function HomeClient({ locale }) {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'News&Niche',
-    alternateName: locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche',
+            alternateName: 'News&Niche',
     url: siteUrl,
     logo: {
       '@type': 'ImageObject',

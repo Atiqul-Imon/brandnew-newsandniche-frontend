@@ -44,10 +44,8 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   const supportedLocales = ['en', 'bn'];
-  const title = locale === 'bn' ? 'নিউজ&নিচে - বাংলা খবরের সেরা উৎস' : 'News&Niche - Best Source for News & Insights';
-  const description = locale === 'bn'
-    ? 'নিউজ&নিচে - সর্বশেষ বাংলা খবর, বিশ্লেষণ, ও গল্প।'
-    : 'News&Niche brings you the latest news, analysis, and stories from around the world.';
+  const title = 'News&Niche - Best Source for News & Insights';
+  const description = 'News&Niche brings you the latest news, analysis, and stories from around the world.';
   const image = `${siteUrl}/default-og-image.jpg`;
   const canonical = `${siteUrl}/${locale}`;
   const keywords = locale === 'bn'

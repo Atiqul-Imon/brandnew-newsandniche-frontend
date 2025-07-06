@@ -12,7 +12,7 @@ export default async function PrivacyPage({ params }) {
       sections: {
         introduction: {
           title: "Introduction",
-          content: "News&Niche ('we', 'our', or 'us') is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services."
+          content: "News&Niche ('we', 'our', or 'us') is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website."
         },
         informationWeCollect: {
           title: "Information We Collect",
@@ -207,7 +207,7 @@ export default async function PrivacyPage({ params }) {
     mainEntity: {
       '@type': 'Organization',
       name: 'News&Niche',
-      alternateName: locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche',
+      alternateName: 'News&Niche',
       url: siteUrl,
       privacyPolicy: `${siteUrl}/${locale}/privacy`,
     },
@@ -426,7 +426,7 @@ export async function generateMetadata({ params }) {
   const content = {
     en: {
       title: "Privacy Policy - News&Niche",
-      description: "Learn about how News&Niche collects, uses, and protects your personal information. Our comprehensive privacy policy ensures GDPR compliance and data protection.",
+      description: "Learn how News&Niche collects, uses, and protects your personal information. Our comprehensive privacy policy ensures GDPR compliance and data protection.",
     },
     bn: {
       title: "গোপনীয়তা নীতি - নিউজ&নিচে",

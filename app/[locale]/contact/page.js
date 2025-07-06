@@ -46,7 +46,7 @@ export default async function ContactPage({ params }) {
     mainEntity: {
       '@type': 'Organization',
       name: 'News&Niche',
-      alternateName: locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche',
+      alternateName: 'News&Niche',
       url: siteUrl,
       logo: {
         '@type': 'ImageObject',
@@ -186,17 +186,9 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   
-  const title = locale === 'bn' 
-    ? 'যোগাযোগ করুন - নিউজ&নিচে'
-    : 'Contact Us - News&Niche';
-  
-  const description = locale === 'bn'
-    ? 'নিউজ&নিচে-এর সাথে যোগাযোগ করুন। আমাদের দল আপনার প্রশ্নের উত্তর দিতে প্রস্তুত।'
-    : 'Get in touch with News&Niche. Our team is ready to answer your questions and hear your feedback.';
-  
-  const keywords = locale === 'bn'
-    ? ['যোগাযোগ', 'নিউজ&নিচে', 'বাংলা খবর', 'যোগাযোগ ফর্ম', 'ইমেইল']
-    : ['contact us', 'get in touch', 'news contact', 'feedback', 'support'];
+  const title = 'Contact Us - News&Niche';
+  const description = 'Get in touch with News&Niche. Our team is ready to answer your questions.';
+  const keywords = ['Contact', 'News&Niche', 'Bangla News', 'Contact Form', 'Email'];
   
   const canonical = `${siteUrl}/${locale}/contact`;
   

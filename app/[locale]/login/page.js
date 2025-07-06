@@ -11,10 +11,8 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   
   return {
-    title: locale === 'bn' ? 'লগইন - নিউজ&নিচে' : 'Login - News&Niche',
-    description: locale === 'bn' 
-      ? 'নিউজ&নিচে-এ লগইন করুন'
-      : 'Login to News&Niche',
+    title: 'Login - News&Niche',
+    description: 'Login to News&Niche',
     robots: {
       index: false,
       follow: false,

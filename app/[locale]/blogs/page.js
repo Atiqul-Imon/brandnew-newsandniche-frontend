@@ -101,34 +101,20 @@ export async function generateMetadata(props) {
   const page = Number(searchParams?.page) || 1;
   
   // Build dynamic title and description
-  let title = locale === 'bn' ? 'নিউজ&নিচে - ব্লগ তালিকা' : 'News&Niche - Blog Listing';
-  let description = locale === 'bn'
-    ? 'নিউজ&নিচে - সর্বশেষ বাংলা ব্লগ, খবর ও বিশ্লেষণ।'
-    : 'Browse the latest blogs, news, and insights on News&Niche.';
+  let title = 'News&Niche - Blog Listing';
+  let description = 'News&Niche - Latest blog posts, news and analysis.';
   
-  // Add search term to title if present
   if (search) {
-    title = locale === 'bn' 
-      ? `"${search}" - নিউজ&নিচে ব্লগ অনুসন্ধান`
-      : `"${search}" - News&Niche Blog Search`;
-    description = locale === 'bn'
-      ? `"${search}" এর জন্য নিউজ&নিচে ব্লগ অনুসন্ধান ফলাফল।`
-      : `Search results for "${search}" on News&Niche blogs.`;
-  }
-  
-  // Add category to title if present
-  if (category) {
-    title = locale === 'bn' 
-      ? `${category} - নিউজ&নিচে ব্লগ বিভাগ`
-      : `${category} - News&Niche Blog Category`;
-    description = locale === 'bn'
-      ? `${category} বিভাগের নিউজ&নিচে ব্লগ পোস্ট।`
-      : `${category} category blogs and articles on News&Niche.`;
+    title = `"${search}" - News&Niche Blog Search`;
+    description = `Search results for "${search}" in News&Niche blog posts.`;
+  } else if (category) {
+    title = `${category} - News&Niche Blog Category`;
+    description = `News&Niche blog posts in the ${category} category.`;
   }
   
   // Add page number if not first page
   if (page > 1) {
-    title += locale === 'bn' ? ` - পৃষ্ঠা ${page}` : ` - Page ${page}`;
+    title += ` - Page ${page}`;
   }
   
   const image = `${siteUrl}/default-og-image.jpg`;

@@ -37,7 +37,7 @@ export async function generateMetadata(props) {
     notFound();
   }
   const siteUrl = 'https://newsandniche.com';
-  const title = locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche';
+  const title = 'News&Niche';
   const description = locale === 'bn' 
     ? 'বাংলা খবরের সেরা উৎস' 
     : 'Best source of English news';
