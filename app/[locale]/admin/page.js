@@ -5,6 +5,7 @@ import Link from "next/link";
 import { api } from '@/app/apiConfig';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
+import AdSenseReadiness from '../../components/AdSenseReadiness';
 
 export default function AdminDashboardPage() {
   const t = useTranslations();
@@ -276,6 +277,11 @@ export default function AdminDashboardPage() {
             )}
           </div>
         </div>
+      </div>
+
+      {/* AdSense Readiness */}
+      <div className="mb-8">
+        <AdSenseReadiness locale={locale} />
       </div>
 
       {/* Quick Tools */}
