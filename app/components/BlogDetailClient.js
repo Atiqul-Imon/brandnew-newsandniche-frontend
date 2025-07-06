@@ -490,7 +490,29 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                   <span className="hidden sm:inline text-[#757575]">·</span>
                   <span className="text-[#757575] text-xs sm:text-sm">{blog.readTime[locale]} {t('blog.minRead')}</span>
                   <span className="hidden sm:inline text-[#757575]">·</span>
-                  <span className="text-[#757575] text-xs sm:text-sm">{new Date(blog.publishedAt).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                  <span className="text-[#757575] text-xs sm:text-sm">
+                    {locale === 'bn' ? 'প্রকাশিত:' : 'Published:'} {new Date(blog.publishedAt).toLocaleDateString(locale, { 
+                      year: 'numeric', 
+                      month: 'short', 
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </span>
+                  {blog.updatedAt && blog.updatedAt !== blog.publishedAt && (
+                    <>
+                      <span className="hidden sm:inline text-[#757575]">·</span>
+                      <span className="text-[#757575] text-xs sm:text-sm">
+                        {locale === 'bn' ? 'আপডেটেড:' : 'Updated:'} {new Date(blog.updatedAt).toLocaleDateString(locale, { 
+                          year: 'numeric', 
+                          month: 'short', 
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                    </>
+                  )}
                   {blog.isFeatured && (
                     <>
                       <span className="hidden sm:inline text-[#757575]">·</span>
@@ -622,7 +644,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
               {/* Footer - REMOVE BACK BUTTON */}
               <footer className="mt-12 pt-8 border-t border-[#e6e6e6] flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="text-[#757575] text-sm">👁️ {blog.viewCount || 0} {t('blog.views')}</span>
+                  {/* View count removed */}
                 </div>
                 {/* <Link href={`/${locale}/blogs`} className="text-[#174ea6] hover:underline font-medium text-sm">
                   &#8592; {t('blog.backToBlogs')}

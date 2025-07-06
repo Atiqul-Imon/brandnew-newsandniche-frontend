@@ -22,7 +22,10 @@ export async function generateMetadata({ params }) {
   let slugsByLocale = { en: slug, bn: slug };
   try {
     for (const l of supportedLocales) {
-      const res = await fetch(`${API_BASE_URL}/api/blogs/${l}/slug/${slug}`);
+      const res = await fetch(`${API_BASE_URL}/api/blogs/${l}/slug/${slug}`, {
+        cache: 'no-store',
+        next: { revalidate: 0 }
+      });
       const data = await res.json();
       if (data.success) {
         slugsByLocale[l] = data.data.blog.slug?.[l] || slug;
@@ -33,18 +36,30 @@ export async function generateMetadata({ params }) {
   }
 
   try {
-    const blogRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}/slug/${slug}`);
+    const blogRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}/slug/${slug}`, {
+      cache: 'no-store',
+      next: { revalidate: 0 }
+    });
     const blogData = await blogRes.json();
     if (blogData.success) {
       const blog = blogData.data.blog;
+
       title = blog.title?.[locale] || title;
       
       // Enhanced description handling with better fallbacks
       let blogDescription = blog.seoDescription?.[locale] || blog.excerpt?.[locale];
       
-      // If no description from blog, create one from title
-      if (!blogDescription && blog.title?.[locale]) {
-        blogDescription = `Read "${blog.title[locale]}" on News&Niche. Get the latest insights and updates.`;
+      // If no description from blog, create one from content or title
+      if (!blogDescription) {
+        if (blog.content?.[locale]) {
+          // Create description from first 150 characters of content
+          const contentText = blog.content[locale].replace(/<[^>]*>/g, ''); // Remove HTML tags
+          blogDescription = contentText.length > 150 
+            ? contentText.substring(0, 147) + '...'
+            : contentText;
+        } else if (blog.title?.[locale]) {
+          blogDescription = `Read "${blog.title[locale]}" on News&Niche. Get the latest insights and updates.`;
+        }
       }
       
       // Final fallback
@@ -61,7 +76,7 @@ export async function generateMetadata({ params }) {
       author = blog.author?.name || author;
       keywords = blog.seoKeywords?.[locale] || [];
       
-      console.log('Meta description generated:', description);
+
     } else {
       console.error('Blog not found or API error:', blogData.message);
     }
