@@ -1,5 +1,5 @@
 /* Import Google Fonts first */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+Bengali:wght@400;700;900&family=Tiro+Bangla:ital,wght@0,400;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Bengali:wght@300;400;500;600;700;800;900&family=Tiro+Bangla:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
 
 /* Then import Tailwind */
 @import "tailwindcss";
@@ -13,8 +13,6 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
-
-
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -59,34 +57,77 @@ body {
   color: #292929;
 }
 
-/* Bangla font support */
+/* Enhanced Bangla font support with multiple fallbacks */
 .font-bangla {
-  font-family: 'SolaimanLipi', 'Noto Sans Bengali', 'SiyamRupali', 'Inter', sans-serif;
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.7;
   letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .font-bangla-ui {
-  font-family: 'SolaimanLipi', 'Noto Sans Bengali', 'SiyamRupali', 'Inter', sans-serif;
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.5;
   letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-bangla-heading {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-bangla-bold {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Bangla blog details specific styling */
 .font-bangla-blog {
-  font-family: 'SolaimanLipi', 'Noto Sans Bengali', 'SiyamRupali', 'Inter', sans-serif;
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
   font-weight: 400;
-  line-height: 1.7;
+  line-height: 1.8;
   letter-spacing: 0.02em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .font-bangla-blog-heading {
-  font-family: 'SolaimanLipi', 'Noto Sans Bengali', 'SiyamRupali', 'Inter', sans-serif;
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.4;
   letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Bangla navigation and UI elements */
+.font-bangla-nav {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* BBC-style shadow */
@@ -112,6 +153,13 @@ body {
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -212,59 +260,196 @@ body {
   margin: 0.5em 0;
 }
 .prose blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1.5em;
   margin: 2em 0;
-  padding: 1.5em 2em;
-  background: #fafafa;
-  border-left: 4px solid #1a8917;
-  font-style: normal;
-  color: #292929;
-  font-size: 1.1em;
-  line-height: 1.6;
+  font-style: italic;
+  color: #4b5563;
+  background: #f9fafb;
+  padding: 1.5em;
+  border-radius: 0.5rem;
 }
 .prose code {
-  background: #f1f1f1;
+  background: #f3f4f6;
   padding: 0.2em 0.4em;
-  border-radius: 3px;
-  font-size: 0.9em;
-  color: #d63384;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  color: #dc2626;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 .prose pre {
-  background: #f8f9fa;
+  background: #1f2937;
+  color: #f9fafb;
   padding: 1.5em;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   overflow-x: auto;
   margin: 2em 0;
-  border: 1px solid #e9ecef;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 .prose img {
   max-width: 100%;
   height: auto;
-  border-radius: 0;
+  border-radius: 0.5rem;
   margin: 2em 0;
-  display: block;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 .prose a {
-  color: #1a8917;
-  text-decoration: none;
-  border-bottom: 1px solid #1a8917;
-  padding-bottom: 0.125em;
-  transition: all 0.2s ease;
+  color: #3b82f6;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
 }
 .prose a:hover {
-  color: #0f5a0f;
-  border-bottom-color: #0f5a0f;
+  color: #1d4ed8;
+  text-decoration-thickness: 3px;
 }
 .prose hr {
   border: none;
-  border-top: 1px solid #e6e6e6;
+  border-top: 2px solid #e5e7eb;
   margin: 3em 0;
+  height: 0;
 }
 
-/* Mobile Responsive Styles */
+/* Bangla-specific prose styling */
+.prose-bangla {
+  color: #1a1a1a;
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.9;
+  word-break: break-word;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.prose-bangla p {
+  margin: 1.9em 0;
+  color: #1a1a1a;
+  text-align: justify;
+}
+
+.prose-bangla h1, .prose-bangla h2, .prose-bangla h3, .prose-bangla h4, .prose-bangla h5, .prose-bangla h6 {
+  font-weight: 700;
+  margin-top: 2.8em;
+  margin-bottom: 1.4em;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: #0f0f0f;
+  text-align: left;
+}
+
+.prose-bangla h1 { 
+  font-size: 2.25em; 
+  margin-top: 0;
+  margin-bottom: 1em;
+  font-weight: 800;
+}
+
+.prose-bangla h2 { 
+  font-size: 1.75em; 
+  margin-top: 2.8em;
+  font-weight: 700;
+}
+
+.prose-bangla h3 { 
+  font-size: 1.375em; 
+  margin-top: 2.4em;
+  font-weight: 600;
+}
+
+.prose-bangla h4 { 
+  font-size: 1.125em; 
+  margin-top: 2.2em;
+  font-weight: 600;
+}
+
+.prose-bangla h5 { 
+  font-size: 1em; 
+  margin-top: 2em;
+  font-weight: 600;
+}
+
+.prose-bangla h6 { 
+  font-size: 0.875em; 
+  margin-top: 1.8em;
+  font-weight: 600;
+}
+
+.prose-bangla ul, .prose-bangla ol {
+  margin: 1.6em 0;
+  padding-left: 1.8em;
+}
+
+.prose-bangla li {
+  margin: 0.6em 0;
+  line-height: 1.8;
+}
+
+.prose-bangla blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1.8em;
+  margin: 2.2em 0;
+  font-style: italic;
+  color: #374151;
+  background: #f8fafc;
+  padding: 1.8em;
+  border-radius: 0.5rem;
+  font-size: 1.05em;
+}
+
+.prose-bangla code {
+  background: #f1f5f9;
+  padding: 0.25em 0.5em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  color: #dc2626;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.prose-bangla pre {
+  background: #1e293b;
+  color: #f1f5f9;
+  padding: 1.8em;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 2.2em 0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.prose-bangla img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 2.2em 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.prose-bangla a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.prose-bangla a:hover {
+  color: #1d4ed8;
+  text-decoration-thickness: 3px;
+}
+
+.prose-bangla hr {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 3.2em 0;
+  height: 0;
+}
+
+/* Responsive design for mobile devices */
 @media (max-width: 600px) {
   .prose, .blog-content {
-    font-size: 1.1rem;
+    font-size: 1.125rem;
     line-height: 1.7;
   }
   .prose h1 {
@@ -280,15 +465,37 @@ body {
     margin: 1.5em 0;
   }
   .prose blockquote {
-    padding: 1em 1.5em;
+    padding: 1.2em;
+    margin: 1.5em 0;
+  }
+  
+  /* Bangla mobile responsive */
+  .prose-bangla {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .prose-bangla h1 {
+    font-size: 1.75em;
+  }
+  .prose-bangla h2 {
+    font-size: 1.5em;
+  }
+  .prose-bangla h3 {
+    font-size: 1.25em;
+  }
+  .prose-bangla img {
+    margin: 1.5em 0;
+  }
+  .prose-bangla blockquote {
+    padding: 1.2em;
     margin: 1.5em 0;
   }
 }
 
-/* Tablet Responsive Styles */
+/* Tablet responsive design */
 @media (min-width: 601px) and (max-width: 1024px) {
   .prose, .blog-content {
-    font-size: 1.2rem;
+    font-size: 1.1875rem;
     line-height: 1.75;
   }
   .prose h1 {
@@ -304,86 +511,127 @@ body {
     margin: 1.8em 0;
   }
   .prose blockquote {
-    padding: 1.25em 1.75em;
+    padding: 1.5em;
+    margin: 1.8em 0;
+  }
+  
+  /* Bangla tablet responsive */
+  .prose-bangla {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+  }
+  .prose-bangla h1 {
+    font-size: 2em;
+  }
+  .prose-bangla h2 {
+    font-size: 1.625em;
+  }
+  .prose-bangla h3 {
+    font-size: 1.3125em;
+  }
+  .prose-bangla img {
+    margin: 1.8em 0;
+  }
+  .prose-bangla blockquote {
+    padding: 1.5em;
     margin: 1.8em 0;
   }
 }
 
-/* 8-inch Tablet Specific Styles */
+/* Desktop responsive design */
 @media (min-width: 768px) and (max-width: 1024px) {
   .prose, .blog-content {
-    font-size: 1.15rem;
-    line-height: 1.7;
+    font-size: 1.25rem;
+    line-height: 1.8;
   }
   .prose h1 {
-    font-size: 2.1em;
+    font-size: 2.5em;
   }
   .prose h2 {
-    font-size: 1.6em;
+    font-size: 1.875em;
   }
   .prose h3 {
-    font-size: 1.3em;
+    font-size: 1.5em;
   }
   .prose img {
-    margin: 1.6em 0;
+    margin: 2em 0;
   }
   .prose blockquote {
-    padding: 1.2em 1.6em;
-    margin: 1.6em 0;
+    padding: 1.8em;
+    margin: 2em 0;
+  }
+  
+  /* Bangla desktop responsive */
+  .prose-bangla {
+    font-size: 1.125rem;
+    line-height: 1.9;
+  }
+  .prose-bangla h1 {
+    font-size: 2.25em;
+  }
+  .prose-bangla h2 {
+    font-size: 1.75em;
+  }
+  .prose-bangla h3 {
+    font-size: 1.375em;
+  }
+  .prose-bangla img {
+    margin: 2em 0;
+  }
+  .prose-bangla blockquote {
+    padding: 1.8em;
+    margin: 2em 0;
   }
 }
 
-/* Bangla Content Specific Tablet Styles */
+/* Bangla-specific responsive typography */
 @media (min-width: 768px) and (max-width: 1024px) {
   .font-bangla-blog {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    letter-spacing: 0.025em;
+    font-size: 1.0625rem;
+    line-height: 1.85;
   }
   .font-bangla-blog-heading {
-    font-size: 1.1em;
+    font-size: 1.5em;
     line-height: 1.4;
-    letter-spacing: 0.015em;
   }
 }
 
-/* Blog Featured Image Responsive Fixes */
+/* Blog featured image responsive */
 .blog-featured-image {
   width: 100%;
   height: auto;
-  min-height: 300px;
-  max-height: 600px;
   object-fit: cover;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .blog-featured-image {
-    min-height: 400px;
-    max-height: 500px;
+    max-height: 400px;
   }
 }
 
 @media (min-width: 1025px) {
   .blog-featured-image {
-    min-height: 450px;
-    max-height: 600px;
+    max-height: 500px;
   }
 }
 
-/* Navigation Tablet Responsive */
+/* Navigation responsive */
 @media (min-width: 768px) and (max-width: 1024px) {
   .nav-tablet {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
   }
   .nav-tablet .nav-links {
-    gap: 1.5rem;
+    margin-left: 1.5rem;
   }
   .nav-tablet .nav-link {
-    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
   }
 }
 
-/* Blog List Tablet Responsive */
+/* Blog grid responsive */
 @media (min-width: 768px) and (max-width: 1024px) {
   .blog-grid-tablet {
     grid-template-columns: repeat(2, 1fr);
@@ -393,39 +641,322 @@ body {
     padding: 1.25rem;
   }
   .blog-card-tablet .blog-title {
-    font-size: 1.1rem;
+    font-size: 1.125rem;
     line-height: 1.4;
   }
   .blog-card-tablet .blog-excerpt {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-top: 0.75rem;
   }
 }
 
-/* Admin Dashboard Tablet Responsive */
+/* Admin responsive */
 @media (min-width: 768px) and (max-width: 1024px) {
   .admin-tablet {
     padding: 1rem;
   }
   .admin-tablet .sidebar {
-    width: 240px;
+    width: 250px;
   }
   .admin-tablet .main-content {
-    margin-left: 240px;
+    margin-left: 250px;
   }
   .admin-tablet .form-grid {
     grid-template-columns: 1fr;
   }
 }
 
+/* Logo font */
 .font-logo {
-  font-family: 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 800;
-  font-size: 1.25em;
-  letter-spacing: 0.04em;
-  color: #1e293b;
+  letter-spacing: -0.025em;
 }
 
+/* Enhanced Noto Bangla font */
 .font-noto-bangla {
-  font-family: 'Noto Sans Bengali', 'Inter', sans-serif;
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Bangla-specific spacing and layout improvements */
+.bangla-text-spacing {
+  word-spacing: 0.05em;
+  letter-spacing: 0.01em;
+}
+
+.bangla-heading-spacing {
+  word-spacing: 0.02em;
+  letter-spacing: 0.01em;
+}
+
+/* Bangla card improvements */
+.bangla-card {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.bangla-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Bangla button improvements */
+.bangla-btn {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all 0.2s ease;
+}
+
+.bangla-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Bangla form improvements */
+.bangla-input {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Bangla navigation improvements */
+.bangla-nav-link {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all 0.2s ease;
+}
+
+.bangla-nav-link:hover {
+  transform: translateY(-1px);
+}
+
+/* Bangla footer improvements */
+.bangla-footer {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Bangla search improvements */
+.bangla-search {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Bangla pagination improvements */
+.bangla-pagination {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Bangla breadcrumb improvements */
+.bangla-breadcrumb {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Bangla meta improvements */
+.bangla-meta {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Bangla category improvements */
+.bangla-category {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-transform: capitalize;
+}
+
+/* Bangla read time improvements */
+.bangla-read-time {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Bangla date improvements */
+.bangla-date {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Bangla excerpt improvements */
+.bangla-excerpt {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #374151;
+  text-align: justify;
+}
+
+/* Bangla title improvements */
+.bangla-title {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #111827;
+}
+
+/* Bangla subtitle improvements */
+.bangla-subtitle {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #374151;
+}
+
+/* Bangla section title improvements */
+.bangla-section-title {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #111827;
+}
+
+/* Bangla description improvements */
+.bangla-description {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #6b7280;
+}
+
+/* Bangla label improvements */
+.bangla-label {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #374151;
+}
+
+/* Bangla placeholder improvements */
+.bangla-placeholder {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #9ca3af;
+}
+
+/* Bangla error improvements */
+.bangla-error {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #dc2626;
+}
+
+/* Bangla success improvements */
+.bangla-success {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #059669;
+}
+
+/* Bangla warning improvements */
+.bangla-warning {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #d97706;
+}
+
+/* Bangla info improvements */
+.bangla-info {
+  font-family: 'Noto Sans Bengali', 'Hind Siliguri', 'Tiro Bangla', 'SolaimanLipi', 'SiyamRupali', 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2563eb;
 }

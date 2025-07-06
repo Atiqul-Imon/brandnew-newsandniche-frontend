@@ -15,10 +15,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-2xl font-bold mb-4">
+            <h3 className={`text-2xl font-bold mb-4 ${locale === 'bn' ? 'font-bangla-heading bangla-section-title bangla-heading-spacing' : ''}`}>
               {locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche'}
             </h3>
-            <p className="text-gray-300 mb-6 max-w-md">
+            <p className={`text-gray-300 mb-6 max-w-md ${locale === 'bn' ? 'font-bangla-blog bangla-description bangla-text-spacing' : ''}`}>
               {locale === 'bn' 
                 ? 'আপনার বিশ্বস্ত সংবাদ উৎস। মানসম্পন্ন বিষয়বস্তু এবং অন্তর্দৃষ্টি সহ সর্বশেষ খবর পান।'
                 : 'Your trusted source for news. Get the latest stories with quality content and insights.'
@@ -27,7 +27,7 @@ export default function Footer() {
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="Facebook"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="Twitter"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="LinkedIn"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@ export default function Footer() {
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="Instagram"
               >
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -66,27 +66,27 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">
+            <h4 className={`text-lg font-semibold mb-4 ${locale === 'bn' ? 'font-bangla-heading bangla-subtitle bangla-heading-spacing' : ''}`}>
               {locale === 'bn' ? 'দ্রুত লিংক' : 'Quick Links'}
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href={`/${locale}`} className="text-gray-300 hover:text-white transition-colors">
+                <Link href={`/${locale}`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {t('navigation.home')}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/blogs`} className="text-gray-300 hover:text-white transition-colors">
+                <Link href={`/${locale}/blogs`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {t('navigation.blog')}
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="#" className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {t('navigation.about')}
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="#" className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {t('navigation.contact')}
                 </Link>
               </li>
@@ -95,27 +95,27 @@ export default function Footer() {
 
           {/* Categories */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">
+            <h4 className={`text-lg font-semibold mb-4 ${locale === 'bn' ? 'font-bangla-heading bangla-subtitle bangla-heading-spacing' : ''}`}>
               {locale === 'bn' ? 'বিভাগসমূহ' : 'Categories'}
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href={`/${locale}/blogs?category=technology`} className="text-gray-300 hover:text-white transition-colors">
+                <Link href={`/${locale}/blogs?category=technology`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {locale === 'bn' ? 'প্রযুক্তি' : 'Technology'}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/blogs?category=politics`} className="text-gray-300 hover:text-white transition-colors">
+                <Link href={`/${locale}/blogs?category=politics`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {locale === 'bn' ? 'রাজনীতি' : 'Politics'}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/blogs?category=sports`} className="text-gray-300 hover:text-white transition-colors">
+                <Link href={`/${locale}/blogs?category=sports`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {locale === 'bn' ? 'খেলাধুলা' : 'Sports'}
                 </Link>
               </li>
               <li>
-                <Link href={`/${locale}/blogs?category=entertainment`} className="text-gray-300 hover:text-white transition-colors">
+                <Link href={`/${locale}/blogs?category=entertainment`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {locale === 'bn' ? 'বিনোদন' : 'Entertainment'}
                 </Link>
               </li>
@@ -126,17 +126,17 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
-            <p className="text-gray-400 text-xs sm:text-sm text-center sm:text-left">
+            <p className={`text-gray-400 text-xs sm:text-sm text-center sm:text-left ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
               © {currentYear} {locale === 'bn' ? 'নিউজ&নিচে' : 'News&Niche'}. {t('footer.copyright')}
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 mt-2 sm:mt-0">
-              <Link href={`/${locale}/privacy`} className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">
+              <Link href={`/${locale}/privacy`} className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                 {t('footer.privacyPolicy')}
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">
+              <Link href="#" className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                 {t('footer.termsOfService')}
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">
+              <Link href="#" className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                 {t('footer.contactUs')}
               </Link>
             </div>

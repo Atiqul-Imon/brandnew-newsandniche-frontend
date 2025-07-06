@@ -94,7 +94,7 @@ export default function HomeClient({ locale }) {
   if (error) {
     return (
       <main className="min-h-screen flex items-center justify-center" aria-label="Main content">
-        <div className="text-red-600 text-lg">{error}</div>
+        <div className={`text-red-600 text-lg ${locale === 'bn' ? 'font-bangla-ui bangla-error' : ''}`}>{error}</div>
       </main>
     );
   }
@@ -115,7 +115,7 @@ export default function HomeClient({ locale }) {
               <div className="mb-8">
                 <Link
                   href={`/${locale}/blogs/${featuredBlogs[0].slug[locale]}`}
-                  className="block group bg-white overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300"
+                  className="block group bg-white overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300 bangla-card"
                   style={{ textDecoration: 'none' }}
                 >
                   <div className="relative w-full aspect-[3/2] bg-[#f2f2f2]">
@@ -129,15 +129,15 @@ export default function HomeClient({ locale }) {
                     />
                   </div>
                   <div className="p-6">
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
-                      <span className="capitalize">{featuredBlogs[0].category[locale]}</span>
+                    <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
+                      <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>{featuredBlogs[0].category[locale]}</span>
                       <span className="mx-2">•</span>
-                      <span>{featuredBlogs[0].readTime[locale]} {t('blog.minRead')}</span>
+                      <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{featuredBlogs[0].readTime[locale]} {t('blog.minRead')}</span>
                       <span className="mx-2">•</span>
-                      <span>{new Date(featuredBlogs[0].publishedAt).toLocaleDateString(locale)}</span>
+                      <span className={locale === 'bn' ? 'bangla-date' : ''}>{new Date(featuredBlogs[0].publishedAt).toLocaleDateString(locale)}</span>
                     </div>
-                    <h3 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{featuredBlogs[0].title[locale]}</h3>
-                    <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 text-lg ${locale === 'bn' ? 'font-bangla' : ''}`}>{featuredBlogs[0].excerpt[locale]}</p>
+                    <h3 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{featuredBlogs[0].title[locale]}</h3>
+                    <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 text-lg ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{featuredBlogs[0].excerpt[locale]}</p>
                   </div>
                 </Link>
               </div>
@@ -147,7 +147,7 @@ export default function HomeClient({ locale }) {
                   <Link
                     key={blog._id}
                     href={`/${locale}/blogs/${blog.slug[locale]}`}
-                    className="bg-white flex flex-col cursor-pointer group overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300"
+                    className="bg-white flex flex-col cursor-pointer group overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300 bangla-card"
                     style={{ textDecoration: 'none' }}
                   >
                     <div className="relative w-full aspect-[3/2] bg-[#f2f2f2]">
@@ -161,15 +161,15 @@ export default function HomeClient({ locale }) {
                       />
                     </div>
                     <div className="p-4 sm:p-6 flex flex-col flex-1">
-                      <div className="flex items-center text-sm text-gray-500 mb-2">
-                        <span className="capitalize">{blog.category[locale]}</span>
+                      <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
+                        <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>{blog.category[locale]}</span>
                         <span className="mx-2">•</span>
-                        <span>{blog.readTime[locale]} {t('blog.minRead')}</span>
+                        <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime[locale]} {t('blog.minRead')}</span>
                         <span className="mx-2">•</span>
-                        <span>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
+                        <span className={locale === 'bn' ? 'bangla-date' : ''}>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
                       </div>
-                      <h3 className={`text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.title[locale]}</h3>
-                      <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla' : ''}`}>{blog.excerpt[locale]}</p>
+                      <h3 className={`text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{blog.title[locale]}</h3>
+                      <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{blog.excerpt[locale]}</p>
                     </div>
                   </Link>
                 ))}
@@ -182,10 +182,10 @@ export default function HomeClient({ locale }) {
           <section className="py-10 sm:py-16" aria-label="Recent blogs">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-3 sm:gap-0">
-                <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>{t('home.recent.title')}</h2>
+                <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-heading bangla-section-title bangla-heading-spacing' : ''}`}>{t('home.recent.title')}</h2>
                 <Link
                   href={`/${locale}/blogs`}
-                  className="text-gray-700 hover:text-gray-900 font-medium text-base sm:text-lg"
+                  className={`text-gray-700 hover:text-gray-900 font-medium text-base sm:text-lg transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav bangla-nav-link' : ''}`}
                 >
                   {t('home.recent.viewAll')} →
                 </Link>
@@ -195,7 +195,7 @@ export default function HomeClient({ locale }) {
                   <Link
                     key={blog._id}
                     href={`/${locale}/blogs/${blog.slug[locale]}`}
-                    className="bg-white flex flex-col cursor-pointer group overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300"
+                    className="bg-white flex flex-col cursor-pointer group overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300 bangla-card"
                     style={{ textDecoration: 'none' }}
                   >
                     <div className="relative w-full aspect-[3/2] bg-[#f2f2f2]">
@@ -209,13 +209,15 @@ export default function HomeClient({ locale }) {
                       />
                     </div>
                     <div className="p-4 sm:p-6 flex flex-col flex-1">
-                      <div className="flex items-center text-sm text-gray-500 mb-2">
-                        <span className="capitalize">{blog.category[locale]}</span>
+                      <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
+                        <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>{blog.category[locale]}</span>
                         <span className="mx-2">•</span>
-                        <span>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
+                        <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime[locale]} {t('blog.minRead')}</span>
+                        <span className="mx-2">•</span>
+                        <span className={locale === 'bn' ? 'bangla-date' : ''}>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
                       </div>
-                      <h3 className={`text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-noto-bangla text-2xl sm:text-3xl font-extrabold' : ''}`}>{blog.title[locale]}</h3>
-                      <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-2 ${locale === 'bn' ? 'font-bangla text-lg sm:text-xl font-semibold' : ''}`}>{blog.excerpt[locale]}</p>
+                      <h3 className={`text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{blog.title[locale]}</h3>
+                      <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{blog.excerpt[locale]}</p>
                     </div>
                   </Link>
                 ))}
