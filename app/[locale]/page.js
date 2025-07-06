@@ -22,7 +22,7 @@ export default async function HomePage({ params }) {
     recentBlogs = recentData.data?.blogs || [];
 
     // Fetch categories
-    const categoriesRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}/categories`, { next: { revalidate: 60 } });
+    const categoriesRes = await fetch(`${API_BASE_URL}/api/categories?lang=${locale}`, { next: { revalidate: 60 } });
     const categoriesData = await categoriesRes.json();
     categories = categoriesData.data?.categories || [];
   } catch (err) {

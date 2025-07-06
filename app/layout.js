@@ -4,6 +4,8 @@ import { AuthProvider } from "./context/AuthContext";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import CookieConsent from './components/CookieConsent';
+import GoogleAnalytics from './components/GoogleAnalytics';
+import AnalyticsDebug from './components/AnalyticsDebug';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -55,6 +57,8 @@ export default async function RootLayout({ children, params: { locale } }) {
       <body className={`${inter.className} antialiased`}>
         <AuthProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
+            <GoogleAnalytics />
+            <AnalyticsDebug />
             {children}
             <CookieConsent locale={locale} />
           </NextIntlClientProvider>

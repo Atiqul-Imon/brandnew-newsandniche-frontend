@@ -92,6 +92,11 @@ export default function CookieConsent({ locale }) {
     updateConsent(allAccepted);
     setShowBanner(false);
     setShowSettings(false);
+    
+    // Trigger analytics initialization
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new StorageEvent('storage', { key: 'cookieConsent' }));
+    }
   };
 
   const handleRejectAll = () => {
@@ -111,6 +116,11 @@ export default function CookieConsent({ locale }) {
     updateConsent(preferences);
     setShowBanner(false);
     setShowSettings(false);
+    
+    // Trigger analytics initialization if analytics consent was given
+    if (preferences.analytics && typeof window !== 'undefined') {
+      window.dispatchEvent(new StorageEvent('storage', { key: 'cookieConsent' }));
+    }
   };
 
   const handlePreferenceChange = (type) => {
