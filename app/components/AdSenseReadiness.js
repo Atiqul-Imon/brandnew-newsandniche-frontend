@@ -66,11 +66,11 @@ export default function AdSenseReadiness({ locale }) {
   const getOverallScore = () => {
     const checks = [
       ...Object.values(readinessStatus.technical),
-      status.content.quality,
-      status.content.schedule,
+      readinessStatus.content.quality,
+      readinessStatus.content.schedule,
       ...Object.values(readinessStatus.legal),
-      status.adsense.implemented,
-      status.adsense.configured
+      readinessStatus.adsense.implemented,
+      readinessStatus.adsense.configured
     ];
     
     const passed = checks.filter(Boolean).length;

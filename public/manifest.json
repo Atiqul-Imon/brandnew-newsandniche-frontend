@@ -1,7 +1,7 @@
 {
   "name": "News&Niche",
   "short_name": "NewsNiche",
-  "description": "Latest news, insights, and stories from News&Niche",
+  "description": "Trending News. Niche Insight - Latest news, insights, and stories from News&Niche",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -19,10 +19,7 @@ export default function Footer() {
               News&Niche
             </h3>
             <p className={`text-gray-300 mb-6 max-w-md ${locale === 'bn' ? 'font-bangla-blog bangla-description bangla-text-spacing' : ''}`}>
-              {locale === 'bn' 
-                ? 'সংবাদ এবং অন্তর্দৃষ্টির জন্য একটি প্ল্যাটফর্ম। মানসম্পন্ন বিষয়বস্তু সহ গল্পগুলি পড়ুন।'
-                : 'A platform for news and insights. Read stories with quality content.'
-              }
+              Trending News. Niche Insight. Read stories with quality content.
             </p>
             <div className="flex space-x-4">
               <a
@@ -132,6 +129,9 @@ export default function Footer() {
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 mt-2 sm:mt-0">
               <Link href={`/${locale}/privacy`} className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                 {t('footer.privacyPolicy')}
+              </Link>
+              <Link href={`/${locale}/affiliate-disclaimer`} className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
+                {locale === 'bn' ? 'অ্যাফিলিয়েট ডিসক্লেইমার' : 'Affiliate Disclaimer'}
               </Link>
               <Link href="#" className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                 {t('footer.termsOfService')}

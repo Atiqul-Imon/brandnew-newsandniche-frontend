@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { api } from '@/app/apiConfig';
+import { WebSiteSchema } from './SchemaMarkup';
 
 export default function HomeClient({ locale }) {
   const t = useTranslations();
@@ -53,9 +54,7 @@ export default function HomeClient({ locale }) {
       width: 512,
       height: 512,
     },
-    description: locale === 'bn' 
-      ? 'সংবাদ এবং অন্তর্দৃষ্টির জন্য একটি প্ল্যাটফর্ম'
-      : 'A platform for news and insights',
+    description: 'Trending News. Niche Insight',
     foundingDate: '2024',
     address: {
       '@type': 'PostalAddress',
@@ -105,6 +104,9 @@ export default function HomeClient({ locale }) {
       <script type="application/ld+json" suppressHydrationWarning>
         {JSON.stringify(organizationSchema)}
       </script>
+      
+      {/* Website Structured Data */}
+      <WebSiteSchema />
       
       <main className="min-h-screen bg-gray-100" aria-label="Main content">
         {/* --- Featured Blogs Section (Hero Replacement) --- */}

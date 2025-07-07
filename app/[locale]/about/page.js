@@ -7,7 +7,7 @@ export default async function AboutPage({ params }) {
   const content = {
     en: {
       title: "About News&Niche",
-      subtitle: "A Platform for Quality News and Insights",
+      subtitle: "Trending News. Niche Insight",
       mission: {
         title: "Our Mission",
         content: "At News&Niche, we believe in delivering accurate, timely, and insightful news that matters. Our mission is to provide readers with comprehensive coverage of current events, in-depth analysis, and thought-provoking content that helps them stay informed and make better decisions."
@@ -46,7 +46,7 @@ export default async function AboutPage({ params }) {
     },
     bn: {
       title: "About News&Niche",
-      subtitle: "A platform for quality news and analysis",
+      subtitle: "Trending News. Niche Insight",
       mission: {
         title: "Our Mission",
         content: "At News&Niche, we believe in delivering important, timely, and insightful news. Our goal is to provide readers with comprehensive coverage of current events, in-depth analysis, and thought-provoking content that helps them stay informed and make better decisions."
@@ -165,7 +165,7 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   
-  const title = 'About News&Niche - A Platform for News';
+  const title = 'About News&Niche - Trending News. Niche Insight';
   const description = 'Learn about News&Niche. Discover our mission, vision, and values that drive us to deliver quality news and insights.';
   const keywords = ['About News&Niche', 'Bangla News', 'News Site', 'Bangla News', 'About Us'];
   

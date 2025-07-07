@@ -44,13 +44,13 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   const supportedLocales = ['en', 'bn'];
-  const title = 'News&Niche - A Platform for News & Insights';
-  const description = 'News&Niche brings you news, analysis, and stories from around the world.';
+  const title = 'News&Niche - Trending News. Niche Insight';
+  const description = 'News&Niche brings you trending news, analysis, and niche insights from around the world. Stay informed with quality content and expert analysis.';
   const image = `${siteUrl}/default-og-image.jpg`;
   const canonical = `${siteUrl}/${locale}`;
   const keywords = locale === 'bn'
-    ? ['বাংলা খবর', 'নিউজ', 'বাংলা সংবাদ', 'বাংলা ব্লগ']
-    : ['news', 'latest news', 'blog', 'insights', 'world news'];
+    ? ['trending news', 'niche insight', 'latest news', 'quality content', 'news blog', 'insights', 'analysis', 'বাংলা খবর', 'নিউজ', 'বাংলা সংবাদ', 'বাংলা ব্লগ']
+    : ['trending news', 'niche insight', 'latest news', 'quality content', 'news blog', 'insights', 'analysis', 'world news'];
 
   // Build alternate links for hreflang
   const alternateLinks = Object.fromEntries(

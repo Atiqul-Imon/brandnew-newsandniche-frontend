@@ -86,8 +86,8 @@
   },
   "home": {
     "hero": {
-      "title": "News&Niche স্বাগতম",
-      "subtitle": "কার্যকরী সংবাদ, অন্তর্দৃষ্টি এবং গুরুত্বপূর্ণ গল্পের জন্য একটি প্ল্যাটফর্ম",
+      "title": "Welcome to News&Niche",
+      "subtitle": "Trending News. Niche Insight",
       "browseBlogs": "ব্লগ ব্রাউজ করুন",
       "joinUs": "আমাদের সাথে যোগ দিন",
       "getStarted": "শুরু করুন",
@@ -106,7 +106,7 @@
     },
     "cta": {
       "title": "মানসম্পন্ন বিষয়বস্তু দিয়ে সুচিত থাকুন",
-      "subtitle": "পাঠকদের সাথে যোগ দিন যারা সংবাদ এবং অন্তর্দৃষ্টির জন্য আমাদের পরিদর্শন করেন",
+      "subtitle": "Join readers who visit us for trending news and niche insights",
       "button": "পড়া শুরু করুন"
     },
     "features": {
@@ -256,6 +256,6 @@
     "slug": "স্লাগ",
     "actions": "অ্যাকশন"
   },
-  "title": "নিউজ & নিচে",
-  "description": "সংবাদ এবং অন্তর্দৃষ্টির জন্য একটি প্ল্যাটফর্ম"
+  "title": "News&Niche",
+  "description": "Trending News. Niche Insight"
 } 

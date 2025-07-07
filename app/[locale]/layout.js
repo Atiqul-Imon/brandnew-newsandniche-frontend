@@ -37,13 +37,11 @@ export async function generateMetadata(props) {
     notFound();
   }
   const siteUrl = 'https://newsandniche.com';
-  const title = 'News&Niche';
-  const description = locale === 'bn' 
-    ? 'সংবাদ এবং অন্তর্দৃষ্টির জন্য একটি প্ল্যাটফর্ম' 
-    : 'A platform for news and insights';
+  const title = 'News&Niche - Trending News. Niche Insight';
+  const description = 'Trending News. Niche Insight - Latest news, insights, and stories from News&Niche. Stay informed with quality content and niche insights.';
   const keywords = locale === 'bn'
-    ? ['নিউজ', 'বাংলা খবর', 'নিচে', 'বাংলাদেশ', 'সংবাদ']
-    : ['news', 'english news', 'niche', 'bangladesh', 'blog'];
+    ? ['trending news', 'niche insight', 'latest news', 'quality content', 'news blog', 'insights', 'analysis', 'বাংলা খবর', 'নিচে', 'বাংলাদেশ', 'সংবাদ']
+    : ['trending news', 'niche insight', 'latest news', 'quality content', 'news blog', 'insights', 'analysis', 'english news', 'niche', 'bangladesh', 'blog'];
   const canonical = `${siteUrl}/${locale}`;
   const alternateLinks = Object.fromEntries(
     supportedLocales.map(l => [

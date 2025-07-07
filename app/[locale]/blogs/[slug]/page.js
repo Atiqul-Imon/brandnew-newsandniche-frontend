@@ -1,6 +1,7 @@
 // SERVER COMPONENT: Fetches blog and related blogs on the server for SSR and SEO
 import BlogDetailClient from '../../../components/BlogDetailClient';
 import { API_BASE_URL } from '../../../apiConfig';
+import { BlogPostSchema, OrganizationSchema } from '../../../components/SchemaMarkup';
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -177,12 +178,31 @@ export default async function BlogPostPage({ params }) {
   }
 
   return (
-    <BlogDetailClient 
-      locale={locale} 
-      slug={slug}
-      initialBlog={blog}
-      initialRelatedBlogs={relatedBlogs}
-      error={error}
-    />
+    <>
+      {/* Schema Markup */}
+      {blog && (
+        <BlogPostSchema
+          title={blog.title?.[locale] || blog.title?.en || 'Blog Post'}
+          description={blog.seoDescription?.[locale] || blog.excerpt?.[locale] || 'Blog post from News&Niche'}
+          author={blog.author?.name || 'News&Niche'}
+          publishedDate={blog.publishedAt}
+          modifiedDate={blog.updatedAt}
+          image={blog.featuredImage}
+          url={`https://newsandniche.com/${locale}/blogs/${blog.slug?.[locale] || slug}`}
+          category={blog.category?.[locale]}
+          tags={blog.tags?.[locale] || []}
+          locale={locale}
+        />
+      )}
+      <OrganizationSchema />
+      
+      <BlogDetailClient 
+        locale={locale} 
+        slug={slug}
+        initialBlog={blog}
+        initialRelatedBlogs={relatedBlogs}
+        error={error}
+      />
+    </>
   );
 } 

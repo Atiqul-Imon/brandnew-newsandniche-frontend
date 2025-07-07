@@ -15,10 +15,19 @@ const inter = Inter({
 
 export const metadata = {
   title: {
-    default: 'News&Niche',
+    default: 'News&Niche - Trending News. Niche Insight',
     template: '%s | News&Niche'
   },
-  description: 'Latest news, insights, and stories from News&Niche.',
+  description: 'Trending News. Niche Insight - Latest news, insights, and stories from News&Niche. Stay informed with quality content and niche insights.',
+  keywords: 'trending news, niche insight, latest news, quality content, news blog, insights, analysis',
+  authors: [{ name: 'News&Niche' }],
+  creator: 'News&Niche',
+  publisher: 'News&Niche',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: [
       { url: '/favicon.svg?v=2', type: 'image/svg+xml' }
