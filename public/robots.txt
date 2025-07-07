@@ -4,6 +4,10 @@ Allow: /
 # Sitemap
 Sitemap: https://newsandniche.com/sitemap.xml
 
+# Favicon
+Allow: /favicon.svg
+Allow: /apple-touch-icon.svg
+
 # Disallow admin areas
 Disallow: /admin/
 Disallow: /api/

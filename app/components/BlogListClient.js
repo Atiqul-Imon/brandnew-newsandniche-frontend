@@ -19,7 +19,7 @@ export default function BlogListClient(props) {
   const total = props.total || 0;
   const initialHasMore = props.hasMore || false;
   const initialError = props.error || null;
-  const locale = props.locale || initialParams.locale || 'en';
+  const locale = props.locale || (typeof initialParams === 'object' && initialParams.locale) || 'en';
 
   // State
   const [blogs, setBlogs] = useState(initialBlogs);

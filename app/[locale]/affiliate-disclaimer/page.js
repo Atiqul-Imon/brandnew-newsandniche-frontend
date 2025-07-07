@@ -141,14 +141,14 @@ export default async function AffiliateDisclaimerPage({ params }) {
                     Your Rights
                   </h2>
                   <p className="text-gray-700 mb-6">
-                    You are not obligated to use our affiliate links. You can visit the vendor's website directly and purchase products at the same price. Our goal is to provide you with accurate information so you can make informed decisions.
+                    You are not obligated to use our affiliate links. You can visit the vendor&apos;s website directly and purchase products at the same price. Our goal is to provide you with accurate information so you can make informed decisions.
                   </p>
                   
                   <h2 className={`text-2xl font-semibold text-gray-900 mt-8 mb-4 ${locale === 'bn' ? 'font-bangla-heading bangla-heading-spacing' : ''}`}>
                     Contact
                   </h2>
                   <p className="text-gray-700 mb-6">
-                    If you have any questions about our affiliate relationships, please don't hesitate to contact us. We're happy to answer your questions.
+                    If you have any questions about our affiliate relationships, please don&apos;t hesitate to contact us. We&apos;re happy to answer your questions.
                   </p>
                   
                   <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mt-8">

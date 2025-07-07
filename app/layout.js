@@ -30,12 +30,17 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.svg?v=2', type: 'image/svg+xml' }
+      { url: '/favicon.svg?v=3', type: 'image/svg+xml', sizes: 'any' },
+      { url: '/favicon.ico', type: 'image/x-icon', sizes: '16x16 32x32' }
     ],
     apple: [
-      { url: '/apple-touch-icon.svg?v=2', type: 'image/svg+xml' }
+      { url: '/apple-touch-icon.svg?v=3', type: 'image/svg+xml', sizes: '180x180' }
     ],
-    shortcut: '/favicon.svg?v=2'
+    shortcut: '/favicon.svg?v=3',
+    other: [
+      { rel: 'icon', url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { rel: 'icon', url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' }
+    ]
   },
   manifest: '/manifest.json',
   robots: {
@@ -62,6 +67,12 @@ export default async function RootLayout({ children, params: { locale } }) {
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
         {/* SolaimanLipi for Bangla */}
         <link href="https://fonts.googleapis.com/css2?family=SolaimanLipi:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        
+        {/* Explicit favicon links for better SEO */}
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.svg?v=3" />
+        <link rel="shortcut icon" href="/favicon.svg?v=3" />
       </head>
       <body className={`${inter.className} antialiased`}>
         <AuthProvider>
