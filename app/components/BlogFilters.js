@@ -5,38 +5,61 @@ import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { trackCategoryClick } from '../../lib/gtag';
 
-export default function BlogFilters({ locale, categories = [], selectedCategory = '', selectedStatus = '' }) {
+export default function BlogFilters({
+  locale,
+  categories = [],
+  selectedCategory = '',
+  selectedStatus = '',
+  onFiltersChange
+}) {
   const t = useTranslations();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleCategoryChange = (category) => {
-    // Track category click
-    trackCategoryClick(category);
-    
-    const params = new URLSearchParams(searchParams);
-    if (category) {
-      params.set('category', category);
+    if (onFiltersChange) {
+      onFiltersChange({
+        category,
+        status: selectedStatus
+      });
     } else {
-      params.delete('category');
+      // Track category click
+      trackCategoryClick(category);
+      const params = new URLSearchParams(searchParams);
+      if (category) {
+        params.set('category', category);
+      } else {
+        params.delete('category');
+      }
+      params.delete('page'); // Reset to first page
+      router.push(`/${locale}/blogs?${params.toString()}`);
     }
-    params.delete('page'); // Reset to first page
-    router.push(`/${locale}/blogs?${params.toString()}`);
   };
 
   const handleStatusChange = (status) => {
-    const params = new URLSearchParams(searchParams);
-    if (status) {
-      params.set('status', status);
+    if (onFiltersChange) {
+      onFiltersChange({
+        category: selectedCategory,
+        status
+      });
     } else {
-      params.delete('status');
+      const params = new URLSearchParams(searchParams);
+      if (status) {
+        params.set('status', status);
+      } else {
+        params.delete('status');
+      }
+      params.delete('page'); // Reset to first page
+      router.push(`/${locale}/blogs?${params.toString()}`);
     }
-    params.delete('page'); // Reset to first page
-    router.push(`/${locale}/blogs?${params.toString()}`);
   };
 
   const clearFilters = () => {
-    router.push(`/${locale}/blogs`);
+    if (onFiltersChange) {
+      onFiltersChange({ category: '', status: '' });
+    } else {
+      router.push(`/${locale}/blogs`);
+    }
   };
 
   return (

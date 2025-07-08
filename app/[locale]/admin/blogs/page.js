@@ -305,7 +305,19 @@ export default function AdminBlogsPage() {
 
       {/* Filters */}
       <div className="mb-6">
-        <BlogFilters onFiltersChange={handleFiltersChange} categories={categories} />
+        <BlogFilters
+          locale={locale}
+          categories={categories}
+          selectedCategory={filters.category}
+          selectedStatus={filters.status}
+          onFiltersChange={(newFilters) => {
+            setFilters((prev) => ({
+              ...prev,
+              ...newFilters
+            }));
+            setCurrentPage(1); // Reset to first page when filters change
+          }}
+        />
       </div>
 
       {/* Stats */}
