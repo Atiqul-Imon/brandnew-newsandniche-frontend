@@ -198,7 +198,7 @@ export function OrganizationSchema() {
     "sameAs": [
       "https://twitter.com/newsandniche",
       "https://facebook.com/newsandniche",
-      "https://linkedin.com/company/newsandniche"
+      "https://www.linkedin.com/company/news-and-niche"
     ],
     "contactPoint": {
       "@type": "ContactPoint",

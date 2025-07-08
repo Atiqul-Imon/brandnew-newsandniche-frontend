@@ -70,7 +70,7 @@ export default function HomeClient({ locale }) {
     sameAs: [
       'https://twitter.com/newsandniche',
       'https://facebook.com/newsandniche',
-      'https://linkedin.com/company/newsandniche',
+      'https://www.linkedin.com/company/news-and-niche',
     ],
     publisher: {
       '@type': 'Organization',
@@ -133,13 +133,17 @@ export default function HomeClient({ locale }) {
                   <div className="p-6">
                     <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
                       <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                        <a
-                          href={`/${locale}/blogs?category=${encodeURIComponent(featuredBlogs[0].category[locale] || '')}`}
-                          className="underline hover:text-blue-600 transition-colors duration-200"
+                        <span
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            window.location.href = `/${locale}/blogs?category=${encodeURIComponent(featuredBlogs[0].category[locale] || '')}`;
+                          }}
+                          className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
                           aria-label={`View all posts in ${featuredBlogs[0].category[locale]}`}
                         >
                           {featuredBlogs[0].category[locale]}
-                        </a>
+                        </span>
                       </span>
                       <span className="mx-2">•</span>
                       <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{featuredBlogs[0].readTime[locale]} {t('blog.minRead')}</span>
@@ -173,13 +177,17 @@ export default function HomeClient({ locale }) {
                     <div className="p-4 sm:p-6 flex flex-col flex-1">
                       <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
                         <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                          <a
-                            href={`/${locale}/blogs?category=${encodeURIComponent(blog.category[locale] || '')}`}
-                            className="underline hover:text-blue-600 transition-colors duration-200"
+                          <span
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              window.location.href = `/${locale}/blogs?category=${encodeURIComponent(blog.category[locale] || '')}`;
+                            }}
+                            className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
                             aria-label={`View all posts in ${blog.category[locale]}`}
                           >
                             {blog.category[locale]}
-                          </a>
+                          </span>
                         </span>
                         <span className="mx-2">•</span>
                         <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime[locale]} {t('blog.minRead')}</span>
@@ -229,13 +237,17 @@ export default function HomeClient({ locale }) {
                     <div className="p-4 sm:p-6 flex flex-col flex-1">
                       <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
                         <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                          <a
-                            href={`/${locale}/blogs?category=${encodeURIComponent(blog.category[locale] || '')}`}
-                            className="underline hover:text-blue-600 transition-colors duration-200"
+                          <span
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              window.location.href = `/${locale}/blogs?category=${encodeURIComponent(blog.category[locale] || '')}`;
+                            }}
+                            className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
                             aria-label={`View all posts in ${blog.category[locale]}`}
                           >
                             {blog.category[locale]}
-                          </a>
+                          </span>
                         </span>
                         <span className="mx-2">•</span>
                         <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime[locale]} {t('blog.minRead')}</span>

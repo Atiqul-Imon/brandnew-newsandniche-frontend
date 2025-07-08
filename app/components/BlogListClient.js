@@ -276,14 +276,18 @@ export default function BlogListClient(props) {
                   <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
                       <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                        <a
-                          href={`/${locale}/blogs?category=${encodeURIComponent(blog.category?.[locale] || '')}`}
-                          className="underline hover:text-blue-600 transition-colors duration-200"
+                        <span
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            window.location.href = `/${locale}/blogs?category=${encodeURIComponent(blog.category?.[locale] || '')}`;
+                          }}
+                          className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
                           aria-label={`View all posts in ${blog.category?.[locale]}`}
                         >
                           {categories.find(c => c.slug === blog.category?.[locale])?.name || 
                            blog.category?.[locale] || 'Uncategorized'}
-                        </a>
+                        </span>
                       </span>
                       <span className="mx-2">•</span>
                       <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime?.[locale] || 5} {t('blog.minRead')}</span>

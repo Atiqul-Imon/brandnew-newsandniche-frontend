@@ -42,7 +42,9 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/news-and-niche"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="LinkedIn"
               >
@@ -132,7 +134,7 @@ export default function Footer() {
                 {t('footer.privacyPolicy')}
               </Link>
               <Link href={`/${locale}/affiliate-disclaimer`} className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
-                {locale === 'bn' ? 'অ্যাফিলিয়েট ডিসক্লেইমার' : 'Affiliate Disclaimer'}
+                {locale === 'bn' ? 'ডিসক্লেইমার' : 'Disclaimer'}
               </Link>
               <Link href="#" className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                 {t('footer.termsOfService')}
@@ -146,4 +148,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-} 
+}
