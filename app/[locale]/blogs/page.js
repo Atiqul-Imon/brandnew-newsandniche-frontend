@@ -51,13 +51,14 @@ export default async function BlogsPage(props) {
     }
 
     // Fetch categories
-    const categoriesRes = await fetch(`${API_BASE_URL}/api/categories?lang=${locale}`, {
+    const categoriesRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}/categories`, {
       next: { revalidate: 300 } // Cache for 5 minutes
     });
     const categoriesData = await categoriesRes.json();
     
     if (categoriesData.success) {
-      categories = categoriesData.data.categories || [];
+      // Get top 10 categories with most posts
+      categories = (categoriesData.data.categories || []).slice(0, 10);
     }
   } catch (err) {
     error = 'Failed to load data';

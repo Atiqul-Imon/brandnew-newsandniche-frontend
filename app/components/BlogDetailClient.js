@@ -455,7 +455,13 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
         <header className="mb-6 sm:mb-8">
           {/* Category and Meta */}
           <div className={`flex items-center text-sm text-gray-500 mb-3 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
-            <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>{blog.category?.[locale]}</span>
+            <a
+              href={`/${locale}/blogs?category=${encodeURIComponent(blog.category?.[locale] || '')}`}
+              className={`capitalize underline hover:text-blue-600 transition-colors duration-200 ${locale === 'bn' ? 'bangla-category' : ''}`}
+              aria-label={`View all posts in ${blog.category?.[locale]}`}
+            >
+              {blog.category?.[locale]}
+            </a>
             <span className="mx-2">•</span>
             <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime?.[locale]} {t('blog.minRead')}</span>
             <span className="mx-2">•</span>

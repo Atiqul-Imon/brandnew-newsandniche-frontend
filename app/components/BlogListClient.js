@@ -44,8 +44,12 @@ export default function BlogListClient(props) {
   useEffect(() => {
     if (initialCategories.length === 0) {
       setCategoriesLoading(true);
-      api.get(`/api/categories?lang=${locale}`)
-        .then(res => setCategories(res.data.data.categories || []))
+      api.get(`/api/blogs/${locale}/categories`)
+        .then(res => {
+          // Get top 10 categories with most posts
+          const topCategories = (res.data.data.categories || []).slice(0, 10);
+          setCategories(topCategories);
+        })
         .catch(() => setCategories([]))
         .finally(() => setCategoriesLoading(false));
     }
@@ -189,15 +193,15 @@ export default function BlogListClient(props) {
           ) : (
             categories.map(cat => (
               <button
-                key={cat._id}
-                className={`px-4 py-2 rounded-full border transition-colors duration-200 ${category === (cat[`slug.${locale}`] || cat.slug?.[locale]) ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
+                key={cat._id || cat.name}
+                className={`px-4 py-2 rounded-full border transition-colors duration-200 ${category === cat.slug ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
                 onClick={() => {
                   const params = new URLSearchParams(searchParams.toString());
-                  params.set("category", cat[`slug.${locale}`] || cat.slug?.[locale]);
+                  params.set("category", cat.slug);
                   router.push(`${pathname}?${params.toString()}`);
                 }}
               >
-                {cat[`name.${locale}`] || cat.name?.[locale] || 'Unnamed Category'}
+                {cat.name} ({cat.postCount})
               </button>
             ))
           )}
@@ -272,9 +276,14 @@ export default function BlogListClient(props) {
                   <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
                       <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                        {categories.find(c => (c[`slug.${locale}`] || c.slug?.[locale]) === blog.category?.[locale])?.[`name.${locale}`] || 
-                         categories.find(c => c.slug?.[locale] === blog.category?.[locale])?.name?.[locale] || 
-                         blog.category?.[locale] || 'Uncategorized'}
+                        <a
+                          href={`/${locale}/blogs?category=${encodeURIComponent(blog.category?.[locale] || '')}`}
+                          className="underline hover:text-blue-600 transition-colors duration-200"
+                          aria-label={`View all posts in ${blog.category?.[locale]}`}
+                        >
+                          {categories.find(c => c.slug === blog.category?.[locale])?.name || 
+                           blog.category?.[locale] || 'Uncategorized'}
+                        </a>
                       </span>
                       <span className="mx-2">•</span>
                       <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime?.[locale] || 5} {t('blog.minRead')}</span>
