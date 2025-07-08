@@ -750,10 +750,18 @@ export default function MuiBlogForm({ blog, locale, onSubmit, onCancel, mode = '
                       const formDataImg = new FormData();
                       formDataImg.append('image', file);
                       try {
-                        const res = await fetch('/api/upload', { method: 'POST', body: formDataImg });
-                        const data = await res.json();
-                        if (data.success && data.url) {
-                          handleImageUploaded(data.url);
+                        // Use the api axios instance and correct endpoint
+                        const token = localStorage.getItem('token');
+                        const res = await api.post('/api/upload/image', formDataImg, {
+                          headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'multipart/form-data'
+                          }
+                        });
+                        if (res.data.success && res.data.data && res.data.data.url) {
+                          handleImageUploaded(res.data.data.url);
+                        } else {
+                          alert(activeLang === 'en' ? 'Image upload failed' : 'ছবি আপলোড ব্যর্থ হয়েছে');
                         }
                       } catch (err) {
                         alert(activeLang === 'en' ? 'Image upload failed' : 'ছবি আপলোড ব্যর্থ হয়েছে');

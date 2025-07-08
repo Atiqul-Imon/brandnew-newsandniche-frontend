@@ -15,6 +15,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
+            <img src="/newsandnichefinallogo.png" alt="News&Niche Logo" className="h-12 w-auto mb-4" />
             <h3 className={`text-2xl font-bold mb-4 ${locale === 'bn' ? 'font-bangla-heading bangla-section-title bangla-heading-spacing' : ''}`}>
               News&Niche
             </h3>

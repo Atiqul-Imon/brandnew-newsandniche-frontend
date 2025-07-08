@@ -30,7 +30,7 @@ export function BlogPostSchema({
       "name": "News&Niche",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://newsandniche.com/logo.png"
+        "url": "https://newsandniche.com/newsandnichefinallogo.png"
       }
     },
     "datePublished": publishedDate,
@@ -183,7 +183,7 @@ export function OrganizationSchema() {
     "url": "https://newsandniche.com",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://newsandniche.com/logo.png",
+      "url": "https://newsandniche.com/newsandnichefinallogo.png",
       "width": 512,
       "height": 512
     },
@@ -210,7 +210,7 @@ export function OrganizationSchema() {
       "name": "News&Niche",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://newsandniche.com/logo.png"
+        "url": "https://newsandniche.com/newsandnichefinallogo.png"
       }
     }
   };
@@ -238,7 +238,7 @@ export function WebSiteSchema() {
       "name": "News&Niche",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://newsandniche.com/logo.png"
+        "url": "https://newsandniche.com/newsandnichefinallogo.png"
       }
     },
     "potentialAction": {

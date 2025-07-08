@@ -73,6 +73,7 @@ export default async function RootLayout({ children, params: { locale } }) {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg?v=3" />
         <link rel="shortcut icon" href="/favicon.svg?v=3" />
+        <link rel="image_src" href="/newsandnichefinallogo.png" />
       </head>
       <body className={`${inter.className} antialiased`}>
         <AuthProvider>
