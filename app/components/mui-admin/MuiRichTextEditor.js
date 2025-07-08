@@ -254,8 +254,18 @@ const MuiRichTextEditor = ({
               label="Heading"
               onChange={e => {
                 const val = e.target.value;
-                if (val === 'p') editor.chain().focus().setParagraph().run();
-                else editor.chain().focus().toggleHeading({ level: parseInt(val[1]) }).run();
+                if (val === 'p') {
+                  editor.chain().focus().setParagraph().run();
+                } else {
+                  // Split block if selection is not a full block
+                  const { from, to, empty } = editor.state.selection;
+                  if (!empty && !editor.state.selection.$from.parent.isTextblock) {
+                    editor.chain().focus().splitBlock().run();
+                  } else if (!empty && from !== to) {
+                    editor.chain().focus().splitBlock().run();
+                  }
+                  editor.chain().focus().toggleHeading({ level: parseInt(val[1]) }).run();
+                }
               }}
             >
               <MenuItem value="p">Paragraph</MenuItem>
@@ -287,9 +297,27 @@ const MuiRichTextEditor = ({
           <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
           {/* Lists group */}
           <ToggleButtonGroup size="small" value="" exclusive>
-            <Tooltip title="Bullet List"><ToggleButton value="bulletList" selected={editor.isActive('bulletList')} onClick={() => editor.chain().focus().toggleBulletList().run()}><FormatListBulleted /></ToggleButton></Tooltip>
-            <Tooltip title="Numbered List"><ToggleButton value="orderedList" selected={editor.isActive('orderedList')} onClick={() => editor.chain().focus().toggleOrderedList().run()}><FormatListNumbered /></ToggleButton></Tooltip>
-            <Tooltip title="Task List"><ToggleButton value="taskList" selected={editor.isActive('taskList')} onClick={() => editor.chain().focus().toggleTaskList().run()}><CheckBox /></ToggleButton></Tooltip>
+            <Tooltip title="Bullet List"><ToggleButton value="bulletList" selected={editor.isActive('bulletList')} onClick={() => {
+              const { from, to, empty } = editor.state.selection;
+              if (!empty && from !== to) {
+                editor.chain().focus().splitBlock().run();
+              }
+              editor.chain().focus().toggleBulletList().run();
+            }}><FormatListBulleted /></ToggleButton></Tooltip>
+            <Tooltip title="Numbered List"><ToggleButton value="orderedList" selected={editor.isActive('orderedList')} onClick={() => {
+              const { from, to, empty } = editor.state.selection;
+              if (!empty && from !== to) {
+                editor.chain().focus().splitBlock().run();
+              }
+              editor.chain().focus().toggleOrderedList().run();
+            }}><FormatListNumbered /></ToggleButton></Tooltip>
+            <Tooltip title="Task List"><ToggleButton value="taskList" selected={editor.isActive('taskList')} onClick={() => {
+              const { from, to, empty } = editor.state.selection;
+              if (!empty && from !== to) {
+                editor.chain().focus().splitBlock().run();
+              }
+              editor.chain().focus().toggleTaskList().run();
+            }}><CheckBox /></ToggleButton></Tooltip>
           </ToggleButtonGroup>
           <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
           {/* Block group */}
