@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { api } from '@/app/apiConfig';
 import { WebSiteSchema } from './SchemaMarkup';
+import CategoryNavigation from './CategoryNavigation';
 
 export default function HomeClient({ locale }) {
   const t = useTranslations();
@@ -109,6 +110,9 @@ export default function HomeClient({ locale }) {
       <WebSiteSchema />
       
       <main className="min-h-screen bg-gray-100" aria-label="Main content">
+        {/* --- Category Navigation --- */}
+        <CategoryNavigation locale={locale} />
+        
         {/* --- Featured Blogs Section (Hero Replacement) --- */}
         {featuredBlogs.length > 0 && (
           <section className="py-8 sm:py-12" aria-label="Featured blogs">

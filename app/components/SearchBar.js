@@ -9,22 +9,22 @@ export default function SearchBar({ onSearch, placeholder, className = '', local
   const t = useTranslations();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get('search') || '');
+  const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const isFirstRun = useRef(true);
 
   useEffect(() => {
+    if (!searchParams) return; // Wait until searchParams is available
+
     if (isFirstRun.current) {
-      console.log('[SearchBar] Skipping first run of useEffect');
+      setQuery(searchParams.get('search') || '');
       isFirstRun.current = false;
       return;
     }
+
     const currentSearch = searchParams.get('search');
-    console.log('[SearchBar] useEffect running after first run, query:', query, 'searchParams:', currentSearch);
-    if (currentSearch === null) {
-      // Don't run search if searchParams is not ready
-      return;
-    }
+    if (currentSearch === null) return;
+
     const timer = setTimeout(() => {
       if (query !== currentSearch) {
         handleSearch();
@@ -35,47 +35,44 @@ export default function SearchBar({ onSearch, placeholder, className = '', local
   }, [query, searchParams]);
 
   const handleSearch = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!query.trim()) return;
 
     setIsSearching(true);
-    
-    // Track search event
     trackSearch(query.trim());
-    
+
+    if (!searchParams) {
+      setIsSearching(false);
+      return;
+    }
+
     const params = new URLSearchParams(searchParams);
     if (query.trim()) {
       params.set('search', query.trim());
     } else {
       params.delete('search');
     }
-    
-    // Reset to first page when searching
     params.delete('page');
-    
-    // Navigate to search results
     const searchUrl = `/${locale}/blogs?search=${encodeURIComponent(query.trim())}`;
     router.push(searchUrl);
-    
     if (onSearch) {
       onSearch(query.trim());
     }
-    
     setIsSearching(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleSearch();
+    handleSearch(e);
   };
 
   const handleClear = () => {
     setQuery('');
+    if (!searchParams) return;
     const params = new URLSearchParams(searchParams);
     params.delete('search');
     params.delete('page');
     router.push(`?${params.toString()}`);
-    
     if (onSearch) {
       onSearch('');
     }

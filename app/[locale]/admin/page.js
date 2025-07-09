@@ -49,10 +49,17 @@ export default function AdminDashboardPage() {
       ]);
 
       const totalBlogs = blogsRes.data.data.total || 0;
-      const publishedBlogs = blogsRes.data.data.blogs?.filter(b => b.status === 'published').length || 0;
-      const draftBlogs = blogsRes.data.data.blogs?.filter(b => b.status === 'draft').length || 0;
       const totalUsers = usersRes.data.data.total || 0;
       const totalCategories = categoriesRes.data.data.categories?.length || 0;
+
+      // Fetch status counts
+      const [publishedRes, draftRes] = await Promise.all([
+        api.get(`/api/blogs?lang=${locale}&status=published&limit=1`),
+        api.get(`/api/blogs?lang=${locale}&status=draft&limit=1`)
+      ]);
+
+      const publishedBlogs = publishedRes.data.data.total || 0;
+      const draftBlogs = draftRes.data.data.total || 0;
 
       setStats({
         totalBlogs,

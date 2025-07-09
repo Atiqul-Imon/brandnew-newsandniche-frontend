@@ -24,6 +24,9 @@ export default function AdminBlogsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalBlogs, setTotalBlogs] = useState(0);
   const [itemsPerPage] = useState(10);
+  const [publishedCount, setPublishedCount] = useState(0);
+  const [draftCount, setDraftCount] = useState(0);
+  const [archivedCount, setArchivedCount] = useState(0);
   const [filters, setFilters] = useState({
     search: '',
     category: '',
@@ -66,10 +69,29 @@ export default function AdminBlogsPage() {
       setBlogs(res.data.data.blogs);
       setTotalBlogs(res.data.data.total || res.data.data.blogs.length);
       setTotalPages(Math.ceil((res.data.data.total || res.data.data.blogs.length) / itemsPerPage));
+      
+      // Fetch status counts
+      await fetchStatusCounts();
     } catch (err) {
       setError(t('errors.serverError'));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchStatusCounts = async () => {
+    try {
+      const [publishedRes, draftRes, archivedRes] = await Promise.all([
+        api.get(`/api/blogs?status=published&language=${locale}&limit=1`),
+        api.get(`/api/blogs?status=draft&language=${locale}&limit=1`),
+        api.get(`/api/blogs?status=archived&language=${locale}&limit=1`)
+      ]);
+      
+      setPublishedCount(publishedRes.data.data.total || 0);
+      setDraftCount(draftRes.data.data.total || 0);
+      setArchivedCount(archivedRes.data.data.total || 0);
+    } catch (err) {
+      console.error('Failed to fetch status counts:', err);
     }
   };
 
@@ -345,7 +367,7 @@ export default function AdminBlogsPage() {
             <div className="ml-4">
               <div className="text-sm font-medium text-gray-500">Published</div>
               <div className="text-2xl font-bold text-green-600">
-                {blogs.filter(b => b.status === 'published').length}
+                {publishedCount}
               </div>
             </div>
           </div>
@@ -360,7 +382,7 @@ export default function AdminBlogsPage() {
             <div className="ml-4">
               <div className="text-sm font-medium text-gray-500">Drafts</div>
               <div className="text-2xl font-bold text-yellow-600">
-                {blogs.filter(b => b.status === 'draft').length}
+                {draftCount}
               </div>
             </div>
           </div>
@@ -375,7 +397,7 @@ export default function AdminBlogsPage() {
             <div className="ml-4">
               <div className="text-sm font-medium text-gray-500">Archived</div>
               <div className="text-2xl font-bold text-red-600">
-                {blogs.filter(b => b.status === 'archived').length}
+                {archivedCount}
               </div>
             </div>
           </div>

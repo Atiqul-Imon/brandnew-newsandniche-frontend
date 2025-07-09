@@ -63,6 +63,10 @@ export default function MuiBlogManagement({ params }) {
   const [sortOrder, setSortOrder] = useState('desc');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalBlogs, setTotalBlogs] = useState(0);
+  const [publishedCount, setPublishedCount] = useState(0);
+  const [draftCount, setDraftCount] = useState(0);
+  const [archivedCount, setArchivedCount] = useState(0);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   const { locale } = React.use(params);
@@ -91,15 +95,35 @@ export default function MuiBlogManagement({ params }) {
       }
 
       const response = await api.get(`/api/blogs?${params.toString()}`);
-      const { blogs, totalPages: pages } = response.data.data;
+      const { blogs, total, pagination } = response.data.data;
       
       setBlogs(blogs || []);
-      setTotalPages(pages || 1);
+      setTotalBlogs(total || 0);
+      setTotalPages(pagination?.pages || 1);
+      
+      // Fetch status counts
+      await fetchStatusCounts();
     } catch (error) {
       console.error('Error fetching blogs:', error);
       showSnackbar('Error fetching blogs', 'error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchStatusCounts = async () => {
+    try {
+      const [publishedRes, draftRes, archivedRes] = await Promise.all([
+        api.get(`/api/blogs?lang=${locale}&status=published&limit=1`),
+        api.get(`/api/blogs?lang=${locale}&status=draft&limit=1`),
+        api.get(`/api/blogs?lang=${locale}&status=archived&limit=1`)
+      ]);
+      
+      setPublishedCount(publishedRes.data.data.total || 0);
+      setDraftCount(draftRes.data.data.total || 0);
+      setArchivedCount(archivedRes.data.data.total || 0);
+    } catch (error) {
+      console.error('Error fetching status counts:', error);
     }
   };
 
@@ -256,10 +280,10 @@ export default function MuiBlogManagement({ params }) {
   const t = translations[locale] || translations.en;
 
   const stats = {
-    total: blogs.length,
-    published: blogs.filter(blog => blog.status === 'published').length,
-    draft: blogs.filter(blog => blog.status === 'draft').length,
-    archived: blogs.filter(blog => blog.status === 'archived').length,
+    total: totalBlogs,
+    published: publishedCount,
+    draft: draftCount,
+    archived: archivedCount,
   };
 
   return (
@@ -288,7 +312,7 @@ export default function MuiBlogManagement({ params }) {
                     {t.totalBlogs}
                   </Typography>
                   <Typography variant="h4" component="div">
-                    {stats.total}
+                    {totalBlogs}
                   </Typography>
                 </Box>
                 <Avatar sx={{ bgcolor: 'primary.main' }}>

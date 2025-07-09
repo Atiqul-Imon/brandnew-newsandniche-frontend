@@ -20,6 +20,7 @@ export default function BlogListClient(props) {
   const initialHasMore = props.hasMore || false;
   const initialError = props.error || null;
   const locale = props.locale || (typeof initialParams === 'object' && initialParams.locale) || 'en';
+  const hideCategoryFilter = props.hideCategoryFilter || false;
 
   // State
   const [blogs, setBlogs] = useState(initialBlogs);
@@ -35,7 +36,10 @@ export default function BlogListClient(props) {
 
   // Params from searchParams
   const search = searchParams.get("search") || "";
-  const category = searchParams.get("category") || "";
+  let category = searchParams.get("category") || "";
+  if (hideCategoryFilter && initialParams.category) {
+    category = initialParams.category;
+  }
   const status = searchParams.get("status") || "published";
   const sortBy = searchParams.get("sortBy") || "publishedAt";
   const sortOrder = searchParams.get("sortOrder") || "desc";
@@ -87,6 +91,7 @@ export default function BlogListClient(props) {
     if (category) params.append("category", category);
     api.get(`/api/blogs?${params}`)
       .then(res => {
+        console.log('API response:', res.data.data);
         setBlogs(res.data.data.blogs || []);
         setHasMore(res.data.data.hasMore);
         setTotalBlogs(res.data.data.total);
@@ -179,39 +184,48 @@ export default function BlogListClient(props) {
         </div>
 
         {/* Category Filter Bar */}
-        <div className="mb-6 sm:mb-8 flex flex-wrap gap-2 justify-center">
-          <button
-            className={`px-4 py-2 rounded-full border transition-colors duration-200 ${!category ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
-            onClick={() => {
-              router.push(pathname);
-            }}
-          >
-            {t("category.all")}
-          </button>
-          {categoriesLoading && initialCategories.length === 0 ? (
-            <div className={`px-4 py-2 text-gray-500 ${locale === 'bn' ? 'font-bangla-ui bangla-loading' : ''}`}>Loading categories...</div>
-          ) : (
-            categories.map(cat => (
-              <button
-                key={cat._id || cat.name}
-                className={`px-4 py-2 rounded-full border transition-colors duration-200 ${category === cat.slug ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
-                onClick={() => {
-                  const params = new URLSearchParams(searchParams.toString());
-                  params.set("category", cat.slug);
-                  router.push(`${pathname}?${params.toString()}`);
-                }}
-              >
-                {cat.name} ({cat.postCount})
-              </button>
-            ))
-          )}
-        </div>
+        {!hideCategoryFilter && (
+          <div className="mb-6 sm:mb-8 flex flex-wrap gap-2 justify-center">
+            <button
+              className={`px-4 py-2 rounded-full border transition-colors duration-200 ${!category ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
+              onClick={() => {
+                router.push(pathname);
+              }}
+            >
+              {t("category.all")}
+            </button>
+            {categoriesLoading && initialCategories.length === 0 ? (
+              <div className={`px-4 py-2 text-gray-500 ${locale === 'bn' ? 'font-bangla-ui bangla-loading' : ''}`}>Loading categories...</div>
+            ) : (
+              categories.map(cat => (
+                <button
+                  key={cat._id || cat.name}
+                  className={`px-4 py-2 rounded-full border transition-colors duration-200 ${category === cat.slug ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.set("category", cat.slug);
+                    router.push(`${pathname}?${params.toString()}`);
+                  }}
+                >
+                  {cat.name} ({cat.postCount})
+                </button>
+              ))
+            )}
+          </div>
+        )}
 
         {/* Search and Filters */}
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between">
             <div className="w-full sm:w-96">
-              <SearchBar onSearch={() => {}} />
+              <SearchBar 
+                onSearch={(query) => {
+                  // The SearchBar component handles URL updates internally
+                  // This callback is just for any additional actions if needed
+                  console.log('Search triggered:', query);
+                }}
+                locale={locale}
+              />
             </div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-gray-600 mt-2 sm:mt-0">
               <span className={locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}>{totalBlogs} {t("blog.allPosts").toLowerCase()}</span>

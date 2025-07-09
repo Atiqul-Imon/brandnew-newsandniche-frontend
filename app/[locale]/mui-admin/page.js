@@ -66,9 +66,9 @@ export default function MuiAdminDashboard({ params }) {
       const totalViews = blogs.reduce((sum, blog) => sum + (blog.views || 0), 0);
 
       setStats({
-        totalBlogs: blogs.length,
+        totalBlogs: blogsRes.data.data.total || blogs.length,
         totalCategories: categories.length,
-        totalUsers: users.length,
+        totalUsers: usersRes.data.data.total || users.length,
         totalViews,
       });
 

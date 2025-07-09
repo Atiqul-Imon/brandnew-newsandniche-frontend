@@ -99,7 +99,8 @@
     },
     "categories": {
       "title": "Explore Categories",
-      "posts": "posts"
+      "posts": "posts",
+      "viewAll": "View All"
     },
     "recent": {
       "title": "Recent Posts",
@@ -264,6 +265,16 @@
     "noCategories": "No categories found",
     "confirmDelete": "Are you sure you want to delete this category?",
     "hasAssociatedBlogs": "Cannot delete category. It has associated blogs."
+  },
+  "categories": {
+    "title": "All Categories",
+    "description": "Explore all categories and discover content that interests you",
+    "errorTitle": "Error Loading Categories",
+    "emptyTitle": "No Categories Found",
+    "emptyDescription": "No categories are available at the moment.",
+    "postSingular": "post",
+    "postPlural": "posts",
+    "categoryDescription": "Explore all posts in this category"
   },
   "comment": {
     "addComment": "Add Comment",
