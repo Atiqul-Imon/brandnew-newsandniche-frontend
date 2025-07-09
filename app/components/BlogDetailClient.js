@@ -5,6 +5,9 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { api } from '@/app/apiConfig';
 import { useAnalytics } from '../../hooks/useAnalytics';
+import ContextualLinks from './ContextualLinks';
+import CategoryCrossLinks from './CategoryCrossLinks';
+import PopularPosts from './PopularPosts';
 
 // --- BBC Inspired Components & Styles ---
 
@@ -626,6 +629,23 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
             }
           })}
         </div>
+
+        {/* Contextual Internal Links */}
+        {blog.category && blog.category[locale] && (
+          <ContextualLinks 
+            keywords={[blog.category[locale], ...(blog.tags || [])]}
+            locale={locale}
+            currentBlogId={blog._id}
+          />
+        )}
+
+        {/* Category Cross-Links */}
+        {blog.category && blog.category[locale] && (
+          <CategoryCrossLinks 
+            currentCategory={blog.category[locale]}
+            locale={locale}
+          />
+        )}
 
         {/* Related Blogs */}
         {relatedBlogs.length > 0 && (

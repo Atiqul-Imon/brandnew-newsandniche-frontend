@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Script from 'next/script';
 import Breadcrumbs from '../../../components/Breadcrumbs';
+import PopularPosts from '../../../components/PopularPosts';
 import { 
   generateBreadcrumbStructuredData, 
   generateCollectionPageStructuredData,
@@ -13,8 +14,6 @@ import {
   generateKeywords,
   capitalizeWords
 } from '../../../utils/seoUtils';
-
-
 
 export default async function CategoryPage(props) {
   const params = await props.params;
@@ -110,7 +109,14 @@ export default async function CategoryPage(props) {
       'music': '🎵',
       'gaming': '🎮',
       'finance': '💰',
-      'real-estate': '🏠'
+      'real-estate': '🏠',
+      'web-development': '🌐',
+      'remote-work-freelancing': '🏠💼',
+      'artificial-intelligence': '🤖',
+      'ai': '🤖',
+      'legendary': '👑',
+      'programming': '💻',
+      'taylor-swift': '🎤'
     };
     
     return iconMap[name.toLowerCase()] || '📄';
@@ -211,18 +217,41 @@ export default async function CategoryPage(props) {
           </div>
         </div>
 
-        {/* Blog List */}
+        {/* Blog List and Sidebar */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <BlogListClient 
-            locale={locale}
-            initialBlogs={initialBlogs}
-            initialCategories={categories}
-            initialParams={initialParams}
-            total={total}
-            hasMore={hasMore}
-            error={error}
-            hideCategoryFilter={true} // Hide category filter since we're already in a category
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-3">
+              <BlogListClient 
+                locale={locale}
+                initialBlogs={initialBlogs}
+                initialCategories={categories}
+                initialParams={initialParams}
+                total={total}
+                hasMore={hasMore}
+                error={error}
+                hideCategoryFilter={true} // Hide category filter since we're already in a category
+              />
+            </div>
+            
+            {/* Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="space-y-6">
+                {/* Popular Posts in this Category */}
+                <PopularPosts 
+                  locale={locale}
+                  category={categorySlug}
+                  limit={5}
+                />
+                
+                {/* Popular Posts Overall */}
+                <PopularPosts 
+                  locale={locale}
+                  limit={5}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
