@@ -51,6 +51,21 @@ export default function CategoryNavigation({ locale, categories = [] }) {
     return name;
   };
 
+  // Helper function to safely get category slug
+  const getCategorySlug = (categorySlug) => {
+    let slug = categorySlug;
+    if (typeof categorySlug === 'object' && categorySlug !== null) {
+      // If it's an object with locale keys, use the current locale or fallback to 'en' or 'bn'
+      slug = categorySlug[locale] || categorySlug.en || categorySlug.bn || Object.values(categorySlug)[0] || '';
+    }
+    if (typeof slug !== 'string') {
+      slug = String(slug || '');
+    }
+    // Slug should not be empty or [object Object]
+    if (!slug || slug === '[object Object]') return '';
+    return slug;
+  };
+
   const getCategoryIcon = (categoryName) => {
     const name = getCategoryName(categoryName);
     const normalizedName = name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
@@ -77,27 +92,31 @@ export default function CategoryNavigation({ locale, categories = [] }) {
         </div>
         
         <div className="flex space-x-3 sm:space-x-4 overflow-x-auto pb-2 scrollbar-hide">
-          {categories.map((category) => (
-            <Link
-              key={category.slug}
-              href={`/${locale}/blogs?category=${encodeURIComponent(category.slug)}`}
-              className="flex-shrink-0 group"
-            >
-              <div className="flex flex-col items-center p-3 sm:p-4 bg-gray-50 hover:bg-blue-50 rounded-lg transition-all duration-200 min-w-[80px] sm:min-w-[100px] border border-transparent hover:border-blue-200 group-hover:shadow-md">
-                <div className="text-2xl sm:text-3xl mb-2 group-hover:scale-110 transition-transform duration-200">
-                  {getCategoryIcon(category.name)}
-                </div>
-                <div className="text-center">
-                  <div className={`text-xs sm:text-sm font-medium text-gray-900 line-clamp-2 ${locale === 'bn' ? 'font-bangla-nav' : ''}`}>
-                    {getCategoryName(category.name).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+          {categories.map((category) => {
+            const slug = getCategorySlug(category.slug);
+            if (!slug) return null; // Skip if slug is invalid
+            return (
+              <Link
+                key={slug}
+                href={`/${locale}/blogs?category=${encodeURIComponent(slug)}`}
+                className="flex-shrink-0 group"
+              >
+                <div className="flex flex-col items-center p-3 sm:p-4 bg-gray-50 hover:bg-blue-50 rounded-lg transition-all duration-200 min-w-[80px] sm:min-w-[100px] border border-transparent hover:border-blue-200 group-hover:shadow-md">
+                  <div className="text-2xl sm:text-3xl mb-2 group-hover:scale-110 transition-transform duration-200">
+                    {getCategoryIcon(category.name)}
                   </div>
-                  <div className={`text-xs text-gray-500 mt-1 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>
-                    {category.postCount} {t('home.categories.posts')}
+                  <div className="text-center">
+                    <div className={`text-xs sm:text-sm font-medium text-gray-900 line-clamp-2 ${locale === 'bn' ? 'font-bangla-nav' : ''}`}> 
+                      {getCategoryName(category.name).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    </div>
+                    <div className={`text-xs text-gray-500 mt-1 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}> 
+                      {category.postCount} {t('home.categories.posts')}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

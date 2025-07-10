@@ -266,8 +266,8 @@ const MuiRichTextEditor = ({
                   editor.chain().focus().setParagraph().run();
                 } else {
                   const level = parseInt(val[1]);
-                  // Apply heading to the current block without splitting
-                  editor.chain().focus().setNode('heading', { level }).run();
+                  // Apply heading to the current block using toggleHeading
+                  editor.chain().focus().toggleHeading({ level }).run();
                 }
               }}
             >
