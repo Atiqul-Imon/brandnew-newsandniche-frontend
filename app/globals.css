@@ -969,3 +969,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2563eb;
 }
+
+/* --- Reduce heading and paragraph spacing for blog details page --- */
+.prose p {
+  margin: 1em 0;
+}
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.6em;
+}
+.prose h1 { margin-bottom: 0.5em; }
+.prose h2 { margin-top: 1.5em; }
+.prose h3 { margin-top: 1.2em; }
+.prose h4 { margin-top: 1em; }
+
+.prose-bangla p {
+  margin: 1.1em 0;
+}
+.prose-bangla h1, .prose-bangla h2, .prose-bangla h3, .prose-bangla h4, .prose-bangla h5, .prose-bangla h6 {
+  margin-top: 1.7em;
+  margin-bottom: 0.7em;
+}
+.prose-bangla h1 { margin-bottom: 0.6em; }
+.prose-bangla h2 { margin-top: 1.7em; }
+.prose-bangla h3 { margin-top: 1.3em; }
+.prose-bangla h4 { margin-top: 1.1em; }

@@ -14,7 +14,7 @@ export default function ContextualLinks({ keywords, locale, currentBlogId }) {
       setLoading(true);
       try {
         // Fetch related content based on keywords
-        const response = await api.get(`/api/blogs?lang=${locale}&status=published&search=${keywords.join(' ')}&limit=3`);
+        const response = await api.get(`/api/proxy/blogs?lang=${locale}&status=published&search=${keywords.join(' ')}&limit=3`);
         
         if (response.data.success) {
           // Filter out current blog and format links

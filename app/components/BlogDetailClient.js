@@ -523,7 +523,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
 
           {/* Excerpt */}
           {blog.excerpt?.[locale] && (
-            <p className={`text-xl sm:text-2xl text-gray-600 mb-12 leading-relaxed max-w-3xl ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>
+            <p className={`text-xl sm:text-2xl text-gray-600 mb-12 leading-relaxed max-w-3xl italic ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>
               {blog.excerpt[locale]}
             </p>
           )}
