@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import "../globals.css";
 import { notFound } from 'next/navigation';
 import Script from 'next/script';
+import { API_BASE_URL } from '../apiConfig';
 
 // Static imports for messages
 import enMessages from '../messages/en.json';
@@ -103,11 +104,21 @@ export default async function LocaleLayout(props) {
   // Get messages for the current locale
   const localeMessages = messages[locale] || messages.en;
   
+  // Fetch categories for the navigation drawer
+  let categories = [];
+  try {
+    const categoriesRes = await fetch(`${API_BASE_URL}/api/categories?lang=${locale}`, { next: { revalidate: 300 } });
+    const categoriesData = await categoriesRes.json();
+    categories = categoriesData.data?.categories || [];
+  } catch (error) {
+    console.error('Failed to fetch categories:', error);
+  }
+  
   return (
     <NextIntlClientProvider locale={locale} messages={localeMessages}>
       <AuthProvider>
         <div className="flex flex-col min-h-screen">
-          <Navigation locale={locale} />
+          <Navigation locale={locale} categories={categories} />
           <main className="flex-grow bg-gray-100" style={{ border: 'none', background: 'transparent' }}>
             {children}
           </main>

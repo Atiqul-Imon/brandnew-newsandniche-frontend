@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
 import { WebSiteSchema } from './SchemaMarkup';
-import CategoryNavigation from './CategoryNavigation';
 
 export default function HomeClient({ 
   locale, 
@@ -89,55 +88,55 @@ export default function HomeClient({
       <WebSiteSchema />
       
       <main className="min-h-screen bg-gray-100" aria-label="Main content">
-        {/* --- Category Navigation --- */}
-        <CategoryNavigation locale={locale} categories={categories} />
-        
-        {/* --- Featured Blogs Section (Hero Replacement) --- */}
+        {/* --- Featured Blogs Section (Industry Standard) --- */}
         {featuredBlogs.length > 0 && (
           <section className="py-8 sm:py-12" aria-label="Featured blogs">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {/* Lead Featured Blog */}
-              <div className="mb-8">
+              {/* Hero Featured Blog */}
+              <div className="mb-8 sm:mb-12">
                 <Link
                   href={`/${locale}/blogs/${featuredBlogs[0].slug[locale]}`}
                   className="block group bg-white overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300 bangla-card"
                   style={{ textDecoration: 'none' }}
                 >
-                  <div className="relative w-full aspect-[3/2] bg-[#f2f2f2]">
-                    <Image
-                      src={featuredBlogs[0].featuredImage}
-                      alt={featuredBlogs[0].title[locale]}
-                      className="object-cover"
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
-                      <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                        <span
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            window.location.href = `/${locale}/blogs?category=${encodeURIComponent(featuredBlogs[0].category[locale] || '')}`;
-                          }}
-                          className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
-                          aria-label={`View all posts in ${featuredBlogs[0].category[locale]}`}
-                        >
-                          {featuredBlogs[0].category[locale]}
-                        </span>
-                      </span>
-                      <span className="mx-2">•</span>
-                      <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{featuredBlogs[0].readTime[locale]} {t('blog.minRead')}</span>
-                      <span className="mx-2">•</span>
-                      <span className={locale === 'bn' ? 'bangla-date' : ''}>{new Date(featuredBlogs[0].publishedAt).toLocaleDateString(locale)}</span>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                    <div className="relative w-full aspect-[4/3] lg:aspect-square bg-[#f2f2f2]">
+                      <Image
+                        src={featuredBlogs[0].featuredImage}
+                        alt={featuredBlogs[0].title[locale]}
+                        className="object-cover"
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
                     </div>
-                    <h3 className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{featuredBlogs[0].title[locale]}</h3>
-                    <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 text-lg ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{featuredBlogs[0].excerpt[locale]}</p>
+                    <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
+                      <div className={`flex items-center text-sm text-gray-500 mb-3 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
+                        <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
+                          <span
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              window.location.href = `/${locale}/blogs?category=${encodeURIComponent(featuredBlogs[0].category[locale] || '')}`;
+                            }}
+                            className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
+                            aria-label={`View all posts in ${featuredBlogs[0].category[locale]}`}
+                          >
+                            {featuredBlogs[0].category[locale]}
+                          </span>
+                        </span>
+                        <span className="mx-2">•</span>
+                        <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{featuredBlogs[0].readTime[locale]} {t('blog.minRead')}</span>
+                        <span className="mx-2">•</span>
+                        <span className={locale === 'bn' ? 'bangla-date' : ''}>{new Date(featuredBlogs[0].publishedAt).toLocaleDateString(locale)}</span>
+                      </div>
+                      <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{featuredBlogs[0].title[locale]}</h2>
+                      <p className={`text-gray-700 mb-4 line-clamp-4 text-lg ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{featuredBlogs[0].excerpt[locale]}</p>
+                    </div>
                   </div>
                 </Link>
               </div>
-              {/* Grid of next 6 featured blogs */}
+
+              {/* Secondary Featured Blogs Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                 {featuredBlogs.slice(1, 7).map((blog) => (
                   <Link
@@ -146,17 +145,17 @@ export default function HomeClient({
                     className="bg-white flex flex-col cursor-pointer group overflow-hidden shadow-bbc hover:shadow-lg transition-shadow duration-300 bangla-card"
                     style={{ textDecoration: 'none' }}
                   >
-                    <div className="relative w-full aspect-[3/2] bg-[#f2f2f2]">
+                    <div className="relative w-full aspect-[16/9] bg-[#f2f2f2]">
                       <Image
                         src={blog.featuredImage}
                         alt={blog.title[locale]}
                         className="object-cover"
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     </div>
-                    <div className="p-4 sm:p-6 flex flex-col flex-1">
-                      <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
+                    <div className="p-5 sm:p-6 flex flex-col flex-1">
+                      <div className={`flex items-center text-sm text-gray-500 mb-3 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
                         <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
                           <span
                             onClick={(e) => {
@@ -175,8 +174,8 @@ export default function HomeClient({
                         <span className="mx-2">•</span>
                         <span className={locale === 'bn' ? 'bangla-date' : ''}>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
                       </div>
-                      <h3 className={`text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{blog.title[locale]}</h3>
-                      <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{blog.excerpt[locale]}</p>
+                      <h3 className={`text-xl sm:text-2xl font-semibold text-gray-900 mb-3 line-clamp-3 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{blog.title[locale]}</h3>
+                      <p className={`text-gray-700 mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{blog.excerpt[locale]}</p>
                     </div>
                   </Link>
                 ))}

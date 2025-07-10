@@ -5,17 +5,30 @@ import { useAuth } from '../context/AuthContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import Link from 'next/link';
 import { useState } from 'react';
+import CategoryDrawer from './CategoryDrawer';
 
-export default function Navigation({ locale }) {
+export default function Navigation({ locale, categories = [] }) {
   const t = useTranslations();
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [categoryDrawerOpen, setCategoryDrawerOpen] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 bg-gray-50 shadow-sm border-b border-gray-200 transition-all duration-300 nav-tablet">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 sm:h-16 items-center">
           <div className="flex items-center">
+            {/* Categories Icon - Left side */}
+            <button
+              onClick={() => setCategoryDrawerOpen(true)}
+              className="flex-shrink-0 p-2 mr-3 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              aria-label="Open categories"
+            >
+              <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            
             <a 
               href={`/${locale}`} 
               className="flex-shrink-0 flex items-center cursor-pointer"
@@ -188,6 +201,14 @@ export default function Navigation({ locale }) {
           </div>
         )}
       </div>
+      
+      {/* Category Drawer */}
+      <CategoryDrawer 
+        locale={locale}
+        categories={categories}
+        isOpen={categoryDrawerOpen}
+        onClose={() => setCategoryDrawerOpen(false)}
+      />
     </nav>
   );
 } 
