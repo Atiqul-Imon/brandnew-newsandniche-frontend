@@ -3,39 +3,18 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { api } from '@/app/apiConfig';
 import { WebSiteSchema } from './SchemaMarkup';
 import CategoryNavigation from './CategoryNavigation';
 
-export default function HomeClient({ locale }) {
+export default function HomeClient({ 
+  locale, 
+  featuredBlogs = [], 
+  recentBlogs = [], 
+  categories = [], 
+  error = null 
+}) {
   const t = useTranslations();
   const { user, logout, loading } = useAuth();
-
-  const [featuredBlogs, setFeaturedBlogs] = useState([]);
-  const [recentBlogs, setRecentBlogs] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-  const [loadingData, setLoadingData] = useState(true);
-
-  useEffect(() => {
-    setLoadingData(true);
-    setError(null);
-    Promise.all([
-      api.get(`/api/blogs?lang=${locale}&status=published&featured=true&limit=7`),
-      api.get(`/api/blogs?lang=${locale}&status=published&limit=9`),
-      api.get(`/api/categories?lang=${locale}`)
-    ])
-      .then(([featuredRes, recentRes, categoriesRes]) => {
-        setFeaturedBlogs(featuredRes.data.data.blogs || []);
-        setRecentBlogs(recentRes.data.data.blogs || []);
-        setCategories(categoriesRes.data.data.categories || []);
-      })
-      .catch((err) => {
-        setError(err.message || 'Failed to load homepage data.');
-      })
-      .finally(() => setLoadingData(false));
-  }, [locale]);
 
   const handleLogout = () => {
     logout();
@@ -83,7 +62,7 @@ export default function HomeClient({ locale }) {
     },
   };
 
-  if (loading || loadingData) {
+  if (loading) {
     return (
       <main className="min-h-screen flex items-center justify-center" aria-label="Main content">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
@@ -111,7 +90,7 @@ export default function HomeClient({ locale }) {
       
       <main className="min-h-screen bg-gray-100" aria-label="Main content">
         {/* --- Category Navigation --- */}
-        <CategoryNavigation locale={locale} />
+        <CategoryNavigation locale={locale} categories={categories} />
         
         {/* --- Featured Blogs Section (Hero Replacement) --- */}
         {featuredBlogs.length > 0 && (
@@ -130,7 +109,6 @@ export default function HomeClient({ locale }) {
                       alt={featuredBlogs[0].title[locale]}
                       className="object-cover"
                       fill
-                      unoptimized
                       sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                     />
                   </div>
@@ -174,7 +152,6 @@ export default function HomeClient({ locale }) {
                         alt={blog.title[locale]}
                         className="object-cover"
                         fill
-                        unoptimized
                         sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                       />
                     </div>
@@ -234,7 +211,6 @@ export default function HomeClient({ locale }) {
                         alt={blog.title[locale]}
                         className="object-cover"
                         fill
-                        unoptimized
                         sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                       />
                     </div>

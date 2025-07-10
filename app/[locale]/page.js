@@ -11,13 +11,13 @@ export default async function HomePage({ params }) {
   let error = null;
 
   try {
-    // Fetch featured blogs
-    const featuredRes = await fetch(`${API_BASE_URL}/api/blogs?lang=${locale}&status=published&featured=true&limit=3`, { next: { revalidate: 60 } });
+    // Fetch featured blogs (increased limit to 7 to match client expectations)
+    const featuredRes = await fetch(`${API_BASE_URL}/api/blogs?lang=${locale}&status=published&featured=true&limit=7`, { next: { revalidate: 60 } });
     const featuredData = await featuredRes.json();
     featuredBlogs = featuredData.data?.blogs || [];
 
-    // Fetch recent blogs
-    const recentRes = await fetch(`${API_BASE_URL}/api/blogs?lang=${locale}&status=published&limit=6`, { next: { revalidate: 60 } });
+    // Fetch recent blogs (increased limit to 9 to match client expectations)
+    const recentRes = await fetch(`${API_BASE_URL}/api/blogs?lang=${locale}&status=published&limit=9`, { next: { revalidate: 60 } });
     const recentData = await recentRes.json();
     recentBlogs = recentData.data?.blogs || [];
 

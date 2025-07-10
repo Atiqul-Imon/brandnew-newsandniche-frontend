@@ -81,7 +81,7 @@ export default async function BlogsPage(props) {
   return (
     <>
       {/* Explore Categories Bar */}
-      <CategoryNavigation locale={locale} />
+      <CategoryNavigation locale={locale} categories={categories} />
       <BlogListClient 
         locale={locale}
         initialBlogs={initialBlogs}

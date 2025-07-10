@@ -250,21 +250,23 @@ const MuiRichTextEditor = ({
           <FormControl size="small" sx={{ minWidth: 100 }}>
             <InputLabel>Heading</InputLabel>
             <Select
-              value={editor.isActive('heading', { level: 1 }) ? 'h1' : editor.isActive('heading', { level: 2 }) ? 'h2' : editor.isActive('heading', { level: 3 }) ? 'h3' : 'p'}
+              value={
+                editor.isActive('heading', { level: 1 }) ? 'h1' : 
+                editor.isActive('heading', { level: 2 }) ? 'h2' : 
+                editor.isActive('heading', { level: 3 }) ? 'h3' : 
+                editor.isActive('heading', { level: 4 }) ? 'h4' : 
+                editor.isActive('heading', { level: 5 }) ? 'h5' : 
+                editor.isActive('heading', { level: 6 }) ? 'h6' : 
+                'p'
+              }
               label="Heading"
               onChange={e => {
                 const val = e.target.value;
                 if (val === 'p') {
                   editor.chain().focus().setParagraph().run();
                 } else {
-                  // Split block if selection is not a full block
-                  const { from, to, empty } = editor.state.selection;
-                  if (!empty && !editor.state.selection.$from.parent.isTextblock) {
-                    editor.chain().focus().splitBlock().run();
-                  } else if (!empty && from !== to) {
-                    editor.chain().focus().splitBlock().run();
-                  }
-                  editor.chain().focus().toggleHeading({ level: parseInt(val[1]) }).run();
+                  const level = parseInt(val[1]);
+                  editor.chain().focus().toggleHeading({ level }).run();
                 }
               }}
             >
@@ -272,6 +274,9 @@ const MuiRichTextEditor = ({
               <MenuItem value="h1">Heading 1</MenuItem>
               <MenuItem value="h2">Heading 2</MenuItem>
               <MenuItem value="h3">Heading 3</MenuItem>
+              <MenuItem value="h4">Heading 4</MenuItem>
+              <MenuItem value="h5">Heading 5</MenuItem>
+              <MenuItem value="h6">Heading 6</MenuItem>
             </Select>
           </FormControl>
           {/* Text formatting group */}

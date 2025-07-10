@@ -1,8 +1,6 @@
 "use client";
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { api } from '@/app/apiConfig';
 
 // Category icons mapping
 const categoryIcons = {
@@ -34,55 +32,30 @@ const categoryIcons = {
   'default': '📄'
 };
 
-export default function CategoryNavigation({ locale }) {
+export default function CategoryNavigation({ locale, categories = [] }) {
   const t = useTranslations();
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoading(true);
-        const response = await api.get(`/api/blogs/${locale}/categories`);
-        setCategories(response.data.data.categories || []);
-      } catch (err) {
-        setError(err.message || 'Failed to load categories');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, [locale]);
-
-  const getCategoryIcon = (categoryName) => {
-    const normalizedName = categoryName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-    return categoryIcons[normalizedName] || categoryIcons.default;
+  // Helper function to safely get category name
+  const getCategoryName = (categoryName) => {
+    let name = categoryName;
+    if (typeof categoryName === 'object' && categoryName !== null) {
+      // If it's an object with locale keys, use the current locale or fallback to 'en'
+      name = categoryName[locale] || categoryName.en || categoryName.bn || Object.values(categoryName)[0] || '';
+    }
+    
+    // Ensure it's a string
+    if (typeof name !== 'string') {
+      name = String(name || '');
+    }
+    
+    return name;
   };
 
-  if (loading) {
-    return (
-      <section className="py-6 sm:py-8 bg-white border-b border-gray-200" aria-label="Categories">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className={`text-lg sm:text-xl font-semibold text-gray-900 ${locale === 'bn' ? 'font-bangla-heading' : ''}`}>
-              {t('home.categories.title')}
-            </h2>
-          </div>
-          <div className="flex space-x-4 overflow-x-auto pb-2">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="flex-shrink-0 w-24 h-16 bg-gray-200 rounded-lg animate-pulse"></div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return null; // Don't show error, just hide the section
-  }
+  const getCategoryIcon = (categoryName) => {
+    const name = getCategoryName(categoryName);
+    const normalizedName = name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+    return categoryIcons[normalizedName] || categoryIcons.default;
+  };
 
   if (categories.length === 0) {
     return null; // Don't show empty section
@@ -116,7 +89,7 @@ export default function CategoryNavigation({ locale }) {
                 </div>
                 <div className="text-center">
                   <div className={`text-xs sm:text-sm font-medium text-gray-900 line-clamp-2 ${locale === 'bn' ? 'font-bangla-nav' : ''}`}>
-                    {category.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    {getCategoryName(category.name).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                   </div>
                   <div className={`text-xs text-gray-500 mt-1 ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>
                     {category.postCount} {t('home.categories.posts')}
