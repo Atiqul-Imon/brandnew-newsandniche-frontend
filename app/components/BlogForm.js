@@ -32,7 +32,7 @@ export default function BlogForm({
     seoDescription: { en: '', bn: '' },
     seoKeywords: { en: [], bn: [] },
     author: {
-      name: 'News & Niche',
+      name: 'News and Niche',
       email: '',
       bio: '',
       avatar: '',
@@ -97,7 +97,7 @@ export default function BlogForm({
         status: initialData.status || 'draft',
         isFeatured: initialData.isFeatured || false,
         author: {
-          name: initialData.author?.name || 'News & Niche',
+          name: initialData.author?.name || 'News and Niche',
           email: initialData.author?.email || '',
           bio: initialData.author?.bio || '',
           avatar: initialData.author?.avatar || '',

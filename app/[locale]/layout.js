@@ -37,8 +37,8 @@ export async function generateMetadata(props) {
     notFound();
   }
   const siteUrl = 'https://newsandniche.com';
-  const title = 'News&Niche - Trending News. Niche Insight';
-  const description = 'Trending News. Niche Insight - Latest news, insights, and stories from News&Niche. Stay informed with quality content and niche insights.';
+  const title = 'News and Niche - Trending News. Niche Insight';
+  const description = 'Trending News. Niche Insight - Latest news, insights, and stories from News and Niche. Stay informed with quality content and niche insights.';
   const keywords = locale === 'bn'
     ? ['trending news', 'niche insight', 'latest news', 'quality content', 'news blog', 'insights', 'analysis', 'বাংলা খবর', 'নিচে', 'বাংলাদেশ', 'সংবাদ']
     : ['trending news', 'niche insight', 'latest news', 'quality content', 'news blog', 'insights', 'analysis', 'english news', 'niche', 'bangladesh', 'blog'];
@@ -71,7 +71,7 @@ export async function generateMetadata(props) {
           alt: title,
         },
       ],
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
     },
     twitter: {

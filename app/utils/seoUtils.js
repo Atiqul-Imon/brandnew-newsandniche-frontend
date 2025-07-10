@@ -46,11 +46,11 @@ export const generateBlogPostingStructuredData = (blog, siteUrl) => {
     "dateModified": blog.updatedAt,
     "author": {
       "@type": "Person",
-      "name": blog.author?.name || "News&Niche"
+      "name": blog.author?.name || "News and Niche"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "News&Niche",
+      "name": "News and Niche",
       "url": siteUrl
     },
     "image": blog.featuredImage || `${siteUrl}/default-og-image.jpg`,
@@ -63,7 +63,7 @@ export const generateOrganizationStructuredData = (siteUrl) => {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "News&Niche",
+    "name": "News and Niche",
     "url": siteUrl,
     "logo": `${siteUrl}/newsandnichefinallogo.png`,
     "sameAs": [
@@ -77,7 +77,7 @@ export const generateWebsiteStructuredData = (siteUrl) => {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "News&Niche",
+    "name": "News and Niche",
     "url": siteUrl,
     "potentialAction": {
       "@type": "SearchAction",

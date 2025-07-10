@@ -200,8 +200,8 @@ export async function generateMetadata(props) {
   const { locale } = params;
   const siteUrl = 'https://newsandniche.com';
   
-  const title = 'All Categories - News&Niche';
-  const description = 'Explore all categories on News&Niche and discover content that interests you. Browse through our comprehensive collection of topics including technology, business, sports, entertainment, and more.';
+  const title = 'All Categories - News and Niche';
+  const description = 'Explore all categories on News and Niche and discover content that interests you. Browse through our comprehensive collection of topics including technology, business, sports, entertainment, and more.';
   
   const image = `${siteUrl}/default-og-image.jpg`;
   const canonical = `${siteUrl}/${locale}/categories`;
@@ -232,7 +232,7 @@ export async function generateMetadata(props) {
           alt: title,
         },
       ],
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
     },
     twitter: {

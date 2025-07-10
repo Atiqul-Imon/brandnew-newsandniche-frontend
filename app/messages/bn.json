@@ -86,7 +86,7 @@
   },
   "home": {
     "hero": {
-      "title": "Welcome to News&Niche",
+      "title": "Welcome to News and Niche",
       "subtitle": "Trending News. Niche Insight",
       "browseBlogs": "ব্লগ ব্রাউজ করুন",
       "joinUs": "আমাদের সাথে যোগ দিন",
@@ -257,6 +257,6 @@
     "slug": "স্লাগ",
     "actions": "অ্যাকশন"
   },
-  "title": "News&Niche",
+  "title": "News and Niche",
   "description": "Trending News. Niche Insight"
 } 

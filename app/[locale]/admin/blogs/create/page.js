@@ -168,7 +168,7 @@ export default function CreateBlogPage() {
     const content = formData.content[activeLang] || '';
     const title = formData.title[activeLang] || '';
     const excerpt = formData.excerpt[activeLang] || '';
-    const author = formData.author?.name || 'News & Niche';
+    const author = formData.author?.name || 'News and Niche';
     const html = `
       <html>
         <head>

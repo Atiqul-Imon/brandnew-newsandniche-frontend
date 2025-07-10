@@ -189,12 +189,12 @@ export async function generateMetadata({ params }) {
   
   const content = {
     en: {
-      title: "Privacy Policy - News&Niche",
-      description: "Learn how News&Niche collects, uses, and protects your personal information. Our comprehensive privacy policy ensures GDPR compliance and data protection.",
+      title: "Privacy Policy - News and Niche",
+      description: "Learn how News and Niche collects, uses, and protects your personal information. Our comprehensive privacy policy ensures GDPR compliance and data protection.",
     },
     bn: {
-      title: "Privacy Policy - News&Niche",
-      description: "Learn how News&Niche collects, uses, and protects your personal information. Our comprehensive privacy policy ensures GDPR compliance and data protection.",
+      title: "Privacy Policy - News and Niche",
+      description: "Learn how News and Niche collects, uses, and protects your personal information. Our comprehensive privacy policy ensures GDPR compliance and data protection.",
     }
   };
 

@@ -6,7 +6,7 @@ export default async function AboutPage({ params }) {
   
   const content = {
     en: {
-      title: "About News&Niche",
+      title: "About News and Niche",
       subtitle: "Trending News. Niche Insight",
       mainContent: "News and Niche is a digital-first media initiative dedicated to delivering trending news and unique niche insights across tech, culture, lifestyle, and global affairs. We bring stories that matter — beyond the mainstream — helping our readers stay informed, inspired, and ahead of the curve.",
       cta: {
@@ -16,7 +16,7 @@ export default async function AboutPage({ params }) {
       }
     },
     bn: {
-      title: "About News&Niche",
+      title: "About News and Niche",
       subtitle: "Trending News. Niche Insight",
       mainContent: "News and Niche is a digital-first media initiative dedicated to delivering trending news and unique niche insights across tech, culture, lifestyle, and global affairs. We bring stories that matter — beyond the mainstream — helping our readers stay informed, inspired, and ahead of the curve.",
       cta: {
@@ -75,7 +75,7 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   
-  const title = 'About News&Niche - Digital-First Media Initiative';
+  const title = 'About News and Niche - Digital-First Media Initiative';
   const description = 'News and Niche is a digital-first media initiative dedicated to delivering trending news and unique niche insights across tech, culture, lifestyle, and global affairs.';
   const keywords = [
     'News and Niche', 
@@ -124,7 +124,7 @@ export async function generateMetadata({ params }) {
           alt: title,
         },
       ],
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
     },
     twitter: {

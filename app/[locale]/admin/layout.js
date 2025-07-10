@@ -3,8 +3,8 @@ import AdminTopbar from '../../components/AdminTopbar';
 
 export async function generateMetadata() {
   return {
-    title: 'Admin Dashboard - News&Niche',
-    description: 'Admin dashboard for News&Niche',
+    title: 'Admin Dashboard - News and Niche',
+    description: 'Admin dashboard for News and Niche',
     robots: {
       index: false,
       follow: false,

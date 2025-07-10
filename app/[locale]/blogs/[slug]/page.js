@@ -11,12 +11,12 @@ export async function generateMetadata({ params }) {
   const supportedLocales = ['en', 'bn'];
 
   // Default fallback values
-  let title = 'News&Niche';
-  let description = 'Latest news, insights, and stories from News&Niche.';
+  let title = 'News and Niche';
+  let description = 'Latest news, insights, and stories from News and Niche.';
   let image = `${siteUrl}/default-og-image.jpg`;
   let canonical = `${siteUrl}/${locale}/blogs/${slug}`;
   let publishedTime = null;
-  let author = 'News&Niche';
+  let author = 'News and Niche';
   let keywords = [];
   let alternateLinks = {};
 
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }) {
             ? contentText.substring(0, 147) + '...'
             : contentText;
         } else if (blog.title?.[locale]) {
-          blogDescription = `Read "${blog.title[locale]}" on News&Niche. Get the latest insights and updates.`;
+          blogDescription = `Read "${blog.title[locale]}" on News and Niche. Get the latest insights and updates.`;
         }
       }
       
@@ -117,7 +117,7 @@ export async function generateMetadata({ params }) {
           alt: title,
         },
       ],
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
       publishedTime,
       authors: [author],
@@ -183,8 +183,8 @@ export default async function BlogPostPage({ params }) {
       {blog && (
         <BlogPostSchema
           title={blog.title?.[locale] || blog.title?.en || 'Blog Post'}
-          description={blog.seoDescription?.[locale] || blog.excerpt?.[locale] || 'Blog post from News&Niche'}
-          author={blog.author?.name || 'News&Niche'}
+          description={blog.seoDescription?.[locale] || blog.excerpt?.[locale] || 'Blog post from News and Niche'}
+          author={blog.author?.name || 'News and Niche'}
           publishedDate={blog.publishedAt}
           modifiedDate={blog.updatedAt}
           image={blog.featuredImage}

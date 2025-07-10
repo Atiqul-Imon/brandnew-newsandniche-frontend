@@ -142,7 +142,7 @@ export default function MuiAdminSidebar({
     >
       <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          News&Niche
+          News and Niche
         </Typography>
         {isMobile && (
           <IconButton onClick={onClose}>

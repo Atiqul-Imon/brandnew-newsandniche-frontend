@@ -27,7 +27,7 @@ export function BlogPostSchema({
     },
     "publisher": {
       "@type": "Organization",
-      "name": "News&Niche",
+      "name": "News and Niche",
       "logo": {
         "@type": "ImageObject",
         "url": "https://newsandniche.com/newsandnichefinallogo.png"
@@ -151,7 +151,7 @@ export function ReviewArticleSchema({
     },
     "publisher": {
       "@type": "Organization",
-      "name": "News&Niche"
+      "name": "News and Niche"
     },
     "datePublished": publishedDate,
     "headline": title,
@@ -178,8 +178,8 @@ export function OrganizationSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "News&Niche",
-    "alternateName": "News&Niche",
+    "name": "News and Niche",
+    "alternateName": "News and Niche",
     "url": "https://newsandniche.com",
     "logo": {
       "@type": "ImageObject",
@@ -187,7 +187,7 @@ export function OrganizationSchema() {
       "width": 512,
       "height": 512
     },
-    "description": "Trending News. Niche Insight - Latest news, insights, and stories from News&Niche. Stay informed with quality content and niche insights.",
+    "description": "Trending News. Niche Insight - Latest news, insights, and stories from News and Niche. Stay informed with quality content and niche insights.",
     "foundingDate": "2024",
     "address": {
       "@type": "PostalAddress",
@@ -207,7 +207,7 @@ export function OrganizationSchema() {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "News&Niche",
+      "name": "News and Niche",
       "logo": {
         "@type": "ImageObject",
         "url": "https://newsandniche.com/newsandnichefinallogo.png"
@@ -229,13 +229,13 @@ export function WebSiteSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "News&Niche",
-    "alternateName": "News&Niche",
+    "name": "News and Niche",
+    "alternateName": "News and Niche",
     "url": "https://newsandniche.com",
-    "description": "Trending News. Niche Insight - Latest news, insights, and stories from News&Niche. Stay informed with quality content and niche insights.",
+    "description": "Trending News. Niche Insight - Latest news, insights, and stories from News and Niche. Stay informed with quality content and niche insights.",
     "publisher": {
       "@type": "Organization",
-      "name": "News&Niche",
+      "name": "News and Niche",
       "logo": {
         "@type": "ImageObject",
         "url": "https://newsandniche.com/newsandnichefinallogo.png"
@@ -253,7 +253,7 @@ export function WebSiteSchema() {
     "copyrightYear": new Date().getFullYear(),
     "copyrightHolder": {
       "@type": "Organization",
-      "name": "News&Niche"
+      "name": "News and Niche"
     }
   };
 
@@ -357,7 +357,7 @@ export function AffiliateDisclosureSchema() {
     "url": "https://newsandniche.com/affiliate-disclaimer",
     "publisher": {
       "@type": "Organization",
-      "name": "News&Niche"
+      "name": "News and Niche"
     },
     "mainEntity": {
       "@type": "Article",
@@ -365,7 +365,7 @@ export function AffiliateDisclosureSchema() {
       "description": "This page discloses our affiliate relationships and how we may earn commissions through affiliate links.",
       "author": {
         "@type": "Organization",
-        "name": "News&Niche"
+        "name": "News and Niche"
       }
     }
   };

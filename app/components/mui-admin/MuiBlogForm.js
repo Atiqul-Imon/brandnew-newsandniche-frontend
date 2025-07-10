@@ -65,7 +65,7 @@ export default function MuiBlogForm({ blog, locale, onSubmit, onCancel, mode = '
     seoDescription: { en: '', bn: '' },
     seoKeywords: { en: [], bn: [] },
     author: {
-      name: 'News & Niche',
+      name: 'News and Niche',
       email: '',
       bio: '',
       avatar: '',
@@ -130,7 +130,7 @@ export default function MuiBlogForm({ blog, locale, onSubmit, onCancel, mode = '
         status: blog.status || 'draft',
         isFeatured: blog.isFeatured || false,
         author: {
-          name: blog.author?.name || 'News & Niche',
+          name: blog.author?.name || 'News and Niche',
           email: blog.author?.email || '',
           bio: blog.author?.bio || '',
           avatar: blog.author?.avatar || '',
@@ -524,7 +524,7 @@ export default function MuiBlogForm({ blog, locale, onSubmit, onCancel, mode = '
     const content = formData.content[activeLang] || '';
     const title = formData.title[activeLang] || '';
     const excerpt = formData.excerpt[activeLang] || '';
-    const author = formData.author?.name || 'News & Niche';
+    const author = formData.author?.name || 'News and Niche';
     const html = `
       <html>
         <head>

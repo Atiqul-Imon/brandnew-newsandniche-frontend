@@ -137,8 +137,8 @@ export default async function CategoryPage(props) {
 
     // CollectionPage structured data
     const collectionPageData = generateCollectionPageStructuredData({
-      name: `${categoryName} - News&Niche`,
-      description: `Explore all posts in the ${categoryName} category on News&Niche.`,
+      name: `${categoryName} - News and Niche`,
+      description: `Explore all posts in the ${categoryName} category on News and Niche.`,
       url: `${siteUrl}/${locale}/categories/${encodeURIComponent(categorySlug)}`,
       numberOfItems: total,
       items: initialBlogs.map(blog => generateBlogPostingStructuredData(blog, siteUrl))
@@ -271,8 +271,8 @@ export async function generateMetadata(props) {
   const page = Number(searchParams?.page) || 1;
   
   // Build dynamic title and description
-  let title = `${categoryName} - News&Niche`;
-  let description = `Explore all posts in the ${categoryName} category on News&Niche. Discover the latest news, articles, and insights about ${categoryName.toLowerCase()}.`;
+  let title = `${categoryName} - News and Niche`;
+  let description = `Explore all posts in the ${categoryName} category on News and Niche. Discover the latest news, articles, and insights about ${categoryName.toLowerCase()}.`;
   
   // Add page number if not first page
   if (page > 1) {
@@ -312,7 +312,7 @@ export async function generateMetadata(props) {
           alt: title,
         },
       ],
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
     },
     twitter: {

@@ -7,8 +7,8 @@ export async function generateMetadata({ params }) {
   const siteUrl = 'https://newsandniche.com';
   
   const title = locale === 'bn' 
-    ? 'বিশেষ অফার - News&Niche' 
-    : 'Special Deals - News&Niche';
+    ? 'বিশেষ অফার - News and Niche' 
+    : 'Special Deals - News and Niche';
   
   const description = locale === 'bn'
     ? 'সেরা ডিসকাউন্ট এবং বিশেষ অফার। আমাদের অ্যাফিলিয়েট লিংকের মাধ্যমে সেরা মূল্যে কিনুন।'
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }) {
       description,
       url: canonical,
       type: 'website',
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
     },
     twitter: {
@@ -68,7 +68,7 @@ export default async function DealsPage({ params }) {
         articles={dealsArticles.map(article => ({
           title: article.title?.[locale] || article.title?.en,
           description: article.excerpt?.[locale] || article.excerpt?.en,
-          author: article.author?.name || 'News&Niche',
+          author: article.author?.name || 'News and Niche',
           publishedDate: article.publishedAt,
           url: `https://newsandniche.com/${locale}/blogs/${article.slug?.[locale] || article.slug?.en}`,
           image: article.featuredImage

@@ -107,15 +107,15 @@ export async function generateMetadata(props) {
   const page = Number(searchParams?.page) || 1;
   
   // Build dynamic title and description
-  let title = 'News&Niche - Blog Listing';
-  let description = 'News&Niche - Latest blog posts, news and analysis.';
+  let title = 'News and Niche - Blog Listing';
+  let description = 'News and Niche - Latest blog posts, news and analysis.';
   
   if (search) {
-    title = `"${search}" - News&Niche Blog Search`;
-    description = `Search results for "${search}" in News&Niche blog posts.`;
+    title = `"${search}" - News and Niche Blog Search`;
+    description = `Search results for "${search}" in News and Niche blog posts.`;
   } else if (category) {
-    title = `${category} - News&Niche Blog Category`;
-    description = `News&Niche blog posts in the ${category} category.`;
+    title = `${category} - News and Niche Blog Category`;
+    description = `News and Niche blog posts in the ${category} category.`;
   }
   
   // Add page number if not first page
@@ -160,7 +160,7 @@ export async function generateMetadata(props) {
           alt: title,
         },
       ],
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
     },
     twitter: {

@@ -45,8 +45,8 @@ export default async function ContactPage({ params }) {
     url: `${siteUrl}/${locale}/contact`,
     mainEntity: {
       '@type': 'Organization',
-      name: 'News&Niche',
-      alternateName: 'News&Niche',
+      name: 'News and Niche',
+      alternateName: 'News and Niche',
       url: siteUrl,
       logo: {
         '@type': 'ImageObject',
@@ -186,9 +186,9 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   
-  const title = 'Contact Us - News&Niche';
-  const description = 'Get in touch with News&Niche. Our team is ready to answer your questions.';
-  const keywords = ['Contact', 'News&Niche', 'Bangla News', 'Contact Form', 'Email'];
+  const title = 'Contact Us - News and Niche';
+  const description = 'Get in touch with News and Niche. Our team is ready to answer your questions.';
+  const keywords = ['Contact', 'News and Niche', 'Bangla News', 'Contact Form', 'Email'];
   
   const canonical = `${siteUrl}/${locale}/contact`;
   
@@ -223,7 +223,7 @@ export async function generateMetadata({ params }) {
           alt: title,
         },
       ],
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
     },
     twitter: {

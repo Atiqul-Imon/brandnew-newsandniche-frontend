@@ -44,8 +44,8 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const siteUrl = 'https://newsandniche.com';
   const supportedLocales = ['en', 'bn'];
-  const title = 'News&Niche - Trending News. Niche Insight';
-  const description = 'News&Niche brings you trending news, analysis, and niche insights from around the world. Stay informed with quality content and expert analysis.';
+  const title = 'News and Niche - Trending News. Niche Insight';
+  const description = 'News and Niche brings you trending news, analysis, and niche insights from around the world. Stay informed with quality content and expert analysis.';
   const image = `${siteUrl}/default-og-image.jpg`;
   const canonical = `${siteUrl}/${locale}`;
   const keywords = locale === 'bn'
@@ -82,7 +82,7 @@ export async function generateMetadata({ params }) {
           alt: title,
         },
       ],
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
     },
     twitter: {

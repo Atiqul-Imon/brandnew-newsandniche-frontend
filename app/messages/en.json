@@ -87,7 +87,7 @@
   },
   "home": {
     "hero": {
-      "title": "Welcome to News&Niche",
+      "title": "Welcome to News and Niche",
       "subtitle": "Trending News. Niche Insight",
       "browseBlogs": "Browse Blogs",
       "joinUs": "Join Us",
@@ -215,7 +215,7 @@
     "blogNotFound": "Blog post not found"
   },
   "footer": {
-    "copyright": "© 2024 News&Niche. All rights reserved.",
+    "copyright": "© 2024 News and Niche. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "contactUs": "Contact Us",
@@ -297,6 +297,6 @@
     "replyPlaceholder": "Write your reply...",
     "confirmDelete": "Are you sure you want to delete this comment?"
   },
-  "title": "News & Niche",
+  "title": "News and Niche",
   "description": "Best source of English news"
 } 

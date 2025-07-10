@@ -311,8 +311,8 @@ const Callout = ({ type, content, locale }) => {
 };
 
 function getAuthorField(blog, field, locale) {
-  if (!blog.author) return '';
-  return blog.author[field]?.[locale] || blog.author[field] || '';
+  if (!blog.author) return 'News and Niche';
+  return blog.author[field]?.[locale] || blog.author[field] || 'News and Niche';
 }
 
 export default function BlogDetailClient({ locale, slug, initialBlog, initialRelatedBlogs, error: initialError }) {
@@ -370,7 +370,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
   const handleShare = (platform) => {
     const url = window.location.href;
     const title = blog?.title?.[locale] || 'Check out this article';
-    const text = blog?.excerpt?.[locale] || 'Interesting read from News&Niche';
+    const text = blog?.excerpt?.[locale] || 'Interesting read from News and Niche';
 
     let shareUrl = '';
     switch (platform) {

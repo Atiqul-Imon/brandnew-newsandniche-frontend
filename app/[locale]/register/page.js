@@ -11,8 +11,8 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   
   return {
-    title: 'Register - News&Niche',
-    description: 'Create a new account on News&Niche',
+    title: 'Register - News and Niche',
+    description: 'Create a new account on News and Niche',
     robots: {
       index: false,
       follow: false,

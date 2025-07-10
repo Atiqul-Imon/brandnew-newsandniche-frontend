@@ -5,8 +5,8 @@ export async function generateMetadata({ params }) {
   const locale = resolvedParams?.locale || 'en';
   const siteUrl = 'https://newsandniche.com';
   
-  const title = 'Disclaimer - News&Niche';
-  const description = 'Learn about News&Niche content, affiliate relationships, and terms of use.';
+  const title = 'Disclaimer - News and Niche';
+  const description = 'Learn about News and Niche content, affiliate relationships, and terms of use.';
   
   const canonical = `${siteUrl}/${locale}/affiliate-disclaimer`;
   
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }) {
       description,
       url: canonical,
       type: 'website',
-      siteName: 'News&Niche',
+      siteName: 'News and Niche',
       locale,
     },
     twitter: {

@@ -11,8 +11,8 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   
   return {
-    title: 'Login - News&Niche',
-    description: 'Login to News&Niche',
+    title: 'Login - News and Niche',
+    description: 'Login to News and Niche',
     robots: {
       index: false,
       follow: false,

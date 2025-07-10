@@ -25,8 +25,8 @@ export default function HomeClient({
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'News&Niche',
-            alternateName: 'News&Niche',
+    name: 'News and Niche',
+            alternateName: 'News and Niche',
     url: siteUrl,
     logo: {
       '@type': 'ImageObject',
@@ -54,7 +54,7 @@ export default function HomeClient({
     ],
     publisher: {
       '@type': 'Organization',
-      name: 'News&Niche',
+      name: 'News and Niche',
       logo: {
         '@type': 'ImageObject',
         url: `${siteUrl}/logo.png`,

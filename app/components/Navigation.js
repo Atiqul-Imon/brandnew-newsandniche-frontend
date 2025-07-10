@@ -24,7 +24,7 @@ export default function Navigation({ locale }) {
                 window.location.href = `/${locale}`;
               }}
             >
-              <img src="/newsandnichefinallogo.png" alt="News&Niche Logo" className="h-10 w-auto mr-2" />
+              <img src="/newsandnichefinallogo.png" alt="News and Niche Logo" className="h-10 w-auto mr-2" />
             </a>
             
             <div className="hidden md:ml-8 lg:ml-10 md:flex md:space-x-6 lg:space-x-8 nav-links">
