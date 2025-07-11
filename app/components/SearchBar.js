@@ -31,7 +31,9 @@ export default function SearchBar({ onSearch, placeholder, className = '', local
       }
     }, 500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [query, searchParams]);
 
   const handleSearch = async (e) => {

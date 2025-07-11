@@ -6,14 +6,20 @@ export default function GoogleAnalytics() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+    let storageListener = null;
+
     const initializeGA = () => {
+      // Check if component is still mounted
+      if (!isMounted) return;
+
       // Check if analytics consent is given
       const consent = hasConsent('analytics');
       console.log('Analytics consent check:', consent);
       
       if (!consent) {
         console.log('Google Analytics disabled - no consent');
-        setIsInitialized(false);
+        if (isMounted) setIsInitialized(false);
         return;
       }
 
@@ -33,7 +39,7 @@ export default function GoogleAnalytics() {
       const existingScript = document.querySelector(`script[src*="googletagmanager.com"]`);
       if (existingScript) {
         console.log('Google Analytics script already loaded');
-        setIsInitialized(true);
+        if (isMounted) setIsInitialized(true);
         return;
       }
 
@@ -57,11 +63,11 @@ export default function GoogleAnalytics() {
       });
 
       console.log('Google Analytics initialized with ID:', GA_TRACKING_ID);
-      setIsInitialized(true);
+      if (isMounted) setIsInitialized(true);
       
       // Send a test event to verify it's working
       setTimeout(() => {
-        if (window.gtag) {
+        if (window.gtag && isMounted) {
           window.gtag('event', 'analytics_initialized', {
             event_category: 'system',
             event_label: 'GA4 Setup Complete'
@@ -76,16 +82,20 @@ export default function GoogleAnalytics() {
 
     // Listen for storage changes (cookie consent updates)
     const handleStorageChange = (e) => {
-      if (e.key === 'cookieConsent') {
+      if (e.key === 'cookieConsent' && isMounted) {
         initializeGA();
       }
     };
 
-    window.addEventListener('storage', handleStorageChange);
+    storageListener = handleStorageChange;
+    window.addEventListener('storage', storageListener);
 
     // Cleanup function
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      isMounted = false;
+      if (storageListener) {
+        window.removeEventListener('storage', storageListener);
+      }
     };
   }, [isInitialized]);
 

@@ -14,7 +14,12 @@ export default function AdSense({
   const [hasConsentGiven, setHasConsentGiven] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+    let storageListener = null;
+
     const checkConsent = () => {
+      if (!isMounted) return;
+      
       const consent = hasConsent('marketing');
       setHasConsentGiven(consent);
       
@@ -24,6 +29,8 @@ export default function AdSense({
     };
 
     const loadAdSense = () => {
+      if (!isMounted) return;
+
       // Check if AdSense script is already loaded
       if (window.adsbygoogle) {
         setIsLoaded(true);
@@ -43,8 +50,10 @@ export default function AdSense({
       }
 
       script.onload = () => {
-        setIsLoaded(true);
-        console.log('AdSense script loaded');
+        if (isMounted) {
+          setIsLoaded(true);
+          console.log('AdSense script loaded');
+        }
       };
 
       script.onerror = () => {
@@ -59,15 +68,19 @@ export default function AdSense({
 
     // Listen for consent changes
     const handleStorageChange = (e) => {
-      if (e.key === 'cookieConsent') {
+      if (e.key === 'cookieConsent' && isMounted) {
         checkConsent();
       }
     };
 
-    window.addEventListener('storage', handleStorageChange);
+    storageListener = handleStorageChange;
+    window.addEventListener('storage', storageListener);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      isMounted = false;
+      if (storageListener) {
+        window.removeEventListener('storage', storageListener);
+      }
     };
   }, [isLoaded]);
 
