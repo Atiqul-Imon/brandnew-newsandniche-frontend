@@ -24,8 +24,6 @@ const nextConfig = {
   },
   // Memory optimization settings
   experimental: {
-    // Reduce memory usage
-    memoryBasedWorkers: true,
     // Optimize bundle size
     optimizePackageImports: ['@mui/material', '@mui/icons-material'],
   },

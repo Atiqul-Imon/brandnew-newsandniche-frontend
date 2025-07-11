@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { api } from '../../../apiConfig';
+import apiConfig from '../../../../apiConfig';
 
 export default function NewsletterUnsubscribePage() {
   const params = useParams();
@@ -12,7 +12,7 @@ export default function NewsletterUnsubscribePage() {
   useEffect(() => {
     const unsubscribe = async () => {
       try {
-        const response = await api.get(`/api/newsletter/unsubscribe/${params.token}`);
+        const response = await apiConfig.get(`/api/newsletter/unsubscribe/${params.token}`);
         
         if (response.data.success) {
           setStatus('success');
