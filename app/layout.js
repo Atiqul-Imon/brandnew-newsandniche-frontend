@@ -6,6 +6,7 @@ import { getMessages } from 'next-intl/server';
 import CookieConsent from './components/CookieConsent';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import AnalyticsDebug from './components/AnalyticsDebug';
+import { NewsletterFloatingButton } from './components/NewsletterSignup';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -62,6 +63,7 @@ export default async function RootLayout({ children, params: { locale } }) {
   return (
     <html lang={locale} className={inter.variable}>
       <head>
+        <meta name="p:domain_verify" content="efa336b9affe63aba06824d9519a2815" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -82,6 +84,8 @@ export default async function RootLayout({ children, params: { locale } }) {
             <AnalyticsDebug />
             {children}
             <CookieConsent locale={locale} />
+            {/* NewsletterFloatingButton temporarily disabled */}
+            {/* <NewsletterFloatingButton locale={locale} /> */}
           </NextIntlClientProvider>
         </AuthProvider>
       </body>

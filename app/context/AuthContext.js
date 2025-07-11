@@ -98,6 +98,42 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const changePassword = async (passwordData) => {
+    try {
+      setError(null);
+      const response = await api.put('/api/users/change-password', passwordData);
+      return { success: true };
+    } catch (error) {
+      const message = error.response?.data?.message || 'Password change failed';
+      setError(message);
+      return { success: false, error: message };
+    }
+  };
+
+  const forgotPassword = async (email) => {
+    try {
+      setError(null);
+      const response = await api.post('/api/users/forgot-password', { email });
+      return { success: true };
+    } catch (error) {
+      const message = error.response?.data?.message || 'Forgot password request failed';
+      setError(message);
+      return { success: false, error: message };
+    }
+  };
+
+  const resetPassword = async (resetData) => {
+    try {
+      setError(null);
+      const response = await api.post('/api/users/reset-password', resetData);
+      return { success: true };
+    } catch (error) {
+      const message = error.response?.data?.message || 'Password reset failed';
+      setError(message);
+      return { success: false, error: message };
+    }
+  };
+
   // Role-based access control helpers
   const hasRole = (roles) => {
     if (!user) return false;
@@ -206,6 +242,9 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateProfile,
+    changePassword,
+    forgotPassword,
+    resetPassword,
     checkAuth,
     // Role-based helpers
     hasRole,

@@ -1,182 +1,259 @@
-// SERVER COMPONENT: Privacy Policy page with SSR for SEO
-import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 export default async function PrivacyPage({ params }) {
-  const { locale } = await params;
-  
+  const t = await getTranslations({ locale: params.locale });
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-          <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">
-              🛡️ Privacy Policy – News and Niche
-            </h1>
-            
-            <p className="text-sm text-gray-600 mb-6">
-              Last updated: July 5, 2024
+        <div className="bg-white rounded-lg shadow-md p-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+            {params.locale === 'bn' ? 'গোপনীয়তা নীতি' : 'Privacy Policy'}
+          </h1>
+          
+          <div className="prose prose-lg max-w-none">
+            <p className="text-gray-600 mb-6">
+              {params.locale === 'bn' 
+                ? 'সর্বশেষ আপডেট: ডিসেম্বর ২০২৪' 
+                : 'Last updated: December 2024'
+              }
             </p>
-            
-            <div className="prose prose-lg max-w-none">
-              <p className="text-gray-700 mb-6">
-                At News and Niche (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;), your privacy is very important to us. This Privacy Policy outlines how we collect, use, and protect your information when you visit or interact with our website <a href="https://www.newsandniche.com" className="text-blue-600 hover:text-blue-800">https://www.newsandniche.com</a>.
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '১. পরিচয়' : '1. Introduction'}
+              </h2>
+              <p className="text-gray-700 mb-4">
+                {params.locale === 'bn' 
+                  ? 'News and Niche ("আমরা", "আমাদের", বা "সাইট") আপনার গোপনীয়তা রক্ষা করতে প্রতিশ্রুতিবদ্ধ। এই গোপনীয়তা নীতি ব্যাখ্যা করে যে আমরা কীভাবে আপনার ব্যক্তিগত তথ্য সংগ্রহ, ব্যবহার এবং সুরক্ষা করি।' 
+                  : 'News and Niche ("we", "our", or "site") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and protect your personal information.'
+                }
               </p>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '২. আমরা কী তথ্য সংগ্রহ করি' : '2. Information We Collect'}
+              </h2>
               
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 1. Information We Collect
-                  </h2>
-                  <p className="text-gray-700 mb-3">
-                    We collect both personally identifiable information and non-personal browsing data:
-                  </p>
-                  <p className="text-gray-700 mb-2 font-medium">Information you provide voluntarily:</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-700 mb-3">
-                    <li>Name, email address (e.g., when subscribing or contacting us)</li>
-                    <li>Preferences, comments, or other content submitted via forms</li>
-                  </ul>
-                  <p className="text-gray-700 mb-2 font-medium">Information we collect automatically:</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-700 mb-3">
-                    <li>IP address, browser type, device info</li>
-                    <li>Usage data, interaction behavior, referral sources</li>
-                    <li>Cookies and similar tracking technologies</li>
-                  </ul>
-                  <p className="text-gray-700">
-                    We do not require you to create an account to use our site.
-                  </p>
-                </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                {params.locale === 'bn' ? 'নিউজলেটার সাবস্ক্রিপশন' : 'Newsletter Subscription'}
+              </h3>
+              <ul className="list-disc pl-6 mb-4 text-gray-700">
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'ইমেইল ঠিকানা (সাবস্ক্রিপশনের জন্য প্রয়োজনীয়)' 
+                    : 'Email address (required for subscription)'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'নাম (ঐচ্ছিক)' 
+                    : 'Name (optional)'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'সাবস্ক্রিপশনের উৎস (ওয়েবসাইট, পপআপ, ইত্যাদি)' 
+                    : 'Subscription source (website, popup, etc.)'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'সম্মতি পছন্দ (নিউজলেটার, মার্কেটিং, অ্যানালিটিক্স)' 
+                    : 'Consent preferences (newsletter, marketing, analytics)'
+                  }
+                </li>
+              </ul>
 
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 2. How We Use Your Information
-                  </h2>
-                  <p className="text-gray-700 mb-3">
-                    We collect and use your data for the following purposes:
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-700">
-                    <li>To operate, improve, and secure our website</li>
-                    <li>To personalize your experience and provide tailored content</li>
-                    <li>To send you newsletters or promotional communications (only with consent)</li>
-                    <li>To understand site traffic and performance through analytics</li>
-                    <li>To detect and prevent fraud or unauthorized activity</li>
-                    <li>To comply with legal obligations</li>
-                  </ul>
-                </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                {params.locale === 'bn' ? 'অটোমেটিকভাবে সংগ্রহিত তথ্য' : 'Automatically Collected Information'}
+              </h3>
+              <ul className="list-disc pl-6 mb-4 text-gray-700">
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'আইপি ঠিকানা' 
+                    : 'IP address'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'ব্রাউজার এবং ডিভাইস তথ্য' 
+                    : 'Browser and device information'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'সাইট ব্যবহারের তথ্য' 
+                    : 'Site usage information'
+                  }
+                </li>
+              </ul>
+            </section>
 
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 3. Cookies and Tracking Technologies
-                  </h2>
-                  <p className="text-gray-700 mb-3">
-                    We use cookies to improve user experience and collect usage insights. These may include:
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-700 mb-3">
-                    <li>Essential cookies: Required for core site features</li>
-                    <li>Analytics cookies: Understand how visitors use our site (e.g., via Google Analytics)</li>
-                    <li>Preference cookies: Remember user settings (e.g., language)</li>
-                    <li>Marketing cookies: May be used for affiliate tracking or third-party ads</li>
-                  </ul>
-                  <p className="text-gray-700">
-                    You can manage or disable cookies through your browser settings.
-                  </p>
-                </div>
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '৩. আমরা কীভাবে তথ্য ব্যবহার করি' : '3. How We Use Information'}
+              </h2>
+              <ul className="list-disc pl-6 mb-4 text-gray-700">
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'নিউজলেটার ইমেইল পাঠানো' 
+                    : 'Sending newsletter emails'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'সাবস্ক্রিপশন নিশ্চিতকরণ' 
+                    : 'Confirming subscriptions'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'সেবার মান উন্নত করা' 
+                    : 'Improving service quality'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'আইনি প্রয়োজনীয়তা পূরণ করা' 
+                    : 'Fulfilling legal requirements'
+                  }
+                </li>
+              </ul>
+            </section>
 
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 4. Information Sharing and Disclosure
-                  </h2>
-                  <p className="text-gray-700 mb-3">
-                    We do not sell, rent, or trade your personal information.
-                  </p>
-                  <p className="text-gray-700 mb-2">We may share information only with:</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-700">
-                    <li>Trusted service providers (e.g., hosting, analytics, email platforms)</li>
-                    <li>Legal authorities if required by law</li>
-                    <li>In the event of a business transfer, merger, or acquisition</li>
-                    <li>With your explicit consent</li>
-                  </ul>
-                </div>
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '৪. তথ্য ভাগাভাগি' : '4. Information Sharing'}
+              </h2>
+              <p className="text-gray-700 mb-4">
+                {params.locale === 'bn' 
+                  ? 'আমরা আপনার ব্যক্তিগত তথ্য তৃতীয় পক্ষের সাথে ভাগ করি না, তবে নিম্নলিখিত ক্ষেত্রে ব্যতিক্রম হতে পারে:' 
+                  : 'We do not share your personal information with third parties, except in the following circumstances:'
+                }
+              </p>
+              <ul className="list-disc pl-6 mb-4 text-gray-700">
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'আপনার স্পষ্ট সম্মতির সাথে' 
+                    : 'With your explicit consent'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'আইনি প্রয়োজনীয়তার জন্য' 
+                    : 'For legal requirements'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'সেবা প্রদানকারীদের সাথে (ইমেইল সেবা ইত্যাদি)' 
+                    : 'With service providers (email services, etc.)'
+                  }
+                </li>
+              </ul>
+            </section>
 
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 5. Data Security
-                  </h2>
-                  <p className="text-gray-700">
-                    We implement reasonable technical and organizational measures to protect your data from unauthorized access, misuse, or disclosure. However, no method of transmission over the Internet is 100% secure.
-                  </p>
-                </div>
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '৫. আপনার অধিকার' : '5. Your Rights'}
+              </h2>
+              <p className="text-gray-700 mb-4">
+                {params.locale === 'bn' 
+                  ? 'আপনার নিম্নলিখিত অধিকার রয়েছে:' 
+                  : 'You have the following rights:'
+                }
+              </p>
+              <ul className="list-disc pl-6 mb-4 text-gray-700">
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'আপনার তথ্য দেখার অধিকার' 
+                    : 'Right to access your information'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'আপনার তথ্য সংশোধনের অধিকার' 
+                    : 'Right to correct your information'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'আপনার তথ্য মুছে ফেলার অধিকার' 
+                    : 'Right to delete your information'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'নিউজলেটার থেকে আনসাবস্ক্রাইব করার অধিকার' 
+                    : 'Right to unsubscribe from newsletter'
+                  }
+                </li>
+              </ul>
+            </section>
 
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 6. GDPR Compliance – Your Data Rights
-                  </h2>
-                  <p className="text-gray-700 mb-3">
-                    If you are located in the European Economic Area (EEA), under the General Data Protection Regulation (GDPR) you have the right to:
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-700 mb-3">
-                    <li>Access your personal data</li>
-                    <li>Request rectification or deletion of your data</li>
-                    <li>Restrict or object to data processing</li>
-                    <li>Withdraw your consent at any time</li>
-                    <li>Request data portability in structured format</li>
-                  </ul>
-                  <p className="text-gray-700">
-                    To exercise any of these rights, please contact us via <a href="mailto:privacy@newsandniche.com" className="text-blue-600 hover:text-blue-800">privacy@newsandniche.com</a>
-                  </p>
-                </div>
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '৬. তথ্য সুরক্ষা' : '6. Data Security'}
+              </h2>
+              <p className="text-gray-700 mb-4">
+                {params.locale === 'bn' 
+                  ? 'আমরা আপনার তথ্য সুরক্ষার জন্য উপযুক্ত প্রযুক্তিগত এবং সংগঠনিক ব্যবস্থা গ্রহণ করি। তবে ইন্টারনেটে কোনো তথ্য সম্পূর্ণ নিরাপদ নয়।' 
+                  : 'We implement appropriate technical and organizational measures to protect your information. However, no data transmission over the internet is completely secure.'
+                }
+              </p>
+            </section>
 
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 7. Data Retention
-                  </h2>
-                  <p className="text-gray-700">
-                    We retain personal data only as long as necessary to fulfill its purpose or to comply with legal/regulatory obligations. Usage analytics data may be retained in anonymized form for statistical purposes.
-                  </p>
-                </div>
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '৭. কুকি' : '7. Cookies'}
+              </h2>
+              <p className="text-gray-700 mb-4">
+                {params.locale === 'bn' 
+                  ? 'আমরা আপনার অভিজ্ঞতা উন্নত করতে কুকি ব্যবহার করি। আপনি আপনার ব্রাউজার সেটিংসে কুকি নিষ্ক্রিয় করতে পারেন।' 
+                  : 'We use cookies to improve your experience. You can disable cookies in your browser settings.'
+                }
+              </p>
+            </section>
 
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 8. Children&apos;s Privacy
-                  </h2>
-                  <p className="text-gray-700">
-                    Our website is not intended for children under 13. We do not knowingly collect personal information from individuals in this age group. If we learn that a child under 13 has submitted personal data, we will delete it promptly.
-                  </p>
-                </div>
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '৮. যোগাযোগ' : '8. Contact'}
+              </h2>
+              <p className="text-gray-700 mb-4">
+                {params.locale === 'bn' 
+                  ? 'গোপনীয়তা নীতি সম্পর্কে কোনো প্রশ্ন থাকলে আমাদের সাথে যোগাযোগ করুন:' 
+                  : 'If you have any questions about this Privacy Policy, please contact us:'
+                }
+              </p>
+              <ul className="list-none pl-6 mb-4 text-gray-700">
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'ইমেইল: privacy@newsandniche.com' 
+                    : 'Email: privacy@newsandniche.com'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'ওয়েবসাইট: /contact' 
+                    : 'Website: /contact'
+                  }
+                </li>
+              </ul>
+            </section>
 
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 9. International Data Transfers
-                  </h2>
-                  <p className="text-gray-700">
-                    Our website may be accessed from outside Bangladesh. Information collected may be transferred to and processed in countries where our hosting or service providers are located. We ensure appropriate safeguards in compliance with applicable laws.
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 10. Updates to This Privacy Policy
-                  </h2>
-                  <p className="text-gray-700 mb-3">
-                    We may occasionally update this Privacy Policy to reflect changes in our practices or legal requirements. Changes will be posted on this page with the revised &quot;Last updated&quot; date.
-                  </p>
-                  <p className="text-gray-700">
-                    We recommend reviewing this page periodically to stay informed.
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-3">
-                    🔹 11. Contact Us
-                  </h2>
-                  <p className="text-gray-700 mb-3">
-                    If you have any questions, feedback, or concerns about this Privacy Policy or your data, please contact us:
-                  </p>
-                  <p className="text-gray-700">
-                    📧 Email: <a href="mailto:privacy@newsandniche.com" className="text-blue-600 hover:text-blue-800">privacy@newsandniche.com</a>
-                  </p>
-                </div>
-              </div>
-            </div>
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '৯. নীতি পরিবর্তন' : '9. Policy Changes'}
+              </h2>
+              <p className="text-gray-700 mb-4">
+                {params.locale === 'bn' 
+                  ? 'আমরা এই গোপনীয়তা নীতি পরিবর্তন করতে পারি। পরিবর্তনগুলি এই পৃষ্ঠায় প্রকাশ করা হবে।' 
+                  : 'We may change this Privacy Policy. Changes will be posted on this page.'
+                }
+              </p>
+            </section>
           </div>
         </div>
       </div>

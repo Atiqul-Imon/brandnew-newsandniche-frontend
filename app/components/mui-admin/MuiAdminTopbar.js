@@ -25,6 +25,7 @@ import {
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function MuiAdminTopbar({
   onSidebarToggle,
@@ -34,6 +35,7 @@ export default function MuiAdminTopbar({
   onLocaleChange,
 }) {
   const { user, logout } = useAuth();
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
 
@@ -58,6 +60,11 @@ export default function MuiAdminTopbar({
     handleProfileMenuClose();
   };
 
+  const handleChangePassword = () => {
+    router.push('/mui-admin/change-password');
+    handleProfileMenuClose();
+  };
+
   const handleLocaleSwitch = () => {
     const newLocale = currentLocale === 'en' ? 'bn' : 'en';
     onLocaleChange(newLocale);
@@ -67,6 +74,7 @@ export default function MuiAdminTopbar({
     en: {
       profile: 'Profile',
       settings: 'Settings',
+      changePassword: 'Change Password',
       logout: 'Logout',
       notifications: 'Notifications',
       noNotifications: 'No new notifications',
@@ -76,6 +84,7 @@ export default function MuiAdminTopbar({
     bn: {
       profile: 'প্রোফাইল',
       settings: 'সেটিংস',
+      changePassword: 'পাসওয়ার্ড পরিবর্তন করুন',
       logout: 'লগআউট',
       notifications: 'বিজ্ঞপ্তি',
       noNotifications: 'কোন নতুন বিজ্ঞপ্তি নেই',
@@ -188,6 +197,10 @@ export default function MuiAdminTopbar({
           <MenuItem onClick={handleProfileMenuClose}>
             <AccountCircleIcon sx={{ mr: 1 }} />
             {t.profile}
+          </MenuItem>
+          <MenuItem onClick={handleChangePassword}>
+            <LockIcon sx={{ mr: 1 }} />
+            {t.changePassword}
           </MenuItem>
           <MenuItem onClick={handleProfileMenuClose}>
             <SettingsIcon sx={{ mr: 1 }} />

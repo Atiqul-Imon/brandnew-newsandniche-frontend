@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
 import { WebSiteSchema } from './SchemaMarkup';
+import NewsletterSignup from './NewsletterSignup';
 
 export default function HomeClient({ 
   locale, 
@@ -242,6 +243,31 @@ export default function HomeClient({
             </div>
           </section>
         )}
+
+        {/* Newsletter Section - Temporarily Hidden */}
+        {/* 
+        <section className="py-16 bg-gray-50" aria-label="Newsletter subscription">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8">
+              <h2 className={`text-3xl font-bold text-gray-900 mb-4 ${locale === 'bn' ? 'font-bangla-heading bangla-heading-spacing' : ''}`}>
+                {locale === 'bn' ? 'নিউজলেটার সাবস্ক্রাইব করুন' : 'Stay Updated'}
+              </h2>
+              <p className={`text-lg text-gray-600 max-w-2xl mx-auto ${locale === 'bn' ? 'font-bangla-blog bangla-text-spacing' : ''}`}>
+                {locale === 'bn' 
+                  ? 'সর্বশেষ আপডেট, এক্সক্লুসিভ কনটেন্ট এবং বিশেষ অফার পেতে আমাদের নিউজলেটার সাবস্ক্রাইব করুন।' 
+                  : 'Get the latest updates, exclusive content, and special offers delivered to your inbox.'
+                }
+              </p>
+            </div>
+            <NewsletterSignup 
+              variant="premium"
+              locale={locale}
+              showPrivacyPolicy={true}
+              showTerms={true}
+            />
+          </div>
+        </section>
+        */}
       </main>
     </>
   );
