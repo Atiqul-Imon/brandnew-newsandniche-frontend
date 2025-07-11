@@ -22,6 +22,7 @@ import {
   Logout as LogoutIcon,
   Settings as SettingsIcon,
   Language as LanguageIcon,
+  Lock as LockIcon, // Added LockIcon
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
