@@ -12,18 +12,19 @@ export default function NewsletterConfirmPage() {
   useEffect(() => {
     const confirmSubscription = async () => {
       try {
-        const response = await apiConfig.get(`/api/newsletter/confirm/${params.token}`);
+        const response = await fetch(`${API_BASE_URL}/api/newsletter/confirm/${params.token}`, { next: { revalidate: 60 } });
+        const data = await response.json();
         
-        if (response.data.success) {
+        if (data.success) {
           setStatus('success');
-          setMessage(response.data.message);
+          setMessage(data.message);
         } else {
           setStatus('error');
-          setMessage(response.data.message || 'Confirmation failed');
+          setMessage(data.message || 'Confirmation failed');
         }
       } catch (error) {
         setStatus('error');
-        setMessage(error.response?.data?.message || 'Confirmation failed');
+        setMessage('Confirmation failed');
       }
     };
 

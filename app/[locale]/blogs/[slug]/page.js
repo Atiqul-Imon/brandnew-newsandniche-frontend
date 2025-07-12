@@ -25,8 +25,7 @@ export async function generateMetadata({ params }) {
   try {
     for (const l of supportedLocales) {
       const res = await fetch(`${API_BASE_URL}/api/blogs/${l}/slug/${slug}`, {
-        cache: 'no-store',
-        next: { revalidate: 0 }
+        next: { revalidate: 300 }
       });
       const data = await res.json();
       if (data.success) {
@@ -39,8 +38,7 @@ export async function generateMetadata({ params }) {
 
   try {
     const blogRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}/slug/${slug}`, {
-      cache: 'no-store',
-      next: { revalidate: 0 }
+      next: { revalidate: 300 }
     });
     const blogData = await blogRes.json();
     if (blogData.success) {

@@ -25,6 +25,36 @@ const nextConfig = {
   // Security headers
   async headers() {
     return [
+      // Static assets (public folder, _next/static)
+      {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      {
+        source: '/public/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      // API routes (cache for 1 minute)
+      {
+        source: '/api/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=60, s-maxage=60, stale-while-revalidate=30'
+          }
+        ]
+      },
+      // Default security headers
       {
         source: '/(.*)',
         headers: [

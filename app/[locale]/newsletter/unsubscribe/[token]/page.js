@@ -12,18 +12,19 @@ export default function NewsletterUnsubscribePage() {
   useEffect(() => {
     const unsubscribe = async () => {
       try {
-        const response = await apiConfig.get(`/api/newsletter/unsubscribe/${params.token}`);
+        const response = await fetch(`${API_BASE_URL}/api/newsletter/unsubscribe/${params.token}`, { next: { revalidate: 60 } });
+        const data = await response.json();
         
-        if (response.data.success) {
+        if (data.success) {
           setStatus('success');
-          setMessage(response.data.message);
+          setMessage(data.message);
         } else {
           setStatus('error');
-          setMessage(response.data.message || 'Unsubscribe failed');
+          setMessage(data.message || 'Unsubscribe failed');
         }
       } catch (error) {
         setStatus('error');
-        setMessage(error.response?.data?.message || 'Unsubscribe failed');
+        setMessage('Unsubscribe failed');
       }
     };
 
