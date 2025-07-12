@@ -86,7 +86,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
+                <Link href={`/${locale}/contact`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {t('navigation.contact')}
                 </Link>
               </li>
@@ -136,10 +136,10 @@ export default function Footer() {
               <Link href={`/${locale}/affiliate-disclaimer`} className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                 {locale === 'bn' ? 'ডিসক্লেইমার' : 'Disclaimer'}
               </Link>
-              <Link href="#" className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
+              <Link href={`/${locale}/terms`} className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                 {t('footer.termsOfService')}
               </Link>
-              <Link href="#" className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
+              <Link href={`/${locale}/contact`} className={`text-gray-400 hover:text-white text-xs sm:text-sm transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                 {t('footer.contactUs')}
               </Link>
             </div>

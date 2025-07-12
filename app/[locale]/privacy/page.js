@@ -14,8 +14,8 @@ export default async function PrivacyPage({ params }) {
           <div className="prose prose-lg max-w-none">
             <p className="text-gray-600 mb-6">
               {params.locale === 'bn' 
-                ? 'সর্বশেষ আপডেট: ডিসেম্বর ২০২৪' 
-                : 'Last updated: December 2024'
+                ? 'সর্বশেষ আপডেট: জুলাই ২০২৫' 
+                : 'Last updated: July 2025'
               }
             </p>
 
@@ -230,8 +230,8 @@ export default async function PrivacyPage({ params }) {
               <ul className="list-none pl-6 mb-4 text-gray-700">
                 <li className="mb-2">
                   {params.locale === 'bn' 
-                    ? 'ইমেইল: privacy@newsandniche.com' 
-                    : 'Email: privacy@newsandniche.com'
+                    ? 'ইমেইল: contact@newsandniche.com' 
+                    : 'Email: contact@newsandniche.com'
                   }
                 </li>
                 <li className="mb-2">

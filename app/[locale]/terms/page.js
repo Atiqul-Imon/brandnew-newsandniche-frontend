@@ -218,8 +218,8 @@ export default async function TermsPage({ params }) {
               <ul className="list-none pl-6 mb-4 text-gray-700">
                 <li className="mb-2">
                   {params.locale === 'bn' 
-                    ? 'ইমেইল: legal@newsandniche.com' 
-                    : 'Email: legal@newsandniche.com'
+                    ? 'ইমেইল: hello@newsandniche.com' 
+                    : 'Email: hello@newsandniche.com'
                   }
                 </li>
                 <li className="mb-2">
