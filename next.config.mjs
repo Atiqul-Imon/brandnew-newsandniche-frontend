@@ -14,9 +14,9 @@ const nextConfig = {
   //   },
   // },
   // Optimize for Render deployment
-  output: 'standalone',
+  // output: 'standalone',
   // Server external packages
-  serverExternalPackages: ['mongoose'],
+  // serverExternalPackages: ['mongoose'],
   // Image optimization
   images: {
     domains: ['res.cloudinary.com'],
