@@ -108,8 +108,8 @@ export const optimizeImage = (src, width = 800, quality = 80) => {
   return src;
 };
 
-// Lazy loading helper
-export const lazyLoad = (importFn, fallback = null) => {
+// Lazy loading hook
+export const useLazyLoad = (importFn, fallback = null) => {
   const [Component, setComponent] = useState(fallback);
   const [loading, setLoading] = useState(true);
   

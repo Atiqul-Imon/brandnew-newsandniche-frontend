@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import apiConfig from '../../../../apiConfig';
+import { api as apiConfig } from '../../../../apiConfig';
 
 export default function NewsletterConfirmPage() {
   const params = useParams();
