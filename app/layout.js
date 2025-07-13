@@ -63,6 +63,7 @@ export default async function RootLayout({ children, params: { locale } }) {
   return (
     <html lang={locale} className={inter.variable}>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="p:domain_verify" content="efa336b9affe63aba06824d9519a2815" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
