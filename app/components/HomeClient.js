@@ -111,25 +111,6 @@ export default function HomeClient({
                       />
                     </div>
                     <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
-                      <div className={`flex items-center text-sm text-gray-500 mb-3 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
-                        <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                          <span
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              window.location.href = `/${locale}/blogs?category=${encodeURIComponent(featuredBlogs[0].category[locale] || '')}`;
-                            }}
-                            className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
-                            aria-label={`View all posts in ${featuredBlogs[0].category[locale]}`}
-                          >
-                            {featuredBlogs[0].category[locale]}
-                          </span>
-                        </span>
-                        <span className="mx-2">•</span>
-                        <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{featuredBlogs[0].readTime[locale]} {t('blog.minRead')}</span>
-                        <span className="mx-2">•</span>
-                        <span className={locale === 'bn' ? 'bangla-date' : ''}>{new Date(featuredBlogs[0].publishedAt).toLocaleDateString(locale)}</span>
-                      </div>
                       <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{featuredBlogs[0].title[locale]}</h2>
                       <p className={`text-gray-700 mb-4 line-clamp-4 text-lg ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{featuredBlogs[0].excerpt[locale]}</p>
                     </div>
@@ -156,25 +137,6 @@ export default function HomeClient({
                       />
                     </div>
                     <div className="p-5 sm:p-6 flex flex-col flex-1">
-                      <div className={`flex items-center text-sm text-gray-500 mb-3 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
-                        <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                          <span
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              window.location.href = `/${locale}/blogs?category=${encodeURIComponent(blog.category[locale] || '')}`;
-                            }}
-                            className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
-                            aria-label={`View all posts in ${blog.category[locale]}`}
-                          >
-                            {blog.category[locale]}
-                          </span>
-                        </span>
-                        <span className="mx-2">•</span>
-                        <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime[locale]} {t('blog.minRead')}</span>
-                        <span className="mx-2">•</span>
-                        <span className={locale === 'bn' ? 'bangla-date' : ''}>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
-                      </div>
                       <h3 className={`text-xl sm:text-2xl font-semibold text-gray-900 mb-3 line-clamp-3 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{blog.title[locale]}</h3>
                       <p className={`text-gray-700 mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{blog.excerpt[locale]}</p>
                     </div>
@@ -215,25 +177,6 @@ export default function HomeClient({
                       />
                     </div>
                     <div className="p-4 sm:p-6 flex flex-col flex-1">
-                      <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
-                        <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                          <span
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              window.location.href = `/${locale}/blogs?category=${encodeURIComponent(blog.category[locale] || '')}`;
-                            }}
-                            className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
-                            aria-label={`View all posts in ${blog.category[locale]}`}
-                          >
-                            {blog.category[locale]}
-                          </span>
-                        </span>
-                        <span className="mx-2">•</span>
-                        <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime[locale]} {t('blog.minRead')}</span>
-                        <span className="mx-2">•</span>
-                        <span className={locale === 'bn' ? 'bangla-date' : ''}>{new Date(blog.publishedAt).toLocaleDateString(locale)}</span>
-                      </div>
                       <h3 className={`text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>{blog.title[locale]}</h3>
                       <p className={`text-gray-700 mb-3 sm:mb-4 line-clamp-3 ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>{blog.excerpt[locale]}</p>
                     </div>
