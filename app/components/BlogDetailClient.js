@@ -483,7 +483,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
         {/* Featured Image */}
         {blog.featuredImage && (
           <div className="mb-12">
-            <div className="relative w-full h-[220px] sm:h-[400px] lg:h-[600px] bg-gray-100 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative w-full h-[220px] sm:h-[350px] md:h-[500px] lg:h-[600px] bg-gray-100 rounded-2xl overflow-hidden shadow-2xl">
               <Image
                 src={blog.featuredImage}
                 alt={blog.title?.[locale]}
