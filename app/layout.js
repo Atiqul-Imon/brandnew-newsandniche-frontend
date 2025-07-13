@@ -76,6 +76,11 @@ export default async function RootLayout({ children, params: { locale } }) {
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg?v=3" />
         <link rel="shortcut icon" href="/favicon.svg?v=3" />
         <link rel="image_src" href="/newsandnichefinallogo.png" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7209812885487533"
+          crossOrigin="anonymous"
+        ></script>
       </head>
       <body className={`${inter.className} antialiased`}>
         <AuthProvider>
