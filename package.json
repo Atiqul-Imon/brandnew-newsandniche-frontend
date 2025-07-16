@@ -4,9 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NODE_OPTIONS='--max-old-space-size=512' next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:optimized": "NODE_OPTIONS='--max-old-space-size=512 --optimize-for-size' next build",
+    "start:optimized": "NODE_OPTIONS='--max-old-space-size=512' next start",
+    "analyze": "ANALYZE=true npm run build",
+    "memory-check": "NODE_OPTIONS='--max-old-space-size=512 --trace-gc' npm run build"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

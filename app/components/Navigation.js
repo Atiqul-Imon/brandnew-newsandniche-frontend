@@ -59,6 +59,7 @@ export default function Navigation({ locale, categories = [] }) {
               >
                 {locale === 'bn' ? 'পর্যালোচনা' : 'Reviews'}
               </Link>
+
               {user && (user.role === 'admin' || user.role === 'moderator' || user.role === 'editor') && (
                 <Link
                   href={`/${locale}/admin/blogs`}
@@ -152,6 +153,7 @@ export default function Navigation({ locale, categories = [] }) {
               >
                 {locale === 'bn' ? 'পর্যালোচনা' : 'Reviews'}
               </Link>
+
               {user && (user.role === 'admin' || user.role === 'moderator' || user.role === 'editor') && (
                 <Link
                   href={`/${locale}/admin/blogs`}

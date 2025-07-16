@@ -21,6 +21,10 @@ const nextConfig = {
   images: {
     domains: ['res.cloudinary.com'],
     formats: ['image/webp', 'image/avif'],
+    // Memory optimization for images
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
   },
   // Security headers
   async headers() {
@@ -94,6 +98,12 @@ const nextConfig = {
   experimental: {
     // Optimize bundle size
     optimizePackageImports: ['@mui/material', '@mui/icons-material'],
+    // Memory optimization
+    memoryBasedWorkers: true,
+    // Reduce memory usage
+    workerThreads: false,
+    // Optimize server components
+    serverComponentsExternalPackages: [],
   },
   // Compiler optimization
   compiler: {
@@ -122,17 +132,41 @@ const nextConfig = {
             },
           },
         },
+        // Memory optimization
+        moduleIds: 'deterministic',
+        chunkIds: 'deterministic',
       };
     }
+    
+    // Memory optimization for development
+    if (dev) {
+      config.watchOptions = {
+        poll: 1000,
+        aggregateTimeout: 300,
+        ignored: ['**/node_modules', '**/.git', '**/.next'],
+      };
+    }
+    
     return config;
   },
-  // Memory limits
+  // Memory limits - Reduced for Render's 512MB limit
   onDemandEntries: {
     // Period (in ms) where the server will keep pages in the buffer
-    maxInactiveAge: 25 * 1000,
+    maxInactiveAge: 15 * 1000, // Reduced from 25s to 15s
     // Number of pages that should be kept simultaneously without being disposed
-    pagesBufferLength: 2,
+    pagesBufferLength: 1, // Reduced from 2 to 1
   },
+  // Memory optimization for static generation
+  generateEtags: false,
+  // Reduce memory usage in development
+  ...(process.env.NODE_ENV === 'development' && {
+    typescript: {
+      ignoreBuildErrors: true,
+    },
+    eslint: {
+      ignoreDuringBuilds: true,
+    },
+  }),
 };
 
 export default withNextIntl(nextConfig);

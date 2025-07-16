@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function AnalyticsDebug() {
   const [debugInfo, setDebugInfo] = useState({
@@ -8,9 +8,15 @@ export default function AnalyticsDebug() {
     consent: null,
     scriptLoaded: false
   });
+  const timeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
+    isMountedRef.current = true;
+    
     const checkAnalytics = () => {
+      if (!isMountedRef.current) return;
+      
       const gaId = process.env.NEXT_PUBLIC_GA_ID;
       const gtagAvailable = typeof window !== 'undefined' && !!window.gtag;
       const scriptLoaded = typeof window !== 'undefined' && !!document.querySelector('script[src*="googletagmanager.com"]');
@@ -24,25 +30,35 @@ export default function AnalyticsDebug() {
         console.error('Error reading consent:', error);
       }
 
-      setDebugInfo({
-        gaId,
-        gtagAvailable,
-        consent,
-        scriptLoaded
-      });
+      if (isMountedRef.current) {
+        setDebugInfo({
+          gaId,
+          gtagAvailable,
+          consent,
+          scriptLoaded
+        });
 
-      console.log('Analytics Debug Info:', {
-        gaId,
-        gtagAvailable,
-        consent,
-        scriptLoaded
-      });
+        console.log('Analytics Debug Info:', {
+          gaId,
+          gtagAvailable,
+          consent,
+          scriptLoaded
+        });
+      }
     };
 
     checkAnalytics();
     
-    // Check again after a delay
-    setTimeout(checkAnalytics, 2000);
+    // Check again after a delay only once
+    timeoutRef.current = setTimeout(checkAnalytics, 2000);
+
+    // Cleanup function
+    return () => {
+      isMountedRef.current = false;
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   // Only show in development

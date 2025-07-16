@@ -89,6 +89,7 @@ export default function HomeClient({
       <WebSiteSchema />
       
       <main className="min-h-screen bg-gray-100" aria-label="Main content">
+        
         {/* --- Featured Blogs Section (Industry Standard) --- */}
         {featuredBlogs.length > 0 && (
           <section className="py-8 sm:py-12" aria-label="Featured blogs">

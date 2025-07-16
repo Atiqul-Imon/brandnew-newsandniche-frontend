@@ -1,17 +1,18 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { hasConsent } from '../utils/cookies';
 
 export default function GoogleAnalytics() {
   const [isInitialized, setIsInitialized] = useState(false);
+  const scriptRef = useRef(null);
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
-    let isMounted = true;
-    let storageListener = null;
-
+    isMountedRef.current = true;
+    
     const initializeGA = () => {
       // Check if component is still mounted
-      if (!isMounted) return;
+      if (!isMountedRef.current) return;
 
       // Check if analytics consent is given
       const consent = hasConsent('analytics');
@@ -19,7 +20,7 @@ export default function GoogleAnalytics() {
       
       if (!consent) {
         console.log('Google Analytics disabled - no consent');
-        if (isMounted) setIsInitialized(false);
+        if (isMountedRef.current) setIsInitialized(false);
         return;
       }
 
@@ -35,19 +36,20 @@ export default function GoogleAnalytics() {
         return;
       }
 
-      // Check if script already exists
+      // Check if script already exists globally
       const existingScript = document.querySelector(`script[src*="googletagmanager.com"]`);
       if (existingScript) {
         console.log('Google Analytics script already loaded');
-        if (isMounted) setIsInitialized(true);
+        if (isMountedRef.current) setIsInitialized(true);
         return;
       }
 
       // Load Google Analytics script
-      const script1 = document.createElement('script');
-      script1.async = true;
-      script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`;
-      document.head.appendChild(script1);
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`;
+      scriptRef.current = script;
+      document.head.appendChild(script);
 
       // Initialize gtag
       window.dataLayer = window.dataLayer || [];
@@ -63,11 +65,11 @@ export default function GoogleAnalytics() {
       });
 
       console.log('Google Analytics initialized with ID:', GA_TRACKING_ID);
-      if (isMounted) setIsInitialized(true);
+      if (isMountedRef.current) setIsInitialized(true);
       
       // Send a test event to verify it's working
-      setTimeout(() => {
-        if (window.gtag && isMounted) {
+      const testEventTimeout = setTimeout(() => {
+        if (window.gtag && isMountedRef.current) {
           window.gtag('event', 'analytics_initialized', {
             event_category: 'system',
             event_label: 'GA4 Setup Complete'
@@ -75,6 +77,9 @@ export default function GoogleAnalytics() {
           console.log('Test event sent to Google Analytics');
         }
       }, 1000);
+
+      // Store timeout for cleanup
+      scriptRef.current.testEventTimeout = testEventTimeout;
     };
 
     // Initialize on mount
@@ -82,20 +87,27 @@ export default function GoogleAnalytics() {
 
     // Listen for storage changes (cookie consent updates)
     const handleStorageChange = (e) => {
-      if (e.key === 'cookieConsent' && isMounted) {
+      if (e.key === 'cookieConsent' && isMountedRef.current) {
         initializeGA();
       }
     };
 
-    storageListener = handleStorageChange;
-    window.addEventListener('storage', storageListener);
+    window.addEventListener('storage', handleStorageChange);
 
     // Cleanup function
     return () => {
-      isMounted = false;
-      if (storageListener) {
-        window.removeEventListener('storage', storageListener);
+      isMountedRef.current = false;
+      
+      // Clear test event timeout
+      if (scriptRef.current?.testEventTimeout) {
+        clearTimeout(scriptRef.current.testEventTimeout);
       }
+      
+      // Remove storage event listener
+      window.removeEventListener('storage', handleStorageChange);
+      
+      // Note: We don't remove the GA script as it might be used by other components
+      // The script will be cleaned up when the page unloads
     };
   }, [isInitialized]);
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { api } from '../apiConfig';
 
 const AuthContext = createContext();
@@ -17,31 +17,61 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const abortControllerRef = useRef(null);
+  const isMountedRef = useRef(true);
 
   // Check if user is authenticated on mount
   useEffect(() => {
+    isMountedRef.current = true;
     checkAuth();
+    
+    return () => {
+      isMountedRef.current = false;
+      // Abort any ongoing API calls
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
   }, []);
 
   const checkAuth = async () => {
     try {
+      // Abort previous request if it exists
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      
+      // Create new abort controller
+      abortControllerRef.current = new AbortController();
+      
       const token = localStorage.getItem('token');
       if (!token) {
-        setLoading(false);
+        if (isMountedRef.current) {
+          setLoading(false);
+        }
         return;
       }
 
-      const response = await api.get('/api/users/profile');
-      setUser(response.data.data.user);
+      const response = await api.get('/api/users/profile', {
+        signal: abortControllerRef.current.signal
+      });
+      
+      if (isMountedRef.current) {
+        setUser(response.data.data.user);
+      }
     } catch (error) {
-      console.error('Auth check failed:', error);
-      // Only remove token if unauthorized
-      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        localStorage.removeItem('token');
-        setUser(null);
+      if (isMountedRef.current) {
+        console.error('Auth check failed:', error);
+        // Only remove token if unauthorized
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          localStorage.removeItem('token');
+          setUser(null);
+        }
       }
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 
@@ -52,12 +82,16 @@ export const AuthProvider = ({ children }) => {
       const { token, user } = response.data.data;
       
       localStorage.setItem('token', token);
-      setUser(user);
+      if (isMountedRef.current) {
+        setUser(user);
+      }
       
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || 'Login failed';
-      setError(message);
+      if (isMountedRef.current) {
+        setError(message);
+      }
       return { success: false, error: message };
     }
   };
@@ -69,31 +103,41 @@ export const AuthProvider = ({ children }) => {
       const { token, user } = response.data.data;
       
       localStorage.setItem('token', token);
-      setUser(user);
+      if (isMountedRef.current) {
+        setUser(user);
+      }
       
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || 'Registration failed';
-      setError(message);
+      if (isMountedRef.current) {
+        setError(message);
+      }
       return { success: false, error: message };
     }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
-    setUser(null);
-    setError(null);
+    if (isMountedRef.current) {
+      setUser(null);
+      setError(null);
+    }
   };
 
   const updateProfile = async (profileData) => {
     try {
       setError(null);
       const response = await api.put('/api/users/profile', profileData);
-      setUser(response.data.data.user);
+      if (isMountedRef.current) {
+        setUser(response.data.data.user);
+      }
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || 'Profile update failed';
-      setError(message);
+      if (isMountedRef.current) {
+        setError(message);
+      }
       return { success: false, error: message };
     }
   };
@@ -101,11 +145,13 @@ export const AuthProvider = ({ children }) => {
   const changePassword = async (passwordData) => {
     try {
       setError(null);
-      const response = await api.put('/api/users/change-password', passwordData);
+      await api.put('/api/users/change-password', passwordData);
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || 'Password change failed';
-      setError(message);
+      if (isMountedRef.current) {
+        setError(message);
+      }
       return { success: false, error: message };
     }
   };
@@ -113,11 +159,13 @@ export const AuthProvider = ({ children }) => {
   const forgotPassword = async (email) => {
     try {
       setError(null);
-      const response = await api.post('/api/users/forgot-password', { email });
+      await api.post('/api/users/forgot-password', { email });
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || 'Forgot password request failed';
-      setError(message);
+      if (isMountedRef.current) {
+        setError(message);
+      }
       return { success: false, error: message };
     }
   };
@@ -125,11 +173,13 @@ export const AuthProvider = ({ children }) => {
   const resetPassword = async (resetData) => {
     try {
       setError(null);
-      const response = await api.post('/api/users/reset-password', resetData);
+      await api.post('/api/users/reset-password', resetData);
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.message || 'Password reset failed';
-      setError(message);
+      if (isMountedRef.current) {
+        setError(message);
+      }
       return { success: false, error: message };
     }
   };
