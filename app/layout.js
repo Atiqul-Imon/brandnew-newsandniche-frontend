@@ -6,7 +6,6 @@ import { getMessages } from 'next-intl/server';
 import CookieConsent from './components/CookieConsent';
 import GoogleAnalytics from './components/GoogleAnalytics';
 import AnalyticsDebug from './components/AnalyticsDebug';
-import MemoryMonitor from './components/MemoryMonitor';
 import { NewsletterFloatingButton } from './components/NewsletterSignup';
 
 const inter = Inter({ 
@@ -89,7 +88,6 @@ export default async function RootLayout({ children, params: { locale } }) {
           <NextIntlClientProvider locale={locale} messages={messages}>
             <GoogleAnalytics />
             <AnalyticsDebug />
-            <MemoryMonitor />
             {children}
             <CookieConsent locale={locale} />
             {/* NewsletterFloatingButton temporarily disabled */}

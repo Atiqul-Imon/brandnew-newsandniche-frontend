@@ -521,7 +521,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
 
           {/* Title - Business Insider Style */}
           <div 
-            className="blog-title text-5xl lg:text-6xl font-black text-gray-900 mb-8 leading-tight tracking-tight max-w-none"
+            className="blog-title text-5xl lg:text-6xl font-black text-gray-900 leading-tight tracking-tight max-w-none mb-10"
             style={{
               fontSize: 'clamp(2rem, 7vw, 2.5rem)',
               fontWeight: 900,

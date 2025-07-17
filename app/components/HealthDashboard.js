@@ -92,9 +92,9 @@ export default function HealthDashboard() {
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">System Health Dashboard</h1>
           <div className="flex items-center justify-between">
-            <p className="text-gray-600">
-              Monitor your application's performance and resource usage
-            </p>
+            <div className="text-sm text-gray-600">
+              <p>Server&apos;s health status and performance metrics</p>
+            </div>
             <div className="flex items-center space-x-4">
               {lastUpdated && (
                 <span className="text-sm text-gray-500">

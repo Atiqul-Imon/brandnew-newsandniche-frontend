@@ -64,12 +64,12 @@ export default function HomeClient({
               {/* Removed 'View All →' link */}
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
-              {/* Main Featured Blog */}
-              <div className="lg:col-span-1">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              {/* Main Featured Blog - Takes 6/12 of the space */}
+              <div className="lg:col-span-6">
                 <Link href={`/${locale}/blogs/${getSlug(featuredBlogs[0])}`} className="group block h-full">
                   <div className="bg-white rounded-lg shadow-md overflow-hidden h-full hover:-translate-y-0.5 transition-transform duration-200 ease-in-out">
-                    <div className="relative h-64 sm:h-80 lg:h-110">
+                    <div className="relative h-72 sm:h-80 lg:h-[440px]">
                       <Image
                         src={featuredBlogs[0]?.featuredImage || '/placeholder.jpg'}
                         alt={featuredBlogs[0]?.title?.en || 'Featured Blog'}
@@ -78,7 +78,7 @@ export default function HomeClient({
                       />
                     </div>
                     <div className="p-4 sm:p-6">
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                         {featuredBlogs[0]?.title?.en || 'Featured Blog Title'}
                       </h3>
                       <p className="text-gray-600 line-clamp-3 text-sm sm:text-base">
@@ -89,13 +89,13 @@ export default function HomeClient({
                 </Link>
               </div>
 
-              {/* Secondary Featured Blogs */}
-              <div className="lg:col-span-1">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 h-full">
+              {/* Secondary Featured Blogs - Takes 6/12 of the space */}
+              <div className="lg:col-span-6">
+                <div className="grid grid-cols-2 gap-3 h-full">
                   {featuredBlogs.slice(1, 5).map((blog, index) => (
-                    <Link key={blog._id || index} href={`/${locale}/blogs/${getSlug(blog)}`} className="group block h-full">
-                      <div className="bg-white rounded-lg shadow-md overflow-hidden h-full hover:-translate-y-0.5 transition-transform duration-200 ease-in-out">
-                        <div className="relative h-64 sm:h-40">
+                    <Link key={blog._id || index} href={`/${locale}/blogs/${getSlug(blog)}`} className="group block">
+                      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:-translate-y-0.5 transition-transform duration-200 ease-in-out h-full">
+                        <div className="relative h-36 sm:h-40 lg:h-44">
                           <Image
                             src={blog.featuredImage || '/placeholder.jpg'}
                             alt={blog.title?.en || 'Blog Post'}
@@ -107,7 +107,7 @@ export default function HomeClient({
                           <h4 className="font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors line-clamp-2 text-sm sm:text-base">
                             {blog.title?.en || 'Blog Title'}
                           </h4>
-                          <p className="text-sm text-gray-600 line-clamp-2">
+                          <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
                             {blog.excerpt?.en || 'Blog excerpt...'}
                           </p>
                         </div>
