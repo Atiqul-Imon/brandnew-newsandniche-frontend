@@ -528,7 +528,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
               lineHeight: 1.1,
               letterSpacing: '0.02em',
               color: '#111827',
-              marginBottom: '1.5rem',
+              marginBottom: '2.5rem',
               maxWidth: 'none',
               textAlign: 'left'
             }}
