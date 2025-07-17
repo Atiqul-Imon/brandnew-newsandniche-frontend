@@ -1,7 +1,6 @@
 // SERVER COMPONENT: Fetches initial blog list on the server for SSR and SEO
 import BlogListClient from '../../components/BlogListClient';
 import { API_BASE_URL } from '../../apiConfig';
-import CategoryNavigation from '../../components/CategoryNavigation';
 
 export default async function BlogsPage(props) {
   const params = await props.params;
@@ -79,19 +78,15 @@ export default async function BlogsPage(props) {
   };
 
   return (
-    <>
-      {/* Explore Categories Bar */}
-      <CategoryNavigation locale={locale} categories={categories} />
-      <BlogListClient 
-        locale={locale}
-        initialBlogs={initialBlogs}
-        initialCategories={categories}
-        initialParams={initialParams}
-        total={total}
-        hasMore={hasMore}
-        error={error}
-      />
-    </>
+    <BlogListClient 
+      locale={locale}
+      initialBlogs={initialBlogs}
+      initialCategories={categories}
+      initialParams={initialParams}
+      total={total}
+      hasMore={hasMore}
+      error={error}
+    />
   );
 }
 

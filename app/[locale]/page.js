@@ -5,35 +5,34 @@ import { API_BASE_URL } from '../apiConfig';
 export default async function HomePage({ params }) {
   const { locale } = await params;
 
-  let featuredBlogs = [];
-  let recentBlogs = [];
-  let categories = [];
+  let homepageData = {
+    featured: [],
+    recent: [],
+    popular: []
+  };
   let error = null;
 
   try {
-    // Fetch featured blogs (increased limit to 7 to match client expectations)
-    const featuredRes = await fetch(`${API_BASE_URL}/api/blogs?lang=${locale}&status=published&featured=true&limit=7`, { next: { revalidate: 60 } });
-    const featuredData = await featuredRes.json();
-    featuredBlogs = featuredData.data?.blogs || [];
-
-    // Fetch recent blogs (increased limit to 9 to match client expectations)
-    const recentRes = await fetch(`${API_BASE_URL}/api/blogs?lang=${locale}&status=published&limit=9`, { next: { revalidate: 60 } });
-    const recentData = await recentRes.json();
-    recentBlogs = recentData.data?.blogs || [];
-
-    // Fetch categories
-    const categoriesRes = await fetch(`${API_BASE_URL}/api/categories?lang=${locale}`, { next: { revalidate: 60 } });
-    const categoriesData = await categoriesRes.json();
-    categories = categoriesData.data?.categories || [];
+    // Fetch consolidated homepage data
+    const homepageRes = await fetch(`${API_BASE_URL}/api/blogs/${locale}/homepage?featuredLimit=6&recentLimit=9&popularLimit=6`, { 
+      next: { revalidate: 60 } 
+    });
+    const homepageResponse = await homepageRes.json();
+    
+    if (homepageResponse.success) {
+      homepageData = homepageResponse.data;
+    } else {
+      error = 'Failed to load homepage data.';
+    }
   } catch (err) {
     error = err.message || 'Failed to load homepage data.';
   }
 
   return (
     <HomeClient
-      featuredBlogs={featuredBlogs}
-      recentBlogs={recentBlogs}
-      categories={categories}
+      featuredBlogs={homepageData.featured || []}
+      recentBlogs={homepageData.recent || []}
+      popularBlogs={homepageData.popular || []}
       error={error}
       locale={locale}
     />

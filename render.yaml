@@ -1,29 +1,37 @@
 services:
   - type: web
-    name: newsandniche-frontend
+    name: newsblog-frontend
     env: node
+    plan: starter
     buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
-      - key: NEXT_PUBLIC_API_BASE_URL
-        sync: false
-      - key: NEXT_PUBLIC_GA_ID
-        sync: false
       - key: NODE_OPTIONS
-        value: "--max-old-space-size=512"
-      - key: NEXT_PUBLIC_ADSENSE_ID
+        value: --max-old-space-size=512
+      - key: NEXT_TELEMETRY_DISABLED
+        value: 1
+      - key: NEXT_SHARP_PATH
+        value: /tmp/node_modules/sharp
+      - key: NEXT_IMAGE_DOMAINS
+        value: res.cloudinary.com
+      - key: API_BASE_URL
         sync: false
-      - key: NEXT_PUBLIC_SITE_URL
-        value: "https://newsandniche.com"
-      - key: NEXT_PUBLIC_APP_ENV
-        value: "production"
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
     healthCheckPath: /
     autoDeploy: true
-    # Memory optimization settings
-    plan: starter
-    # Resource limits
-    resources:
-      cpu: 0.5
-      memory: 512MB 
+    scaling:
+      minInstances: 1
+      maxInstances: 3
+      targetConcurrency: 10
+      targetMemoryUtilizationPercent: 80 

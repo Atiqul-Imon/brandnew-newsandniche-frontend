@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 
 export function middleware(request) {
   const { pathname } = request.nextUrl;
+  
   // Redirect /blogs/en or /blogs/bn to /en/blogs
   const match = pathname.match(/^\/blogs\/(en|bn)(\/.*)?$/);
   if (match) {
@@ -10,6 +11,7 @@ export function middleware(request) {
     const rest = match[2] || '';
     return NextResponse.redirect(new URL(`/${locale}/blogs${rest}`, request.url));
   }
+  
   // Use next-intl middleware for locale handling
   return createMiddleware({
     locales: ['en', 'bn'],

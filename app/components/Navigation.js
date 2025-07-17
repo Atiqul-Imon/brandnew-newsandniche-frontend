@@ -61,12 +61,20 @@ export default function Navigation({ locale, categories = [] }) {
               </Link>
 
               {user && (user.role === 'admin' || user.role === 'moderator' || user.role === 'editor') && (
-                <Link
-                  href={`/${locale}/admin/blogs`}
-                  className={`text-gray-700 hover:text-gray-900 px-2 sm:px-3 py-2 transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav text-lg sm:text-xl font-semibold bangla-nav-link' : 'text-sm font-medium'}`}
-                >
-                  {t('admin.dashboard')}
-                </Link>
+                <>
+                  <Link
+                    href={`/${locale}/mui-admin`}
+                    className={`text-gray-700 hover:text-gray-900 px-2 sm:px-3 py-2 transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav text-lg sm:text-xl font-semibold bangla-nav-link' : 'text-sm font-medium'}`}
+                  >
+                    {t('admin.dashboard')}
+                  </Link>
+                  <Link
+                    href={`/${locale}/health-dashboard`}
+                    className={`text-gray-700 hover:text-gray-900 px-2 sm:px-3 py-2 transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav text-lg sm:text-xl font-semibold bangla-nav-link' : 'text-sm font-medium'}`}
+                  >
+                    Health Monitor
+                  </Link>
+                </>
               )}
             </div>
           </div>
@@ -155,13 +163,22 @@ export default function Navigation({ locale, categories = [] }) {
               </Link>
 
               {user && (user.role === 'admin' || user.role === 'moderator' || user.role === 'editor') && (
-                <Link
-                  href={`/${locale}/admin/blogs`}
-                  className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-sm sm:text-base font-medium rounded transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav text-base sm:text-lg font-semibold bangla-nav-link' : ''}`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {t('admin.dashboard')}
-                </Link>
+                <>
+                  <Link
+                    href={`/${locale}/mui-admin`}
+                    className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-sm sm:text-base font-medium rounded transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav text-base sm:text-lg font-semibold bangla-nav-link' : ''}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {t('admin.dashboard')}
+                  </Link>
+                  <Link
+                    href={`/${locale}/health-dashboard`}
+                    className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-sm sm:text-base font-medium rounded transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav text-base sm:text-lg font-semibold bangla-nav-link' : ''}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Health Monitor
+                  </Link>
+                </>
               )}
               <div className="border-t border-gray-200 my-2" />
               {user ? (

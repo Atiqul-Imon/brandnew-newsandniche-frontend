@@ -164,7 +164,7 @@ export default function MuiAdminDashboard({ params }) {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box>
-                  <Typography color="textSecondary" gutterBottom>
+                  <Typography color="textSecondary" gutterBottom component="div">
                     {t.totalBlogs}
                   </Typography>
                   <Typography variant="h4" component="div">
@@ -184,7 +184,7 @@ export default function MuiAdminDashboard({ params }) {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box>
-                  <Typography color="textSecondary" gutterBottom>
+                  <Typography color="textSecondary" gutterBottom component="div">
                     {t.totalCategories}
                   </Typography>
                   <Typography variant="h4" component="div">
@@ -204,7 +204,7 @@ export default function MuiAdminDashboard({ params }) {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box>
-                  <Typography color="textSecondary" gutterBottom>
+                  <Typography color="textSecondary" gutterBottom component="div">
                     {t.totalUsers}
                   </Typography>
                   <Typography variant="h4" component="div">
@@ -224,7 +224,7 @@ export default function MuiAdminDashboard({ params }) {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Box>
-                  <Typography color="textSecondary" gutterBottom>
+                  <Typography color="textSecondary" gutterBottom component="div">
                     {t.totalViews}
                   </Typography>
                   <Typography variant="h4" component="div">
@@ -260,7 +260,7 @@ export default function MuiAdminDashboard({ params }) {
                           color={getStatusColor(blog.status)}
                           size="small"
                         />
-                        <Typography variant="caption" color="textSecondary">
+                        <Typography variant="caption" color="textSecondary" component="div">
                           {blog.views || 0} {t.views}
                         </Typography>
                       </Box>
@@ -274,14 +274,15 @@ export default function MuiAdminDashboard({ params }) {
                     <ListItemText
                       primary={blog.title[locale] || blog.title.en}
                       secondary={
-                        <Box>
-                          <Typography variant="body2" color="textSecondary">
+                        <React.Fragment>
+                          <Typography variant="body2" color="textSecondary" component="span">
                             {blog.category[locale] || blog.category.en}
                           </Typography>
-                          <Typography variant="caption" color="textSecondary">
+                          <br />
+                          <Typography variant="caption" color="textSecondary" component="span">
                             {new Date(blog.publishedAt).toLocaleDateString(locale)}
                           </Typography>
-                        </Box>
+                        </React.Fragment>
                       }
                     />
                   </ListItem>
@@ -301,7 +302,7 @@ export default function MuiAdminDashboard({ params }) {
               {locale === 'en' ? 'Quick Actions' : 'দ্রুত অ্যাকশন'}
             </Typography>
             <List>
-              <ListItem button>
+              <ListItem>
                 <ListItemAvatar>
                   <Avatar sx={{ bgcolor: 'primary.main' }}>
                     <ArticleIcon />
@@ -311,7 +312,7 @@ export default function MuiAdminDashboard({ params }) {
                   primary={locale === 'en' ? 'Create New Blog' : 'নতুন ব্লগ তৈরি করুন'}
                 />
               </ListItem>
-              <ListItem button>
+              <ListItem>
                 <ListItemAvatar>
                   <Avatar sx={{ bgcolor: 'secondary.main' }}>
                     <CategoryIcon />
@@ -321,7 +322,7 @@ export default function MuiAdminDashboard({ params }) {
                   primary={locale === 'en' ? 'Add Category' : 'বিভাগ যোগ করুন'}
                 />
               </ListItem>
-              <ListItem button>
+              <ListItem>
                 <ListItemAvatar>
                   <Avatar sx={{ bgcolor: 'success.main' }}>
                     <PeopleIcon />

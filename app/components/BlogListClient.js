@@ -20,7 +20,7 @@ export default function BlogListClient(props) {
   const initialHasMore = props.hasMore || false;
   const initialError = props.error || null;
   const locale = props.locale || (typeof initialParams === 'object' && initialParams.locale) || 'en';
-  const hideCategoryFilter = props.hideCategoryFilter || false;
+  const hideCategoryFilter = props.hideCategoryFilter !== undefined ? props.hideCategoryFilter : true;
 
   // State
   const [blogs, setBlogs] = useState(initialBlogs);
@@ -125,12 +125,17 @@ export default function BlogListClient(props) {
         setHasMore(res.data.data.hasMore);
         setTotalBlogs(res.data.data.total);
         setCurrentPage(nextPage);
+        
+        // Update URL with new page number
+        const newParams = new URLSearchParams(searchParams.toString());
+        newParams.set('page', nextPage.toString());
+        router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
       })
       .catch(err => {
         setError(err.response?.data?.message || t("errors.serverError") || "Failed to load blogs");
       })
       .finally(() => setLoading(false));
-  }, [currentPage, search, category, status, sortBy, sortOrder, locale, limit, t]);
+  }, [currentPage, search, category, status, sortBy, sortOrder, locale, limit, t, searchParams, pathname, router]);
 
   // UI
   if (loading && blogs.length === 0) {
@@ -182,37 +187,6 @@ export default function BlogListClient(props) {
             {t("blog.discoverStories")}
           </p>
         </div>
-
-        {/* Category Filter Bar */}
-        {!hideCategoryFilter && (
-          <div className="mb-6 sm:mb-8 flex flex-wrap gap-2 justify-center">
-            <button
-              className={`px-4 py-2 rounded-full border transition-colors duration-200 ${!category ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
-              onClick={() => {
-                router.push(pathname);
-              }}
-            >
-              {t("category.all")}
-            </button>
-            {categoriesLoading && initialCategories.length === 0 ? (
-              <div className={`px-4 py-2 text-gray-500 ${locale === 'bn' ? 'font-bangla-ui bangla-loading' : ''}`}>Loading categories...</div>
-            ) : (
-              categories.map(cat => (
-                <button
-                  key={cat._id || cat.name}
-                  className={`px-4 py-2 rounded-full border transition-colors duration-200 ${category === cat.slug ? "bg-gray-900 text-gray-100" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"} ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}
-                  onClick={() => {
-                    const params = new URLSearchParams(searchParams.toString());
-                    params.set("category", cat.slug);
-                    router.push(`${pathname}?${params.toString()}`);
-                  }}
-                >
-                  {cat.name} ({cat.postCount})
-                </button>
-              ))
-            )}
-          </div>
-        )}
 
         {/* Search and Filters */}
         <div className="mb-6 sm:mb-8">
@@ -274,7 +248,7 @@ export default function BlogListClient(props) {
                 <Link
                   key={blog._id}
                   href={`/${locale}/blogs/${blog.slug?.[locale]}`}
-                  className="bg-white flex flex-col cursor-pointer group"
+                  className="bg-white flex flex-col cursor-pointer group hover:-translate-y-0.5 transition-transform duration-200 ease-in-out"
                   style={{ textDecoration: 'none' }}
                 >
                   <div className="relative w-full h-64">
@@ -288,24 +262,6 @@ export default function BlogListClient(props) {
                     />
                   </div>
                   <div className="p-4 sm:p-6 flex flex-col flex-1">
-                    <div className={`flex items-center text-sm text-gray-500 mb-2 ${locale === 'bn' ? 'font-bangla-ui bangla-meta' : ''}`}>
-                      <span className={`capitalize ${locale === 'bn' ? 'bangla-category' : ''}`}>
-                        <span
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            window.location.href = `/${locale}/blogs?category=${encodeURIComponent(blog.category?.[locale] || '')}`;
-                          }}
-                          className="underline hover:text-blue-600 transition-colors duration-200 cursor-pointer"
-                          aria-label={`View all posts in ${blog.category?.[locale]}`}
-                        >
-                          {categories.find(c => c.slug === blog.category?.[locale])?.name || 
-                           blog.category?.[locale] || 'Uncategorized'}
-                        </span>
-                      </span>
-                      <span className="mx-2">•</span>
-                      <span className={locale === 'bn' ? 'bangla-read-time' : ''}>{blog.readTime?.[locale] || 5} {t('blog.minRead')}</span>
-                    </div>
                     <h2 className={`text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>
                       {blog.title?.[locale] || 'Untitled'}
                     </h2>

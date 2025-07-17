@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const abortControllerRef = useRef(null);
   const isMountedRef = useRef(true);
+  const authCheckPromiseRef = useRef(null); // For request deduplication
 
   // Check if user is authenticated on mount
   useEffect(() => {
@@ -35,44 +36,60 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const checkAuth = async () => {
-    try {
-      // Abort previous request if it exists
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-      
-      // Create new abort controller
-      abortControllerRef.current = new AbortController();
-      
-      const token = localStorage.getItem('token');
-      if (!token) {
+    // Prevent multiple simultaneous auth checks
+    if (authCheckPromiseRef.current) {
+      return authCheckPromiseRef.current;
+    }
+
+    authCheckPromiseRef.current = (async () => {
+      try {
+        // Abort previous request if it exists
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+        }
+        
+        // Create new abort controller
+        abortControllerRef.current = new AbortController();
+        
+        const token = localStorage.getItem('token');
+        if (!token) {
+          if (isMountedRef.current) {
+            setLoading(false);
+          }
+          return;
+        }
+
+        const response = await api.get('/api/users/profile', {
+          signal: abortControllerRef.current.signal
+        });
+        
+        if (isMountedRef.current) {
+          setUser(response.data.data.user);
+          setError(null); // Clear any previous errors
+        }
+      } catch (error) {
+        // Handle axios cancelation silently
+        if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
+          return; // Don't log or set error for canceled requests
+        }
+        
+        if (isMountedRef.current) {
+          console.error('Auth check failed:', error);
+          // Only remove token if unauthorized
+          if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+            localStorage.removeItem('token');
+            setUser(null);
+          }
+        }
+      } finally {
         if (isMountedRef.current) {
           setLoading(false);
         }
-        return;
+        authCheckPromiseRef.current = null; // Clear the promise reference
       }
+    })();
 
-      const response = await api.get('/api/users/profile', {
-        signal: abortControllerRef.current.signal
-      });
-      
-      if (isMountedRef.current) {
-        setUser(response.data.data.user);
-      }
-    } catch (error) {
-      if (isMountedRef.current) {
-        console.error('Auth check failed:', error);
-        // Only remove token if unauthorized
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-          localStorage.removeItem('token');
-          setUser(null);
-        }
-      }
-    } finally {
-      if (isMountedRef.current) {
-        setLoading(false);
-      }
-    }
+    return authCheckPromiseRef.current;
   };
 
   const login = async ({ email, password }) => {
@@ -88,6 +105,11 @@ export const AuthProvider = ({ children }) => {
       
       return { success: true };
     } catch (error) {
+      // Handle canceled requests silently
+      if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
+        return { success: false, error: 'Request was canceled' };
+      }
+      
       const message = error.response?.data?.message || 'Login failed';
       if (isMountedRef.current) {
         setError(message);
@@ -109,6 +131,11 @@ export const AuthProvider = ({ children }) => {
       
       return { success: true };
     } catch (error) {
+      // Handle canceled requests silently
+      if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
+        return { success: false, error: 'Request was canceled' };
+      }
+      
       const message = error.response?.data?.message || 'Registration failed';
       if (isMountedRef.current) {
         setError(message);
@@ -134,6 +161,11 @@ export const AuthProvider = ({ children }) => {
       }
       return { success: true };
     } catch (error) {
+      // Handle canceled requests silently
+      if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
+        return { success: false, error: 'Request was canceled' };
+      }
+      
       const message = error.response?.data?.message || 'Profile update failed';
       if (isMountedRef.current) {
         setError(message);
@@ -148,6 +180,11 @@ export const AuthProvider = ({ children }) => {
       await api.put('/api/users/change-password', passwordData);
       return { success: true };
     } catch (error) {
+      // Handle canceled requests silently
+      if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
+        return { success: false, error: 'Request was canceled' };
+      }
+      
       const message = error.response?.data?.message || 'Password change failed';
       if (isMountedRef.current) {
         setError(message);
@@ -162,6 +199,11 @@ export const AuthProvider = ({ children }) => {
       await api.post('/api/users/forgot-password', { email });
       return { success: true };
     } catch (error) {
+      // Handle canceled requests silently
+      if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
+        return { success: false, error: 'Request was canceled' };
+      }
+      
       const message = error.response?.data?.message || 'Forgot password request failed';
       if (isMountedRef.current) {
         setError(message);
@@ -176,6 +218,11 @@ export const AuthProvider = ({ children }) => {
       await api.post('/api/users/reset-password', resetData);
       return { success: true };
     } catch (error) {
+      // Handle canceled requests silently
+      if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
+        return { success: false, error: 'Request was canceled' };
+      }
+      
       const message = error.response?.data?.message || 'Password reset failed';
       if (isMountedRef.current) {
         setError(message);
@@ -284,6 +331,31 @@ export const AuthProvider = ({ children }) => {
   // Add clearError function
   const clearError = () => setError(null);
 
+  // Utility function for safe API calls
+  const safeApiCall = async (apiCall, errorMessage = 'Request failed') => {
+    try {
+      const result = await apiCall();
+      return { success: true, data: result };
+    } catch (error) {
+      // Handle canceled requests silently
+      if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
+        return { success: false, error: 'Request was canceled' };
+      }
+      
+      const message = error.response?.data?.message || errorMessage;
+      if (isMountedRef.current) {
+        setError(message);
+      }
+      return { success: false, error: message };
+    }
+  };
+
+  // Force refresh auth (useful for after login/logout)
+  const refreshAuth = () => {
+    authCheckPromiseRef.current = null; // Clear cached promise
+    checkAuth();
+  };
+
   const value = {
     user,
     loading,
@@ -295,14 +367,15 @@ export const AuthProvider = ({ children }) => {
     changePassword,
     forgotPassword,
     resetPassword,
-    checkAuth,
-    // Role-based helpers
+    clearError,
+    refreshAuth,
+    // Role-based access control
     hasRole,
     isAdmin,
     isModerator,
     isEditor,
     isUser,
-    // Permission-based helpers
+    // Permission-based access control
     hasPermission,
     canViewAdmin,
     canManageUsers,
@@ -311,7 +384,6 @@ export const AuthProvider = ({ children }) => {
     canCreateBlog,
     canEditAllBlogs,
     canDeleteAllBlogs,
-    clearError // Provide clearError in context
   };
 
   return (
