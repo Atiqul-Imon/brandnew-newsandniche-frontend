@@ -60,7 +60,9 @@ export default function HomeClient({
         {featuredBlogs.length > 0 && (
           <section className="mb-12">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Featured Posts</h2>
+              <h2 className={`text-2xl sm:text-3xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-heading bangla-section-title bangla-heading-spacing' : ''}`}>
+                {locale === 'bn' ? 'বৈশিষ্ট্যযুক্ত পোস্ট' : 'Featured Posts'}
+              </h2>
               {/* Removed 'View All →' link */}
             </div>
             
@@ -72,17 +74,17 @@ export default function HomeClient({
                     <div className="relative h-72 sm:h-80 lg:h-[440px]">
                       <Image
                         src={featuredBlogs[0]?.featuredImage || '/placeholder.jpg'}
-                        alt={featuredBlogs[0]?.title?.en || 'Featured Blog'}
+                        alt={featuredBlogs[0]?.title?.[locale] || featuredBlogs[0]?.title?.en || 'Featured Blog'}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <div className="p-4 sm:p-6">
-                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                        {featuredBlogs[0]?.title?.en || 'Featured Blog Title'}
+                      <h3 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>
+                        {featuredBlogs[0]?.title?.[locale] || featuredBlogs[0]?.title?.en || 'Featured Blog Title'}
                       </h3>
-                      <p className="text-gray-600 line-clamp-3 text-sm sm:text-base">
-                        {featuredBlogs[0]?.excerpt?.en || 'Featured blog excerpt...'}
+                      <p className={`text-gray-600 line-clamp-3 text-sm sm:text-base ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>
+                        {featuredBlogs[0]?.excerpt?.[locale] || featuredBlogs[0]?.excerpt?.en || 'Featured blog excerpt...'}
                       </p>
                     </div>
                   </div>
@@ -104,11 +106,11 @@ export default function HomeClient({
                           />
                         </div>
                         <div className="p-3 sm:p-4">
-                          <h4 className="font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors line-clamp-2 text-sm sm:text-base">
-                            {blog.title?.en || 'Blog Title'}
+                          <h4 className={`font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors line-clamp-2 text-sm sm:text-base ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>
+                            {blog.title?.[locale] || blog.title?.en || 'Blog Title'}
                           </h4>
-                          <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
-                            {blog.excerpt?.en || 'Blog excerpt...'}
+                          <p className={`text-xs sm:text-sm text-gray-600 line-clamp-2 ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>
+                            {blog.excerpt?.[locale] || blog.excerpt?.en || 'Blog excerpt...'}
                           </p>
                         </div>
                       </div>
@@ -124,9 +126,11 @@ export default function HomeClient({
         {recentBlogs.length > 0 && (
           <section className="mb-12">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Recent Posts</h2>
-              <Link href={`/${locale}/blogs`} className="text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base">
-                View All →
+              <h2 className={`text-xl sm:text-2xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-heading bangla-section-title bangla-heading-spacing' : ''}`}>
+                {locale === 'bn' ? 'সর্বশেষ পোস্ট' : 'Recent Posts'}
+              </h2>
+              <Link href={`/${locale}/blogs`} className={`text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}>
+                {locale === 'bn' ? 'সব দেখুন →' : 'View All →'}
               </Link>
             </div>
             
@@ -137,17 +141,17 @@ export default function HomeClient({
                     <div className="relative h-64">
                       <Image
                         src={blog.featuredImage || '/placeholder.jpg'}
-                        alt={blog.title?.en || 'Blog Post'}
+                        alt={blog.title?.[locale] || blog.title?.en || 'Blog Post'}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <div className="p-3 sm:p-4">
-                      <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2 text-sm sm:text-base">
-                        {blog.title?.en || 'Blog Title'}
+                      <h3 className={`font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2 text-sm sm:text-base ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>
+                        {blog.title?.[locale] || blog.title?.en || 'Blog Title'}
                       </h3>
-                      <p className="text-gray-600 line-clamp-3 text-sm">
-                        {blog.excerpt?.en || 'Blog excerpt...'}
+                      <p className={`text-gray-600 line-clamp-3 text-sm ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>
+                        {blog.excerpt?.[locale] || blog.excerpt?.en || 'Blog excerpt...'}
                       </p>
                     </div>
                   </div>
@@ -161,9 +165,11 @@ export default function HomeClient({
         {popularBlogs.length > 0 && (
           <section className="mb-12">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Popular Posts</h2>
-              <Link href={`/${locale}/blogs`} className="text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base">
-                View All →
+              <h2 className={`text-xl sm:text-2xl font-bold text-gray-900 ${locale === 'bn' ? 'font-bangla-heading bangla-section-title bangla-heading-spacing' : ''}`}>
+                {locale === 'bn' ? 'জনপ্রিয় পোস্ট' : 'Popular Posts'}
+              </h2>
+              <Link href={`/${locale}/blogs`} className={`text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base ${locale === 'bn' ? 'font-bangla-nav bangla-btn' : ''}`}>
+                {locale === 'bn' ? 'সব দেখুন →' : 'View All →'}
               </Link>
             </div>
             
@@ -174,20 +180,20 @@ export default function HomeClient({
                     <div className="relative h-64">
                       <Image
                         src={blog.featuredImage || '/placeholder.jpg'}
-                        alt={blog.title?.en || 'Blog Post'}
+                        alt={blog.title?.[locale] || blog.title?.en || 'Blog Post'}
                         fill
                         className="object-cover"
                       />
-                      <div className="absolute top-2 right-2 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                        Popular
+                      <div className={`absolute top-2 right-2 bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium ${locale === 'bn' ? 'font-bangla-ui' : ''}`}>
+                        {locale === 'bn' ? 'জনপ্রিয়' : 'Popular'}
                       </div>
                     </div>
                     <div className="p-3 sm:p-4">
-                      <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2 text-sm sm:text-base">
-                        {blog.title?.en || 'Blog Title'}
+                      <h3 className={`font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2 text-sm sm:text-base ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>
+                        {blog.title?.[locale] || blog.title?.en || 'Blog Title'}
                       </h3>
-                      <p className="text-gray-600 line-clamp-3 text-sm">
-                        {blog.excerpt?.en || 'Blog excerpt...'}
+                      <p className={`text-gray-600 line-clamp-3 text-sm ${locale === 'bn' ? 'font-bangla-blog bangla-excerpt bangla-text-spacing' : ''}`}>
+                        {blog.excerpt?.[locale] || blog.excerpt?.en || 'Blog excerpt...'}
                       </p>
                     </div>
                   </div>
