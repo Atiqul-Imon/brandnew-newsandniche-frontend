@@ -98,7 +98,7 @@ export default async function BestProductsPage({ params }) {
                     <div className="aspect-w-16 aspect-h-9">
                       <img
                         src={article.featuredImage}
-                        alt={article.title?.[locale] || article.title?.en}
+                        alt={article.title?.[locale] || article.title?.en || 'Blog post from News and Niche'}
                         className="w-full h-48 object-cover"
                       />
                     </div>

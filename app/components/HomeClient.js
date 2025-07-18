@@ -74,7 +74,7 @@ export default function HomeClient({
                     <div className="relative h-72 sm:h-80 lg:h-[440px]">
                       <Image
                         src={featuredBlogs[0]?.featuredImage || '/placeholder.jpg'}
-                        alt={featuredBlogs[0]?.title?.[locale] || featuredBlogs[0]?.title?.en || 'Featured Blog'}
+                        alt={featuredBlogs[0]?.title?.[locale] || featuredBlogs[0]?.title?.en || 'Featured blog post from News and Niche'}
                         fill
                         className="object-cover"
                       />
@@ -100,7 +100,7 @@ export default function HomeClient({
                         <div className="relative h-36 sm:h-40 lg:h-44">
                           <Image
                             src={blog.featuredImage || '/placeholder.jpg'}
-                            alt={blog.title?.en || 'Blog Post'}
+                            alt={blog.title?.[locale] || blog.title?.en || 'Blog post from News and Niche'}
                             fill
                             className="object-cover"
                           />
@@ -141,7 +141,7 @@ export default function HomeClient({
                     <div className="relative h-64">
                       <Image
                         src={blog.featuredImage || '/placeholder.jpg'}
-                        alt={blog.title?.[locale] || blog.title?.en || 'Blog Post'}
+                        alt={blog.title?.[locale] || blog.title?.en || 'Blog post from News and Niche'}
                         fill
                         className="object-cover"
                       />
@@ -180,7 +180,7 @@ export default function HomeClient({
                     <div className="relative h-64">
                       <Image
                         src={blog.featuredImage || '/placeholder.jpg'}
-                        alt={blog.title?.[locale] || blog.title?.en || 'Blog Post'}
+                        alt={blog.title?.[locale] || blog.title?.en || 'Blog post from News and Niche'}
                         fill
                         className="object-cover"
                       />

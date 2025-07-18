@@ -92,7 +92,7 @@ export default function PopularPosts({ locale, category = null, limit = 5 }) {
                   {post.featuredImage && (
                     <Image
                       src={post.featuredImage}
-                      alt={post.title[locale]}
+                      alt={post.title[locale] || post.title?.en || 'Blog post from News and Niche'}
                       className="object-cover w-full h-full"
                       width={64}
                       height={48}

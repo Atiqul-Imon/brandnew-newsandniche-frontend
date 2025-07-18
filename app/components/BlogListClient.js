@@ -254,7 +254,7 @@ export default function BlogListClient(props) {
                   <div className="relative w-full h-64">
                     <Image
                       src={blog.featuredImage}
-                      alt={blog.title?.[locale] || 'Blog image'}
+                      alt={blog.title?.[locale] || blog.title?.en || 'Blog post from News and Niche'}
                       className="w-full object-cover"
                       style={{ WebkitFontSmoothing: 'antialiased' }}
                       fill

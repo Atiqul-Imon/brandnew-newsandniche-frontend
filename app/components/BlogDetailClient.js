@@ -62,7 +62,7 @@ const ImageGallery = ({ images, title, locale }) => {
       <div className="relative w-full aspect-4/3 min-h-[400px] bg-gray-50">
         <Image
           src={images[activeIndex]}
-          alt={`${title || 'Gallery image'} ${activeIndex + 1}`}
+          alt={`${title || 'Gallery image'} ${activeIndex + 1} from News and Niche blog`}
           className="object-cover rounded-lg"
           fill
           unoptimized
@@ -489,7 +489,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
             <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] bg-gray-100 rounded-lg overflow-hidden shadow-sm">
               <Image
                 src={blog.featuredImage}
-                alt={blog.title?.[locale]}
+                alt={blog.title?.[locale] || blog.title?.en || 'Blog post featured image from News and Niche'}
                 className="object-cover"
                 fill
                 unoptimized
@@ -713,7 +713,7 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                   <div className="relative w-full aspect-[3/2] bg-gray-100">
                     <Image
                       src={relatedBlog.featuredImage}
-                      alt={relatedBlog.title[locale]}
+                      alt={relatedBlog.title[locale] || relatedBlog.title?.en || 'Related blog post from News and Niche'}
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                       fill
                       unoptimized

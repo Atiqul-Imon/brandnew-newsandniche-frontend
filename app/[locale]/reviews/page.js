@@ -98,7 +98,7 @@ export default async function ReviewsPage({ params }) {
                     <div className="aspect-w-16 aspect-h-9">
                       <img
                         src={review.featuredImage}
-                        alt={review.title?.[locale] || review.title?.en}
+                        alt={review.title?.[locale] || review.title?.en || 'Blog post from News and Niche'}
                         className="w-full h-48 object-cover"
                       />
                     </div>
