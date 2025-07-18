@@ -44,6 +44,8 @@ import {
   FilterList as FilterIcon,
   Sort as SortIcon,
   Article as ArticleIcon,
+  Star as StarIcon,
+  StarBorder as StarBorderIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../../context/AuthContext';
 import { api } from '../../../apiConfig';
@@ -156,6 +158,24 @@ export default function MuiBlogManagement({ params }) {
     }
   };
 
+  const handleToggleFeatured = async (blog) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await api.put(`/api/blogs/${blog._id}/featured`, {}, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.data.success) {
+        const newStatus = !blog.isFeatured;
+        showSnackbar(`Blog ${newStatus ? 'featured' : 'unfeatured'} successfully`, 'success');
+        fetchBlogs(); // Refresh the list to show updated status
+      }
+    } catch (error) {
+      console.error('Error toggling featured status:', error);
+      showSnackbar('Error updating featured status', 'error');
+    }
+  };
+
   const handleFormSubmit = async (blogData) => {
     try {
       if (editingBlog) {
@@ -239,6 +259,8 @@ export default function MuiBlogManagement({ params }) {
       edit: 'Edit',
       delete: 'Delete',
       view: 'View',
+      featured: 'Featured',
+      toggleFeatured: 'Toggle Featured',
       confirmDelete: 'Confirm Delete',
       deleteMessage: 'Are you sure you want to delete this blog? This action cannot be undone.',
       cancel: 'Cancel',
@@ -265,6 +287,8 @@ export default function MuiBlogManagement({ params }) {
       edit: 'সম্পাদনা',
       delete: 'মুছুন',
       view: 'দেখুন',
+      featured: 'বৈশিষ্ট্যযুক্ত',
+      toggleFeatured: 'বৈশিষ্ট্যযুক্ত টগল করুন',
       confirmDelete: 'মুছে ফেলার নিশ্চিতকরণ',
       deleteMessage: 'আপনি কি নিশ্চিত যে আপনি এই ব্লগটি মুছতে চান? এই অ্যাকশনটি পূর্বাবস্থায় ফেরানো যাবে না।',
       cancel: 'বাতিল',
@@ -456,6 +480,7 @@ export default function MuiBlogManagement({ params }) {
                   <TableCell>{t.title}</TableCell>
                   <TableCell>{t.date}</TableCell>
                   <TableCell>Status</TableCell>
+                  <TableCell>{t.featured}</TableCell>
                   <TableCell>{t.views}</TableCell>
                   <TableCell>{t.actions}</TableCell>
                 </TableRow>
@@ -483,6 +508,14 @@ export default function MuiBlogManagement({ params }) {
                         size="small"
                       />
                     </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={blog.isFeatured ? 'Featured' : 'Not Featured'}
+                        color={blog.isFeatured ? 'warning' : 'default'}
+                        size="small"
+                        icon={blog.isFeatured ? <StarIcon /> : <StarBorderIcon />}
+                      />
+                    </TableCell>
                     <TableCell>{blog.views || 0}</TableCell>
                     <TableCell>
                       <Box sx={{ display: 'flex', gap: 1 }}>
@@ -492,6 +525,15 @@ export default function MuiBlogManagement({ params }) {
                             onClick={() => window.open(`/${locale}/blogs/${blog.slug[locale]}`, '_blank')}
                           >
                             <ViewIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title={blog.isFeatured ? 'Unfeature' : 'Feature'}>
+                          <IconButton
+                            size="small"
+                            color={blog.isFeatured ? 'warning' : 'default'}
+                            onClick={() => handleToggleFeatured(blog)}
+                          >
+                            {blog.isFeatured ? <StarIcon /> : <StarBorderIcon />}
                           </IconButton>
                         </Tooltip>
                         <Tooltip title={t.edit}>
