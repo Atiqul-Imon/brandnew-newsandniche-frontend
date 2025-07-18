@@ -4,6 +4,11 @@ import { NextResponse } from 'next/server';
 export function middleware(request) {
   const { pathname } = request.nextUrl;
   
+  // Force redirect to /en when accessing root domain
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/en', request.url));
+  }
+  
   // Redirect /blogs/en or /blogs/bn to /en/blogs
   const match = pathname.match(/^\/blogs\/(en|bn)(\/.*)?$/);
   if (match) {
