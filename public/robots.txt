@@ -1,21 +1,51 @@
+# Robots.txt for News and Niche
+# https://newsandniche.com
+
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemaps
 Sitemap: https://newsandniche.com/sitemap.xml
 
-# Favicon
+# Important assets
 Allow: /favicon.svg
 Allow: /apple-touch-icon.svg
+Allow: /manifest.json
 
-# Disallow admin areas
+# Admin and private areas
 Disallow: /admin/
+Disallow: /mui-admin/
+Disallow: /health-dashboard/
 Disallow: /api/
+Disallow: /_next/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
 
-# Allow important pages
-Allow: /blogs/
-Allow: /about/
-Allow: /contact/
+# Draft and private content
+Disallow: /*?status=draft
+Disallow: /*?status=private
 
-# Crawl delay (optional)
-Crawl-delay: 1 
+# Important pages
+Allow: /en/
+Allow: /bn/
+Allow: /en/blogs/
+Allow: /bn/blogs/
+Allow: /en/about/
+Allow: /bn/about/
+Allow: /en/contact/
+Allow: /bn/contact/
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Additional SEO directives
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: / 
