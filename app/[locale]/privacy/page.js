@@ -211,10 +211,24 @@ export default async function PrivacyPage({ params }) {
               </h2>
               <p className="text-gray-700 mb-4">
                 {params.locale === 'bn' 
-                  ? 'আমরা আপনার অভিজ্ঞতা উন্নত করতে কুকি ব্যবহার করি। আপনি আপনার ব্রাউজার সেটিংসে কুকি নিষ্ক্রিয় করতে পারেন।' 
-                  : 'We use cookies to improve your experience. You can disable cookies in your browser settings.'
+                  ? 'আমরা আপনার অভিজ্ঞতা উন্নত করতে কুকি ব্যবহার করি। আমরা Google AdSense এর মতো বিজ্ঞাপন অংশীদারদের সাথেও কাজ করতে পারি, যারা কুকি এবং অনুরূপ প্রযুক্তি ব্যবহার করে বিজ্ঞাপন ব্যক্তিগতকরণ এবং পরিমাপ করতে পারে। আপনি বিজ্ঞাপন ব্যক্তিগতকরণের সেটিংস পরিবর্তন করতে পারেন।' 
+                  : 'We use cookies to improve your experience. We may also work with advertising partners such as Google AdSense, who use cookies and similar technologies to personalize and measure ads. You can manage your ad personalization settings.'
                 }
               </p>
+              <ul className="list-disc pl-6 mb-4 text-gray-700">
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'Google বিজ্ঞাপন সেটিংস: https://adssettings.google.com' 
+                    : 'Google Ads Settings: https://adssettings.google.com'
+                  }
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' 
+                    ? 'Google এর বিজ্ঞাপন নীতি: https://policies.google.com/technologies/ads' 
+                    : 'Google Ads Policy: https://policies.google.com/technologies/ads'
+                  }
+                </li>
+              </ul>
             </section>
 
             <section className="mb-8">
@@ -239,6 +253,29 @@ export default async function PrivacyPage({ params }) {
                     ? 'ওয়েবসাইট: /contact' 
                     : 'Website: /contact'
                   }
+                </li>
+              </ul>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                {params.locale === 'bn' ? '৯. Google AdSense এবং বিজ্ঞাপন' : '9. Google AdSense and Advertising'}
+              </h2>
+              <p className="text-gray-700 mb-4">
+                {params.locale === 'bn'
+                  ? 'আমরা Google AdSense ব্যবহার করে বিজ্ঞাপন দেখাতে পারি। Google এবং তার অংশীদাররা কুকি ব্যবহার করে আপনার পূর্ববর্তী ওয়েবসাইট ভিজিটের উপর ভিত্তি করে বিজ্ঞাপন প্রদর্শন করতে পারে। আপনি বিজ্ঞাপন ব্যক্তিগতকরণ বন্ধ করতে চাইলে আপনি Google Ads Settings থেকে এটি পরিবর্তন করতে পারেন।'
+                  : 'We may use Google AdSense to serve ads. Google and its partners may use cookies to serve ads based on your prior visits to this and other websites. You can opt out of ad personalization in Google Ads Settings.'
+                }
+              </p>
+              <ul className="list-disc pl-6 mb-4 text-gray-700">
+                <li className="mb-2">
+                  {params.locale === 'bn' ? 'Ads.txt: https://newsandniche.com/ads.txt' : 'Ads.txt: https://newsandniche.com/ads.txt'}
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' ? 'Google Ads Settings: https://adssettings.google.com' : 'Google Ads Settings: https://adssettings.google.com'}
+                </li>
+                <li className="mb-2">
+                  {params.locale === 'bn' ? 'Google Privacy & Terms: https://policies.google.com/technologies/ads' : 'Google Privacy & Terms: https://policies.google.com/technologies/ads'}
                 </li>
               </ul>
             </section>

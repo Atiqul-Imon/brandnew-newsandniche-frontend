@@ -37,17 +37,12 @@ export default function AdSense({
         return;
       }
 
-      // Load AdSense script
+      // Load AdSense script (recommended ?client= format)
+      const publisherId = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-7209812885487533';
       const script = document.createElement('script');
       script.async = true;
-      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+      script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${publisherId}`;
       script.crossOrigin = 'anonymous';
-      
-      // Add your AdSense publisher ID here
-      const publisherId = process.env.NEXT_PUBLIC_ADSENSE_ID;
-      if (publisherId) {
-        script.setAttribute('data-ad-client', publisherId);
-      }
 
       script.onload = () => {
         if (isMounted) {
@@ -133,7 +128,7 @@ export default function AdSense({
           display: responsive ? 'block' : 'inline-block',
           ...(adFormat === 'auto' ? {} : { width: '100%', height: '250px' })
         }}
-        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
+        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-7209812885487533'}
         data-ad-slot={adSlot}
         data-ad-format={adFormat}
         data-full-width-responsive={responsive}

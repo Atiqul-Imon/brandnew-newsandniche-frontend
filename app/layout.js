@@ -65,6 +65,7 @@ export default async function RootLayout({ children, params: { locale } }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="p:domain_verify" content="efa336b9affe63aba06824d9519a2815" />
+        <meta name="google-adsense-account" content="ca-pub-7209812885487533" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />

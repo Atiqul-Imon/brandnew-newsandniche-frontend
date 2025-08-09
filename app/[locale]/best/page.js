@@ -17,6 +17,7 @@ export async function generateMetadata({ params }) {
   const canonical = `${siteUrl}/${locale}/best`;
   
   return {
+    // robots will be added conditionally in the page body if empty
     title,
     description,
     alternates: {
@@ -62,8 +63,13 @@ export default async function BestProductsPage({ params }) {
     console.error('Error fetching best articles:', error);
   }
 
+  const noindex = bestArticles.length === 0;
+
   return (
     <>
+      {noindex && (
+        <meta name="robots" content="noindex,follow" />
+      )}
       <ArticleListSchema 
         articles={bestArticles.map(article => ({
           title: article.title?.[locale] || article.title?.en,

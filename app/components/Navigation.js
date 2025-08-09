@@ -53,12 +53,7 @@ export default function Navigation({ locale, categories = [] }) {
               >
                 {t('blog.allPosts')}
               </Link>
-              <Link
-                href={`/${locale}/reviews`}
-                className={`text-gray-700 hover:text-gray-900 px-2 sm:px-3 py-2 transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav text-lg sm:text-xl font-semibold bangla-nav-link' : 'text-sm font-medium'}`}
-              >
-                {locale === 'bn' ? 'পর্যালোচনা' : 'Reviews'}
-              </Link>
+              {/* Reviews removed for now (no content) */}
 
               {user && (user.role === 'admin' || user.role === 'moderator' || user.role === 'editor') && (
                 <>
@@ -154,13 +149,7 @@ export default function Navigation({ locale, categories = [] }) {
               >
                 {t('blog.allPosts')}
               </Link>
-              <Link
-                href={`/${locale}/reviews`}
-                className={`px-4 py-3 text-gray-700 hover:bg-gray-100 text-sm sm:text-base font-medium rounded transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-nav text-base sm:text-lg font-semibold bangla-nav-link' : ''}`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {locale === 'bn' ? 'পর্যালোচনা' : 'Reviews'}
-              </Link>
+              {/* Reviews removed for now (no content) */}
 
               {user && (user.role === 'admin' || user.role === 'moderator' || user.role === 'editor') && (
                 <>
