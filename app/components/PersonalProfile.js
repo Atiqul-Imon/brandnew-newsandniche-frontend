@@ -21,6 +21,8 @@ export default function PersonalProfile() {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [guestSubs, setGuestSubs] = useState([]);
+  const [sponsoredSubs, setSponsoredSubs] = useState([]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -30,6 +32,7 @@ export default function PersonalProfile() {
     
     if (user) {
       fetchProfile();
+      fetchMySubmissions();
     }
   }, [user, loading, locale, router]);
 
@@ -130,6 +133,19 @@ export default function PersonalProfile() {
     }
   };
 
+  const fetchMySubmissions = async () => {
+    try {
+      const [guestRes, sponsoredRes] = await Promise.all([
+        api.get('/api/guest-posts/my'),
+        api.get('/api/sponsored-posts/my')
+      ]);
+      setGuestSubs(guestRes.data?.data?.submissions || []);
+      setSponsoredSubs(sponsoredRes.data?.data?.submissions || []);
+    } catch (e) {
+      // Non-blocking
+    }
+  };
+
   const getRoleBadge = (role) => {
     const roleConfig = {
       admin: { color: 'bg-red-100 text-red-800', label: 'Admin' },
@@ -182,6 +198,25 @@ export default function PersonalProfile() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
         <p className="text-gray-600">Manage your account settings and profile information</p>
+      </div>
+
+      {/* Quick Actions: Submissions */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Create Submission</h3>
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href={`/${locale}/guest-post`}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Submit Guest Post
+          </Link>
+          <Link
+            href={`/${locale}/sponsored-post`}
+            className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors"
+          >
+            Submit Sponsored Post
+          </Link>
+        </div>
       </div>
 
       {/* Success/Error Messages */}
@@ -544,6 +579,47 @@ export default function PersonalProfile() {
             <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
               Delete Account
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* My Submissions */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">My Submissions</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="font-semibold mb-2">Guest Posts</h4>
+            <ul className="space-y-2">
+              {guestSubs.length === 0 && <li className="text-sm text-gray-500">No guest submissions</li>}
+              {guestSubs.map((s) => (
+                <li key={s._id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{s.post?.title?.en || 'Untitled'}</p>
+                    <p className="text-xs text-gray-500">Status: {s.status}</p>
+                  </div>
+                  {['approved','under_review','needs_revision'].includes(s.status) && (
+                    <Link href={`/en/guest-post/edit/${s._id}`} className="text-blue-600 text-sm hover:underline">Edit</Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Sponsored Posts</h4>
+            <ul className="space-y-2">
+              {sponsoredSubs.length === 0 && <li className="text-sm text-gray-500">No sponsored submissions</li>}
+              {sponsoredSubs.map((s) => (
+                <li key={s._id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{s.post?.title?.en || 'Untitled'}</p>
+                    <p className="text-xs text-gray-500">Status: {s.status}</p>
+                  </div>
+                  {['approved','under_review','needs_revision'].includes(s.status) && (
+                    <Link href={`/en/sponsored-post/edit/${s._id}`} className="text-blue-600 text-sm hover:underline">Edit</Link>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

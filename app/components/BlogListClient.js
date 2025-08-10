@@ -260,6 +260,16 @@ export default function BlogListClient(props) {
                       fill
                       unoptimized
                     />
+                    {(blog.postType === 'sponsored' || blog.seoSafety?.isSponsored) && (
+                      <span className="absolute top-3 left-3 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                        Sponsored
+                      </span>
+                    )}
+                    {blog.postType === 'guest' && (
+                      <span className="absolute top-3 right-3 bg-gray-800 text-white text-xs font-semibold px-2 py-1 rounded">
+                        Guest
+                      </span>
+                    )}
                   </div>
                   <div className="p-4 sm:p-6 flex flex-col flex-1">
                     <h2 className={`text-base sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2 line-clamp-2 ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>

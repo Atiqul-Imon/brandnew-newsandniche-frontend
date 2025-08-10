@@ -104,6 +104,12 @@ export default function HomeClient({
                             fill
                             className="object-cover"
                           />
+                          {(blog.postType === 'sponsored' || blog.seoSafety?.isSponsored) && (
+                            <span className="absolute top-2 left-2 bg-yellow-500 text-white text-[10px] font-semibold px-2 py-1 rounded">Sponsored</span>
+                          )}
+                          {blog.postType === 'guest' && (
+                            <span className="absolute top-2 right-2 bg-gray-800 text-white text-[10px] font-semibold px-2 py-1 rounded">Guest</span>
+                          )}
                         </div>
                         <div className="p-3 sm:p-4">
                           <h4 className={`font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors line-clamp-2 text-sm sm:text-base ${locale === 'bn' ? 'font-bangla-heading bangla-title bangla-heading-spacing' : ''}`}>

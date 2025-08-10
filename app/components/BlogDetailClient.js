@@ -218,10 +218,50 @@ const parseContent = (content) => {
   return blocks;
 };
 
-// Enhanced markdown rendering with Business Insider style
-const renderMarkdown = (text) => {
+// Basic competitor blocklist (edit to your needs)
+const BLOCKED_COMPETITOR_HOSTS = [];
+
+// Enhanced markdown rendering with Business Insider style + link policy + basic sanitization
+function renderMarkdownWithPolicy(text, { isSponsored, enforceNofollow, internalHosts, blockedHosts }) {
   if (!text) return '';
-  return text
+
+  // Build link attribute string based on policy
+  const attrForUrl = (url) => {
+    try {
+      // Treat relative URLs as internal
+      const isRelative = url.startsWith('/') || url.startsWith('#');
+      if (isRelative) return '';
+      const u = new URL(url);
+      const host = u.hostname;
+      const isInternal = internalHosts.some(h => host === h || host.endsWith(`.${h}`));
+      if (isInternal) return '';
+      const rel = [
+        'noopener',
+        'noreferrer',
+        ...(isSponsored ? ['sponsored', 'nofollow'] : []),
+        ...(enforceNofollow ? ['nofollow'] : [])
+      ];
+      return ` rel="${Array.from(new Set(rel)).join(' ')}" target="_blank"`;
+    } catch {
+      return '';
+    }
+  };
+
+  // Drop competitor links but keep anchor text
+  const dropIfCompetitor = (url) => {
+    try {
+      const isRelative = url.startsWith('/') || url.startsWith('#');
+      if (isRelative) return false;
+      const u = new URL(url);
+      const host = u.hostname;
+      return blockedHosts.some(h => host === h || host.endsWith(`.${h}`));
+    } catch {
+      return false;
+    }
+  };
+
+  // Convert markdown to HTML
+  let html = text
     // Headers
     .replace(/^### (.*$)/gim, '<h3 class="text-xl sm:text-2xl font-bold text-gray-900 mt-8 sm:mt-12 mb-4 sm:mb-6 leading-tight">$1</h3>')
     .replace(/^## (.*$)/gim, '<h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mt-12 sm:mt-16 mb-6 sm:mb-8 leading-tight">$1</h2>')
@@ -230,8 +270,12 @@ const renderMarkdown = (text) => {
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>')
     .replace(/\*(.*?)\*/g, '<em class="italic text-gray-700">$1</em>')
     .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-800">$1</code>')
-    // Links
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:text-blue-800 underline font-medium">$1</a>')
+    // Links with policy
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, textLabel, url) => {
+      if (dropIfCompetitor(url)) return textLabel;
+      const attrs = attrForUrl(url);
+      return `<a href="${url}" class="text-blue-600 hover:text-blue-800 underline font-medium"${attrs}>${textLabel}</a>`;
+    })
     // Lists
     .replace(/^\* (.*$)/gim, '<li class="ml-6 mb-2">$1</li>')
     .replace(/^- (.*$)/gim, '<li class="ml-6 mb-2">$1</li>')
@@ -239,7 +283,13 @@ const renderMarkdown = (text) => {
     .replace(/\n\n/g, '</p><p class="mb-3m:mb-4 leading-relaxed">')
     .replace(/^\n/g, '<p class="mb-3m:mb-4leading-relaxed>')
     .replace(/\n$/g, '</p>');
-};
+
+  // Very basic sanitization: strip script tags and inline handlers
+  html = html.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
+  html = html.replace(/ on[a-z]+="[^"]*"/gi, '');
+
+  return html;
+}
 
 // Enhanced Callout component with Business Insider style
 const Callout = ({ type, content, locale }) => {
@@ -457,7 +507,14 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
     );
   }
 
-  const contentBlocks = parseContent(blog.content?.[locale] || '');
+  const contentBlocks = parseContent(blog.content?.en || '');
+  const isSponsored = blog.postType === 'sponsored' || blog?.seoSafety?.isSponsored;
+  const enforceNofollow = !!blog?.seoSafety?.nofollowLinks;
+  const disclosurePosition = blog?.seoSafety?.disclosurePosition || 'both';
+  const hasDisclosure = !!blog?.seoSafety?.hasDisclosure;
+  const disclosureText = blog?.sponsorship?.disclosureText?.en || (isSponsored ? 'This article contains sponsored content.' : '');
+  const internalHosts = [typeof window !== 'undefined' ? window.location.hostname : 'newsandniche.com'];
+  const blockedHosts = BLOCKED_COMPETITOR_HOSTS;
 
   return (
     <main className="min-h-screen bg-white" aria-label="Main content">
@@ -645,6 +702,13 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
           </div>
         </header>
 
+        {/* Disclosure (top) */}
+        {isSponsored && hasDisclosure && (disclosurePosition === 'top' || disclosurePosition === 'both') && (
+          <div className="mb-6 p-4 rounded border border-yellow-200 bg-yellow-50 text-yellow-800 text-sm">
+            {disclosureText}
+          </div>
+        )}
+
         {/* Article Content - Business Insider Style */}
         <div className={`prose prose-xl max-w-none ${locale === 'bn' ? 'prose-bangla' : ''}`}>
           {contentBlocks.map((block, index) => {
@@ -681,12 +745,19 @@ export default function BlogDetailClient({ locale, slug, initialBlog, initialRel
                   <div
                     key={index}
                     className={`mb-6m:mb-8ading-relaxed text-gray-800 text-base sm:text-lg ${locale === 'bn' ? 'font-bangla-blog bangla-text-spacing' : ''}`}
-                    dangerouslySetInnerHTML={{ __html: renderMarkdown(block.content) }}
+                    dangerouslySetInnerHTML={{ __html: renderMarkdownWithPolicy(block.content, { isSponsored, enforceNofollow, internalHosts, blockedHosts }) }}
                   />
                 );
             }
           })}
         </div>
+
+        {/* Disclosure (bottom) */}
+        {isSponsored && hasDisclosure && (disclosurePosition === 'bottom' || disclosurePosition === 'both') && (
+          <div className="mt-8 p-4 rounded border border-yellow-200 bg-yellow-50 text-yellow-800 text-sm">
+            {disclosureText}
+          </div>
+        )}
 
         {/* Category Cross-Links */}
         {blog.category && blog.category[locale] && (

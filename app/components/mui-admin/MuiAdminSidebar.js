@@ -44,6 +44,16 @@ const menuItems = {
       path: '/mui-admin/blogs',
     },
     {
+      text: 'Guest Submissions',
+      icon: <ArticleIcon />,
+      path: '/mui-admin/guest-submissions',
+    },
+    {
+      text: 'Sponsored Submissions',
+      icon: <ArticleIcon />,
+      path: '/mui-admin/sponsored-submissions',
+    },
+    {
       text: 'Categories',
       icon: <CategoryIcon />,
       path: '/mui-admin/categories',

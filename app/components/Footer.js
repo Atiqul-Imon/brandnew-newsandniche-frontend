@@ -76,6 +76,16 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href={`/${locale}/guest-post/terms`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
+                  {locale === 'bn' ? 'গেস্ট পোস্ট নীতিমালা' : 'Guest Post Policy'}
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/sponsored-post/terms`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
+                  {locale === 'bn' ? 'স্পনসর পোস্ট শর্তাবলী' : 'Sponsored Post Terms'}
+                </Link>
+              </li>
+              <li>
                 <Link href={`/${locale}/blogs`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {t('navigation.blog')}
                 </Link>

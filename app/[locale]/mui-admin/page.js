@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import {
   Grid,
@@ -31,7 +32,21 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../apiConfig';
 
-export default function MuiAdminDashboard({ params }) {
+export default function AdminIndex({ params }) {
+  const { locale } = params;
+  return (
+    <div className="p-8 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6">{locale === 'bn' ? 'অ্যাডমিন ড্যাশবোর্ড' : 'Admin Dashboard'}</h1>
+      <ul className="space-y-3">
+        <li><Link className="text-blue-600 underline" href={`/${locale}/mui-admin/blogs`}>{locale === 'bn' ? 'ব্লগ ম্যানেজ করুন' : 'Manage Blogs'}</Link></li>
+        <li><Link className="text-blue-600 underline" href={`/${locale}/mui-admin/guest-submissions`}>{locale === 'bn' ? 'গেস্ট সাবমিশন' : 'Guest Submissions'}</Link></li>
+        <li><Link className="text-blue-600 underline" href={`/${locale}/mui-admin/sponsored-submissions`}>{locale === 'bn' ? 'স্পনসরড সাবমিশন' : 'Sponsored Submissions'}</Link></li>
+      </ul>
+    </div>
+  );
+}
+
+export function MuiAdminDashboard({ params }) {
   const { user } = useAuth();
   const [stats, setStats] = useState({
     totalBlogs: 0,
