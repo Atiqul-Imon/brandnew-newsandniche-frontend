@@ -115,6 +115,11 @@ export default function LoginForm({ locale }) {
             >
               {isLoading ? t('auth.signingIn') : t('auth.signIn')}
             </button>
+            <div className="mt-3 text-center">
+              <Link href={`/${locale}/forgot-password`} className="text-sm font-medium text-blue-600 hover:text-blue-500">
+                {t('auth.forgotPassword') || 'Forgot password?'}
+              </Link>
+            </div>
           </div>
         </form>
       </div>
