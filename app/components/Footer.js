@@ -91,7 +91,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
+                <Link href={`/${locale}/about`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
                   {t('navigation.about')}
                 </Link>
               </li>
@@ -103,34 +103,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Categories */}
-          <div>
-            <h4 className={`text-lg font-semibold mb-4 ${locale === 'bn' ? 'font-bangla-heading bangla-subtitle bangla-heading-spacing' : ''}`}>
-              {locale === 'bn' ? 'বিভাগসমূহ' : 'Categories'}
-            </h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href={`/${locale}/blogs?category=technology`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
-                  {locale === 'bn' ? 'প্রযুক্তি' : 'Technology'}
-                </Link>
-              </li>
-              <li>
-                <Link href={`/${locale}/blogs?category=politics`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
-                  {locale === 'bn' ? 'রাজনীতি' : 'Politics'}
-                </Link>
-              </li>
-              <li>
-                <Link href={`/${locale}/blogs?category=sports`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
-                  {locale === 'bn' ? 'খেলাধুলা' : 'Sports'}
-                </Link>
-              </li>
-              <li>
-                <Link href={`/${locale}/blogs?category=entertainment`} className={`text-gray-300 hover:text-white transition-colors duration-200 ${locale === 'bn' ? 'font-bangla-ui bangla-nav-link' : ''}`}>
-                  {locale === 'bn' ? 'বিনোদন' : 'Entertainment'}
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Categories removed as requested */}
         </div>
 
         {/* Bottom Section */}
