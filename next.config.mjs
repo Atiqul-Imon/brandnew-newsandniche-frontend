@@ -8,6 +8,11 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   
+  // Configure ESLint to not fail build on warnings
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+  
   // Optimize images
   images: {
     domains: ['res.cloudinary.com'],

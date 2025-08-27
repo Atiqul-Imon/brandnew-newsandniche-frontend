@@ -18,7 +18,7 @@ export default function SponsoredTermsPage() {
         <h2>Disclosure & Compliance</h2>
         <ul>
           <li>All sponsored posts are labeled “Sponsored” and include visible disclosures.</li>
-          <li>All paid links are marked with <code>rel="sponsored nofollow"</code> and open in a new tab.</li>
+          <li>All paid links are marked with <code>rel=&quot;sponsored nofollow&quot;</code> and open in a new tab.</li>
           <li>We do not guarantee rankings or specific SEO outcomes.</li>
         </ul>
 
