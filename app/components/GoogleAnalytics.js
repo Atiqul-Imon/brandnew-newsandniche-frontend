@@ -2,6 +2,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { hasConsent } from '../utils/cookies';
 
+// Debug logging only in development
+const isDev = process.env.NODE_ENV === 'development';
+const debugLog = (message, ...args) => {
+  if (isDev) {
+    console.log(message, ...args);
+  }
+};
+
 export default function GoogleAnalytics() {
   const [isInitialized, setIsInitialized] = useState(false);
   const scriptRef = useRef(null);
@@ -16,10 +24,10 @@ export default function GoogleAnalytics() {
 
       // Check if analytics consent is given
       const consent = hasConsent('analytics');
-      console.log('Analytics consent check:', consent);
+      debugLog('Analytics consent check:', consent);
       
       if (!consent) {
-        console.log('Google Analytics disabled - no consent');
+        debugLog('Google Analytics disabled - no consent');
         if (isMountedRef.current) setIsInitialized(false);
         return;
       }
@@ -32,14 +40,14 @@ export default function GoogleAnalytics() {
       const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
       
       if (!GA_TRACKING_ID) {
-        console.error('Google Analytics ID not found');
+        if (isDev) console.error('Google Analytics ID not found');
         return;
       }
 
       // Check if script already exists globally
       const existingScript = document.querySelector(`script[src*="googletagmanager.com"]`);
       if (existingScript) {
-        console.log('Google Analytics script already loaded');
+        debugLog('Google Analytics script already loaded');
         if (isMountedRef.current) setIsInitialized(true);
         return;
       }
@@ -64,22 +72,24 @@ export default function GoogleAnalytics() {
         page_location: window.location.href,
       });
 
-      console.log('Google Analytics initialized with ID:', GA_TRACKING_ID);
+      debugLog('Google Analytics initialized with ID:', GA_TRACKING_ID);
       if (isMountedRef.current) setIsInitialized(true);
       
-      // Send a test event to verify it's working
-      const testEventTimeout = setTimeout(() => {
-        if (window.gtag && isMountedRef.current) {
-          window.gtag('event', 'analytics_initialized', {
-            event_category: 'system',
-            event_label: 'GA4 Setup Complete'
-          });
-          console.log('Test event sent to Google Analytics');
-        }
-      }, 1000);
+      // Send a test event to verify it's working (only in development)
+      if (isDev) {
+        const testEventTimeout = setTimeout(() => {
+          if (window.gtag && isMountedRef.current) {
+            window.gtag('event', 'analytics_initialized', {
+              event_category: 'system',
+              event_label: 'GA4 Setup Complete'
+            });
+            debugLog('Test event sent to Google Analytics');
+          }
+        }, 1000);
 
-      // Store timeout for cleanup
-      scriptRef.current.testEventTimeout = testEventTimeout;
+        // Store timeout for cleanup
+        scriptRef.current.testEventTimeout = testEventTimeout;
+      }
     };
 
     // Initialize on mount
